@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-    <title>배드민턴 수업 풀리그 운영 시스템 (PC 전용)</title>
+    <title>배드민턴 수업 풀리그 운영 시스템 - 전광판 시안</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -493,6 +493,23 @@
     .broadcast-board.layout-3{grid-template-columns:repeat(3,minmax(0,1fr));}
     .broadcast-board.layout-4{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));}
     .broadcast-board.singles-rank-split{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:1fr;}
+    .broadcast-board.singles-match-rank-split{grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);grid-template-rows:1fr;}
+    .broadcast-singles-rank-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(8px,.9vw,12px);min-height:0;height:100%;}
+    .broadcast-singles-bracket{display:grid;grid-template-rows:auto 1fr;min-height:0;border-radius:24px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg, rgba(12,27,53,.96), rgba(7,20,42,.96));box-shadow:var(--shadow);overflow:hidden;}
+    .broadcast-singles-bracket-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:clamp(12px,1.2vw,16px) clamp(14px,1.3vw,18px);border-bottom:1px solid rgba(255,255,255,.08);}
+    .broadcast-singles-bracket-title{font-size:clamp(1rem,1.25vw,1.28rem);font-weight:1000;letter-spacing:-.02em;}
+    .broadcast-singles-bracket-meta{display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:clamp(.74rem,.86vw,.84rem);font-weight:800;color:#d9e9ff;white-space:nowrap;}
+    .broadcast-singles-bracket-body{padding:clamp(10px,1vw,14px);min-height:0;overflow:auto;}
+    .broadcast-singles-match-list{display:grid;gap:clamp(8px,.9vw,12px);}
+    .broadcast-singles-match-item{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;min-height:clamp(60px,6.8vh,78px);padding:clamp(10px,1vw,14px);border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);}
+    .broadcast-singles-match-item.current{background:linear-gradient(180deg, rgba(45,115,255,.16), rgba(90,177,255,.08));border-color:rgba(90,177,255,.28);box-shadow:inset 0 0 0 1px rgba(90,177,255,.18);}
+    .broadcast-singles-court{display:inline-flex;align-items:center;justify-content:center;min-width:clamp(78px,6vw,96px);padding:10px 12px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:clamp(.86rem,1vw,1rem);font-weight:900;white-space:nowrap;}
+    .broadcast-singles-match-item.current .broadcast-singles-court{background:rgba(90,177,255,.16);border-color:rgba(90,177,255,.3);}
+    .broadcast-singles-names{min-width:0;display:grid;gap:4px;}
+    .broadcast-singles-name-line{font-size:clamp(1.02rem,1.55vw,1.48rem);font-weight:1000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.02em;}
+    .broadcast-singles-sub{font-size:clamp(.76rem,.9vw,.9rem);color:#9db3d5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .broadcast-singles-state{display:inline-flex;align-items:center;justify-content:center;padding:9px 12px;border-radius:999px;font-size:clamp(.74rem,.86vw,.84rem);font-weight:900;white-space:nowrap;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);}
+    .broadcast-singles-state.current{background:rgba(255,209,102,.14);border-color:rgba(255,209,102,.28);color:#ffe08a;}
     .broadcast-rank-card{display:grid;grid-template-rows:auto 1fr;min-height:0;border-radius:24px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg, rgba(12,27,53,.96), rgba(7,20,42,.96));box-shadow:var(--shadow);overflow:hidden;}
     .broadcast-rank-card-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:clamp(12px,1.2vw,16px) clamp(14px,1.3vw,18px);border-bottom:1px solid rgba(255,255,255,.08);}
     .broadcast-rank-card-title{font-size:clamp(1rem,1.2vw,1.22rem);font-weight:1000;letter-spacing:-.02em;}
@@ -670,7 +687,8 @@
     body.broadcast-only .broadcast-shell.singles-rank-shell{grid-template-columns:1fr;}
     body.broadcast-only .broadcast-shell.singles-rank-shell .broadcast-sidebar{display:none;}
     body.broadcast-only .broadcast-shell.singles-rank-shell .broadcast-main{grid-template-rows:auto 1fr;}
-    body.broadcast-only .broadcast-shell.singles-rank-shell .broadcast-board.singles-rank-split{height:100%;}
+    body.broadcast-only .broadcast-shell.singles-rank-shell .broadcast-board.singles-rank-split,
+    body.broadcast-only .broadcast-shell.singles-rank-shell .broadcast-board.singles-match-rank-split{height:100%;}
 
     @media (max-height: 920px){
       body.broadcast-only .broadcast-shell{grid-template-columns:minmax(0,2.8fr) minmax(240px,.95fr);}
@@ -2437,6 +2455,182 @@
   }
 }
 
+
+/* ===== Stadium broadcast redesign ===== */
+.broadcast-shell{
+  grid-template-columns:minmax(0,3.5fr) minmax(320px,1.05fr);
+}
+.broadcast-hero{
+  padding:14px 18px;
+  border-radius:26px;
+  background:linear-gradient(180deg, rgba(11,25,48,.98), rgba(6,16,33,.98));
+  border:1px solid rgba(120,164,255,.16);
+}
+.broadcast-hero h2{font-size:clamp(1.1rem,1.7vw,1.38rem);font-weight:1000;}
+.broadcast-hero p{color:#93a9ce;}
+.broadcast-mode-pill{
+  background:linear-gradient(135deg, rgba(54,113,255,.28), rgba(69,179,255,.22));
+  border-color:rgba(104,166,255,.28);
+}
+.broadcast-board.stadium-layout{grid-template-columns:1fr;grid-template-rows:1fr;}
+.broadcast-board.stadium-layout .panel{height:100%;}
+.broadcast-board.stadium-layout.dual-live{grid-template-rows:repeat(2,minmax(0,1fr));gap:14px;}
+.broadcast-board.stadium-layout.dual-live .broadcast-stadium-card{min-height:0;}
+.broadcast-stadium-card{
+  min-height:0;height:100%;display:grid;grid-template-rows:auto auto auto auto;
+  border-radius:30px;overflow:hidden;position:relative;
+  background:radial-gradient(circle at top, rgba(28,67,135,.22), transparent 36%), linear-gradient(180deg, #071021 0%, #050d1a 100%);
+  border:1px solid rgba(147,181,255,.14);box-shadow:0 26px 60px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.05);
+}
+.broadcast-stadium-card::before{
+  content:'';position:absolute;inset:0;background:linear-gradient(180deg, rgba(255,255,255,.03), transparent 25%, transparent 75%, rgba(255,255,255,.02));pointer-events:none;
+}
+.broadcast-stadium-top{
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;
+  padding:18px 24px 10px;border-bottom:1px solid rgba(255,255,255,.06);
+}
+.broadcast-stadium-meta,.broadcast-stadium-kind{
+  display:inline-flex;align-items:center;gap:8px;font-size:clamp(.84rem,1vw,1rem);font-weight:900;color:#dce9ff;
+}
+.broadcast-stadium-kind{justify-self:end;text-align:right;}
+.broadcast-stadium-state{
+  justify-self:center;display:inline-flex;align-items:center;gap:10px;padding:10px 18px;border-radius:999px;
+  font-size:clamp(.9rem,1.1vw,1.08rem);font-weight:1000;border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.05);color:#eef5ff;white-space:nowrap;
+}
+.broadcast-stadium-state .dot{width:10px;height:10px;border-radius:999px;background:currentColor;box-shadow:0 0 10px currentColor;display:inline-block;}
+.broadcast-stadium-state.live{background:rgba(77,163,255,.13);color:#dcebff;border-color:rgba(77,163,255,.2);}
+.broadcast-stadium-state.done{background:rgba(83,215,105,.12);color:#e0ffe6;border-color:rgba(83,215,105,.18);}
+.broadcast-stadium-state.wait{background:rgba(255,209,102,.14);color:#fff0b8;border-color:rgba(255,209,102,.2);}
+
+.broadcast-stadium-team-row{
+  display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:18px;align-items:center;
+  padding:18px 28px 8px;
+}
+.broadcast-stadium-team{
+  min-width:0;text-align:center;font-size:clamp(2.2rem,3.4vw,3.8rem);font-weight:1000;letter-spacing:-.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.broadcast-stadium-vs{
+  align-self:center;display:inline-flex;align-items:center;justify-content:center;width:86px;height:86px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+  color:#8ebcff;font-weight:1000;font-size:1.25rem;letter-spacing:.18em;
+}
+.broadcast-stadium-score-row{
+  display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:18px;align-items:center;
+  padding:2px 28px 8px;
+}
+.broadcast-stadium-score{
+  text-align:center;font-size:clamp(6rem,11vw,10rem);font-weight:1000;line-height:.9;letter-spacing:-.08em;font-variant-numeric:tabular-nums;
+  text-shadow:0 10px 26px rgba(0,0,0,.4); white-space:nowrap;
+}
+.broadcast-stadium-colon{font-size:clamp(2.8rem,4.5vw,4.8rem);font-weight:1000;color:#8fbfff;transform:translateY(-6%);}
+
+.broadcast-stadium-main-row{
+  display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:12px;padding:10px 24px 12px;
+}
+.broadcast-stadium-side{
+  min-width:0;display:grid;gap:10px;justify-items:center;
+}
+.broadcast-stadium-side.left{justify-items:center;}
+.broadcast-stadium-side.right{justify-items:center;}
+.broadcast-stadium-team{
+  font-size:clamp(2rem,3.2vw,3.6rem);font-weight:1000;line-height:1.05;color:#f6f9ff;text-align:center;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;
+}
+.broadcast-stadium-lineup{
+  min-width:0;width:100%;padding:0;border-radius:0;background:transparent;border:none;
+  font-size:clamp(.92rem,1.05vw,1.08rem);font-weight:800;line-height:1.35;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.broadcast-stadium-score-wrap{
+  display:flex;align-items:center;justify-content:center;gap:34px;min-width:0;padding:0 24px;
+}
+.broadcast-stadium-score{
+  font-size:clamp(6.6rem,13vw,11rem);font-weight:1000;line-height:.9;color:#eef5ff;letter-spacing:-.06em;text-align:center;
+}
+.broadcast-stadium-colon{
+  font-size:clamp(3.2rem,5vw,5.4rem);font-weight:1000;line-height:1;color:#8bb6ff;transform:translateY(-2px);
+}
+
+.broadcast-stadium-progress{
+  display:grid;grid-template-columns:1fr 1fr 1fr minmax(0,1.45fr);gap:12px;padding:8px 24px 12px;
+}
+.broadcast-progress-item{
+  padding:14px 12px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);text-align:center;min-width:0;
+}
+.broadcast-progress-item.next{background:rgba(77,163,255,.08);border-color:rgba(77,163,255,.16);}
+.broadcast-progress-label{display:block;font-size:clamp(.74rem,.82vw,.9rem);color:#9fb3d4;font-weight:800;margin-bottom:4px;white-space:nowrap;}
+.broadcast-progress-value{
+  display:block;font-size:clamp(1.15rem,1.5vw,1.7rem);font-weight:1000;color:#eef5ff;line-height:1.2;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.broadcast-progress-item.next .broadcast-progress-value{
+  font-size:clamp(.92rem,1.02vw,1.1rem);
+}
+.broadcast-stadium-lineup-label{display:none;}
+.broadcast-queue-list{display:grid;gap:10px;}
+.broadcast-queue-item{padding:12px 12px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);display:grid;gap:8px;}
+.broadcast-queue-top{display:flex;justify-content:space-between;gap:8px;align-items:center;}
+.broadcast-queue-title{font-size:.96rem;font-weight:1000;color:#eef5ff;}
+.broadcast-queue-badge{padding:5px 9px;border-radius:999px;background:rgba(77,163,255,.12);font-size:.76rem;font-weight:900;color:#dcebff;}
+.broadcast-queue-meta{font-size:.82rem;color:#9eb1d0;line-height:1.5;}
+.broadcast-queue-score{font-size:.88rem;font-weight:900;color:#dce8ff;}
+@media (max-width: 1280px){
+  .broadcast-stadium-top{padding:14px 18px 8px;}
+  .broadcast-stadium-main-row{padding:8px 18px 10px;}
+  .broadcast-stadium-progress{padding:8px 18px 12px;}
+}
+@media (max-width: 980px){
+  .broadcast-shell{grid-template-columns:1fr;}
+}
+@media (max-width: 760px){
+  .broadcast-stadium-top{grid-template-columns:1fr;gap:10px;text-align:center;}
+  .broadcast-stadium-meta,.broadcast-stadium-kind,.broadcast-stadium-state{justify-self:center;}
+  .broadcast-stadium-main-row{grid-template-columns:1fr;padding-top:10px;gap:10px;}
+  .broadcast-stadium-vs{display:none;}
+  .broadcast-stadium-score-wrap{order:2;}
+  .broadcast-stadium-side{gap:8px;}
+  .broadcast-stadium-progress{grid-template-columns:1fr 1fr;}
+  .broadcast-progress-item.next{grid-column:1 / -1;}
+}
+body.broadcast-only .broadcast-shell{grid-template-columns:minmax(0,3.8fr) minmax(300px,1fr);}
+body.broadcast-only .broadcast-board.stadium-layout{height:100%;}
+body.broadcast-only .broadcast-board.stadium-layout.dual-live{height:100%;}
+body.broadcast-only .broadcast-board.stadium-layout.dual-live .broadcast-stadium-score{font-size:clamp(4.8rem,9vw,7.2rem);}
+body.broadcast-only .broadcast-board.stadium-layout.dual-live .broadcast-stadium-team{font-size:clamp(1.5rem,2.2vw,2.2rem);}
+body.broadcast-only .broadcast-board.stadium-layout.dual-live .broadcast-stadium-vs{width:62px;height:62px;font-size:.95rem;}
+body.broadcast-only .broadcast-board.stadium-layout.dual-live .broadcast-stadium-top{padding:12px 18px 8px;}
+body.broadcast-only .broadcast-board.stadium-layout.dual-live .broadcast-stadium-main-row{padding:8px 18px 8px;gap:10px;}
+body.broadcast-only .broadcast-board.stadium-layout.dual-live .broadcast-stadium-progress{padding:6px 18px 10px;gap:8px;grid-template-columns:1fr 1fr 1fr minmax(0,1.3fr);}
+body.broadcast-only .broadcast-board.stadium-layout.dual-live .broadcast-progress-item{padding:10px 8px;border-radius:14px;}
+body.broadcast-only .broadcast-board.stadium-layout .broadcast-progress-item{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+body.broadcast-only .broadcast-board.stadium-layout.dual-live .broadcast-progress-value{font-size:clamp(1rem,1.1vw,1.2rem);}
+body.broadcast-only .broadcast-board.stadium-layout.dual-live .broadcast-progress-item.next .broadcast-progress-value{font-size:clamp(.82rem,.86vw,.92rem);}
+body.broadcast-only .broadcast-board.stadium-layout.dual-live .broadcast-stadium-lineup{font-size:clamp(.82rem,.9vw,.96rem);padding:0;}
+body.broadcast-only .broadcast-board.stadium-layout .broadcast-stadium-status-row{
+  gap:8px;
+}
+body.broadcast-only .broadcast-board.stadium-layout .broadcast-stadium-status-box{
+  padding:9px 10px;
+  border-radius:14px;
+
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+}
+body.broadcast-only .broadcast-board.stadium-layout .broadcast-stadium-status-label{
+  font-size:clamp(11px,.7vw,14px);
+  margin-bottom:4px;
+}
+body.broadcast-only .broadcast-board.stadium-layout .broadcast-stadium-status-value{
+  font-size:clamp(16px,1vw,22px);
+  line-height:1.15;
+}
+
+body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);}
+
 </style>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -2908,6 +3102,16 @@
         </section>
 
         <aside class="broadcast-sidebar">
+          <div class="broadcast-side-card" id="broadcastQueueCard">
+            <div class="broadcast-side-head">
+              <div class="broadcast-side-title">다음 경기</div>
+              <div class="broadcast-badge">자동 갱신</div>
+            </div>
+            <div class="broadcast-side-body broadcast-side-scroll">
+              <div class="broadcast-queue-list" id="broadcastQueueList"></div>
+            </div>
+          </div>
+
           <div class="broadcast-side-card" id="broadcastDoublesCard">
             <div class="broadcast-side-head">
               <div class="broadcast-side-title">복식 조별 순위</div>
@@ -6764,12 +6968,14 @@ function renderBroadcastPage() {
   const doublesRank = document.getElementById('broadcastDoublesRank');
   const menSinglesRank = document.getElementById('broadcastMenSinglesRank');
   const womenSinglesRank = document.getElementById('broadcastWomenSinglesRank');
+  const queueList = document.getElementById('broadcastQueueList');
+  const queueCard = document.getElementById('broadcastQueueCard');
   const modePill = document.getElementById('broadcastModePill');
   const doublesCard = document.getElementById('broadcastDoublesCard');
   const menSinglesCard = document.getElementById('broadcastMenSinglesCard');
   const womenSinglesCard = document.getElementById('broadcastWomenSinglesCard');
   const broadcastShell = document.querySelector('#broadcastPage .broadcast-shell');
-  if (!board || !doublesRank || !menSinglesRank || !womenSinglesRank || !modePill || !doublesCard || !menSinglesCard || !womenSinglesCard || !broadcastShell) return;
+  if (!board || !doublesRank || !menSinglesRank || !womenSinglesRank || !modePill || !doublesCard || !menSinglesCard || !womenSinglesCard || !broadcastShell || !queueList || !queueCard) return;
 
   syncBroadcastToggleButtons();
 
@@ -6789,107 +6995,180 @@ function renderBroadcastPage() {
   `).join('') : `<div class="footer-note">${emptyText}</div>`;
 
   doublesCard.style.display = isSingles ? 'none' : '';
+  queueCard.style.display = isSingles ? 'none' : '';
   menSinglesCard.style.display = 'none';
   womenSinglesCard.style.display = 'none';
   broadcastShell.classList.toggle('singles-rank-shell', isSingles);
 
   if (isSingles) {
-    board.className = 'broadcast-board singles-rank-split';
-    modePill.textContent = `단식 · 순위판 ${singlesRanked.length ? `(${singlesRanked.length}명 집계)` : '대기 중'}`;
+    const league = currentSinglesLeague();
+    const unfinishedSingles = [...(league.menMatches || []), ...(league.womenMatches || [])]
+      .filter(m => !m.finished)
+      .sort((a, b) => (Number(a.slotNo || 0) - Number(b.slotNo || 0)) || (Number(a.courtNo || 0) - Number(b.courtNo || 0)) || (Number(a.roundNo || 0) - Number(b.roundNo || 0)));
+    const currentSlot = unfinishedSingles.length ? Number(unfinishedSingles[0].slotNo || 0) : null;
+
+    const renderSinglesScheduleItems = () => {
+      if (!unfinishedSingles.length) return '<div class="footer-note">표시할 단식 대진이 없습니다.</div>';
+      return unfinishedSingles.map((match, index) => {
+        const p1 = getPlayerById(match.playerA);
+        const p2 = getPlayerById(match.playerB);
+        const p1Name = p1?.name || '선수 A';
+        const p2Name = p2?.name || '선수 B';
+        const genderText = p1?.gender === 'M' ? '남자 단식' : (p1?.gender === 'F' ? '여자 단식' : '단식');
+        const isCurrent = currentSlot !== null && Number(match.slotNo || 0) === currentSlot;
+        const stateText = isCurrent ? '현재 경기' : `다음 경기 ${index + 1}`;
+        return `
+          <div class="broadcast-singles-match-item ${isCurrent ? 'current' : ''}">
+            <div class="broadcast-singles-court">${Number(match.courtNo) || 1}번 코트</div>
+            <div class="broadcast-singles-names">
+              <div class="broadcast-singles-name-line">${escapeHtml(p1Name)} <span style="color:#8dbfff;font-weight:800;">vs</span> ${escapeHtml(p2Name)}</div>
+              <div class="broadcast-singles-sub">${Number(match.roundNo) || 0}라운드 · ${escapeHtml(genderText)}${isCurrent && match.started ? ' · 진행중' : ''}</div>
+            </div>
+            <div class="broadcast-singles-state ${isCurrent ? 'current' : ''}">${stateText}</div>
+          </div>
+        `;
+      }).join('');
+    };
+
+    board.className = 'broadcast-board singles-match-rank-split';
+    modePill.textContent = unfinishedSingles.length ? `단식 · 현재 ${matches.length}경기` : '단식 · 대기 중';
     board.innerHTML = `
-      <section class="broadcast-rank-card">
-        <div class="broadcast-rank-card-head">
-          <div class="broadcast-rank-card-title">남자 단식 순위</div>
-          <div class="broadcast-rank-card-meta">${menSinglesRanked.length}명</div>
+      <section class="broadcast-singles-bracket">
+        <div class="broadcast-singles-bracket-head">
+          <div class="broadcast-singles-bracket-title">단식 대진표</div>
+          <div class="broadcast-singles-bracket-meta">완료 경기는 자동 제외 · 실시간 갱신</div>
         </div>
-        <div class="broadcast-rank-card-body scrollbar-ui">
-          <div class="broadcast-rank-list">
-            ${renderRankItems(menSinglesRanked, '남자 단식 대진 또는 결과가 아직 없습니다.')}
+        <div class="broadcast-singles-bracket-body scrollbar-ui">
+          <div class="broadcast-singles-match-list">
+            ${renderSinglesScheduleItems()}
           </div>
         </div>
       </section>
-      <section class="broadcast-rank-card">
-        <div class="broadcast-rank-card-head">
-          <div class="broadcast-rank-card-title">여자 단식 순위</div>
-          <div class="broadcast-rank-card-meta">${womenSinglesRanked.length}명</div>
-        </div>
-        <div class="broadcast-rank-card-body scrollbar-ui">
-          <div class="broadcast-rank-list">
-            ${renderRankItems(womenSinglesRanked, '여자 단식 대진 또는 결과가 아직 없습니다.')}
+      <section class="broadcast-singles-rank-grid">
+        <section class="broadcast-rank-card">
+          <div class="broadcast-rank-card-head">
+            <div class="broadcast-rank-card-title">남자 단식 순위</div>
+            <div class="broadcast-rank-card-meta">${menSinglesRanked.length}명</div>
           </div>
-        </div>
+          <div class="broadcast-rank-card-body scrollbar-ui">
+            <div class="broadcast-rank-list">
+              ${renderRankItems(menSinglesRanked, '남자 단식 대진 또는 결과가 아직 없습니다.')}
+            </div>
+          </div>
+        </section>
+        <section class="broadcast-rank-card">
+          <div class="broadcast-rank-card-head">
+            <div class="broadcast-rank-card-title">여자 단식 순위</div>
+            <div class="broadcast-rank-card-meta">${womenSinglesRanked.length}명</div>
+          </div>
+          <div class="broadcast-rank-card-body scrollbar-ui">
+            <div class="broadcast-rank-list">
+              ${renderRankItems(womenSinglesRanked, '여자 단식 대진 또는 결과가 아직 없습니다.')}
+            </div>
+          </div>
+        </section>
       </section>
     `;
   } else {
-    const layoutClass = `layout-${Math.min(Math.max(matches.length, 1), 4)}`;
-    board.className = `broadcast-board ${layoutClass}`;
-
+    board.className = 'broadcast-board stadium-layout';
     if (!matches.length) {
-      board.innerHTML = `<div class="panel"><div class="panel-body"><div class="footer-note">진행 중인 복식 경기가 없습니다.</div></div></div>`;
       modePill.textContent = '복식 · 대기 중';
+      board.innerHTML = `<div class="panel"><div class="panel-body"><div class="footer-note">진행 중인 복식 경기가 없습니다.</div></div></div>`;
+      queueList.innerHTML = '<div class="footer-note">대기 중인 경기가 없습니다.</div>';
     } else {
-      modePill.textContent = `복식 · 현재 ${matches.length}경기`;
-      board.innerHTML = matches.map(m => {
-        const teamA = getTeamById(m.teamAId);
-        const teamB = getTeamById(m.teamBId);
+      const liveMatches = matches.slice(0, Math.min(2, matches.length));
+      const queueMatches = matches.slice(liveMatches.length);
+      board.classList.toggle('dual-live', liveMatches.length >= 2);
+
+      const renderStadiumMatchCard = (match, cardIndex = 0, totalCards = 1) => {
+        const teamA = getTeamById(match.teamAId);
+        const teamB = getTeamById(match.teamBId);
         const aName = teamA?.name || 'A조';
         const bName = teamB?.name || 'B조';
-        const activeType = m.activeGame || 'women';
-        const game = m.games?.[activeType] || { a: 0, b: 0, lineupA: [], lineupB: [], finished: false };
+        const activeType = match.activeGame || 'women';
+        const game = match.games?.[activeType] || { a: 0, b: 0, lineupA: [], lineupB: [], finished: false };
         const scoreA = Number(game.a) || 0;
         const scoreB = Number(game.b) || 0;
         const lineupA = lineupNames(teamA || { playerIds: [] }, game.lineupA || []);
         const lineupB = lineupNames(teamB || { playerIds: [] }, game.lineupB || []);
-        const stateText = game.finished ? '현재 종목 종료' : (m.started ? '진행중' : '대기');
-        const statusCards = ['women','mixed','men'].map(type => {
-          const g = m.games?.[type] || { a:0, b:0, finished:false };
-          const stateClass = activeType === type ? 'live' : (g.finished ? 'done' : 'wait');
-          const stateLabel = activeType === type ? '진행중' : (g.finished ? '완료' : '대기');
-          return `
-            <div class="broadcast-status-card">
-              <span class="broadcast-status-kind">${gameLabel(type)}</span>
-              <span class="broadcast-status-score">${Number(g.a) || 0}:${Number(g.b) || 0}</span>
-              <span class="broadcast-status-state ${stateClass}">${stateLabel}</span>
-            </div>
-          `;
-        }).join('');
-        const headStateClass = game.finished ? 'done' : (m.started ? 'live' : 'wait');
+        const finishedCount = ['women','mixed','men'].filter(type => match.games?.[type]?.finished).length;
+        const remainCount = 3 - finishedCount;
+        const stateText = game.finished ? '현재 종목 종료' : (match.started ? '경기중' : '경기 준비중');
+        const headStateClass = game.finished ? 'done' : (match.started ? 'live' : 'wait');
+        const panelTitle = totalCards >= 2 ? `현재 경기 ${cardIndex + 1}` : '현재 경기 진행 상태';
+        const lineLabel = totalCards >= 2 ? `${Number(match.courtNo) || 1}코트 경기` : '현재 경기';
+        const nextMatch = queueMatches[0] || null;
+        const nextSummary = nextMatch
+          ? `${gameLabel(nextMatch.activeGame || 'women')} · ${getTeamById(nextMatch.teamAId)?.name || 'A조'} vs ${getTeamById(nextMatch.teamBId)?.name || 'B조'}${queueMatches.length > 1 ? ` 외 ${queueMatches.length - 1}` : ''}`
+          : '다음 경기 없음';
+
         return `
-          <div class="broadcast-card">
-            <div class="broadcast-head">
-              <div class="broadcast-head-left">
-                <div class="broadcast-badge">ROUND ${Number(m.roundNo) || 0} · COURT ${Number(m.courtNo) || 1}</div>
+          <section class="broadcast-stadium-card">
+            <div class="broadcast-stadium-top">
+              <div class="broadcast-stadium-meta">${Number(match.courtNo) || 1}코트 · ${Number(match.roundNo) || 0}라운드</div>
+              <div class="broadcast-stadium-state ${headStateClass}"><span class="dot"></span>${stateText}</div>
+              <div class="broadcast-stadium-kind">${escapeHtml(gameLabel(activeType))}</div>
+            </div>
+            <div class="broadcast-stadium-main-row">
+              <div class="broadcast-stadium-side left">
+                <div class="broadcast-stadium-team">${escapeHtml(aName)}</div>
+                <div class="broadcast-stadium-lineup">${formatBroadcastLineup(lineupA)}</div>
               </div>
-              <div class="broadcast-head-center">
-                <div class="broadcast-head-state ${headStateClass}">${stateText}</div>
+              <div class="broadcast-stadium-score-wrap">
+                <div class="broadcast-stadium-score">${scoreA}</div>
+                <div class="broadcast-stadium-colon">:</div>
+                <div class="broadcast-stadium-score">${scoreB}</div>
               </div>
-              <div class="broadcast-head-right">
-                <div class="broadcast-kind">${escapeHtml(gameLabel(activeType))}</div>
+              <div class="broadcast-stadium-side right">
+                <div class="broadcast-stadium-team">${escapeHtml(bName)}</div>
+                <div class="broadcast-stadium-lineup">${formatBroadcastLineup(lineupB)}</div>
               </div>
             </div>
-            <div class="broadcast-card-body">
-              <div class="broadcast-team-row">
-                <span class="broadcast-team-name">${escapeHtml(aName)}</span>
-                <span class="broadcast-vs">VS</span>
-                <span class="broadcast-team-name">${escapeHtml(bName)}</span>
+            <div class="broadcast-stadium-progress">
+              <div class="broadcast-progress-item">
+                <span class="broadcast-progress-label">현재 종목</span>
+                <span class="broadcast-progress-value">${escapeHtml(gameLabel(activeType))}</span>
               </div>
-              <div class="broadcast-score-layout">
-                <div class="broadcast-player-name left">${formatBroadcastLineup(lineupA)}</div>
-                <div class="broadcast-score-row">
-                  <span class="broadcast-score-num">${scoreA}</span>
-                  <span class="broadcast-score-colon">:</span>
-                  <span class="broadcast-score-num">${scoreB}</span>
-                </div>
-                <div class="broadcast-player-name right">${formatBroadcastLineup(lineupB)}</div>
+              <div class="broadcast-progress-item">
+                <span class="broadcast-progress-label">종료 종목</span>
+                <span class="broadcast-progress-value">${finishedCount} / 3</span>
               </div>
-              <div class="broadcast-meta broadcast-meta-spacer" aria-hidden="true"></div>
+              <div class="broadcast-progress-item">
+                <span class="broadcast-progress-label">남은 종목</span>
+                <span class="broadcast-progress-value">${remainCount}</span>
+              </div>
+              <div class="broadcast-progress-item next">
+                <span class="broadcast-progress-label">다음 경기</span>
+                <span class="broadcast-progress-value">${escapeHtml(nextSummary)}</span>
+              </div>
             </div>
-            <div class="broadcast-foot">
-              ${statusCards}
+          </section>
+        `;
+      };
+
+      board.innerHTML = liveMatches.map((match, index) => renderStadiumMatchCard(match, index, liveMatches.length)).join('');
+
+      queueList.innerHTML = queueMatches.length ? queueMatches.map((m, index) => {
+        const team1 = getTeamById(m.teamAId)?.name || 'A조';
+        const team2 = getTeamById(m.teamBId)?.name || 'B조';
+        const active = m.activeGame || 'women';
+        const g = m.games?.[active] || { a:0, b:0, finished:false };
+        const stateText = g.finished ? '현재 종목 종료' : (m.started ? '진행중' : '대기');
+        return `
+          <div class="broadcast-queue-item">
+            <div class="broadcast-queue-top">
+              <div class="broadcast-queue-title">${index + 1}순위 표시 경기</div>
+              <div class="broadcast-queue-badge">${Number(m.courtNo) || 1}코트 · ${Number(m.roundNo) || 0}R</div>
+            </div>
+            <div class="broadcast-queue-meta">${escapeHtml(team1)} vs ${escapeHtml(team2)} · ${escapeHtml(gameLabel(active))}</div>
+            <div class="broadcast-queue-top">
+              <div class="broadcast-queue-score">${Number(g.a) || 0} : ${Number(g.b) || 0}</div>
+              <div class="broadcast-queue-meta">${stateText}</div>
             </div>
           </div>
         `;
-      }).join('');
+      }).join('') : '<div class="footer-note">다음 경기 정보가 아직 없습니다.</div>';
+      modePill.textContent = liveMatches.length >= 2 ? `복식 · 동시 ${liveMatches.length}경기` : `복식 · 현재 ${matches.length}경기`;
     }
   }
 
