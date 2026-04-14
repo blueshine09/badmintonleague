@@ -85,7 +85,7 @@
     .score-toolbar{display:grid;grid-template-columns:1fr 1fr;gap:8px}
     .score-waiting{display:none;padding:18px 16px;border:1px dashed rgba(255,255,255,.14);border-radius:16px;background:rgba(255,255,255,.03);color:var(--muted);font-size:.86rem;line-height:1.6;text-align:center}
     .score-waiting.show{display:block}
-    .stats-panel{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+    .stats-panel{display:none;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
     .stats-team{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:10px;display:grid;gap:8px}
     .stats-title{font-size:.84rem;font-weight:800;text-align:center;color:#dce9ff}
     .stats-btns{display:grid;grid-template-columns:1fr 1fr;gap:6px}
@@ -617,29 +617,19 @@ function getTeamLineupCountFromMatch(match, teamId, type) {
   if (match.teamBId === teamId) return countSelectedPlayers(game.lineupB || []);
   return 0;
 }
+function getTeamRoundSubmission(teamId, roundNo) {
+  return appData.lineupSubmissions?.[teamId]?.[String(roundNo)] || null;
+}
+function getTeamRoundStage(teamId, roundNo) {
+  const roundData = getTeamRoundSubmission(teamId, roundNo);
+  if (!roundData || typeof roundData !== 'object') return 'draft';
+  if (roundData.finalSubmittedAt) return 'submitted';
+  if (roundData.rolesCompletedAt) return 'roles_ready';
+  if (roundData.lineupCompletedAt) return 'lineup_ready';
+  return 'draft';
+}
 function isTeamRoundSubmitted(teamId, roundNo) {
-  const roundData = appData.lineupSubmissions?.[teamId]?.[String(roundNo)];
-  const hasSubmittedAt = !!roundData?.submittedAt;
-
-  const roundMatch = (appData.liveMatches || []).find(match =>
-    Number(match.roundNo) === Number(roundNo) && (match.teamAId === teamId || match.teamBId === teamId)
-  ) || null;
-
-  const womenCount = roundData && typeof roundData === 'object'
-    ? countSelectedPlayers(getRoundLineupEntry(roundData, 'women'))
-    : 0;
-  const mixedCount = roundData && typeof roundData === 'object'
-    ? countSelectedPlayers(getRoundLineupEntry(roundData, 'mixed'))
-    : 0;
-  const menCount = roundData && typeof roundData === 'object'
-    ? countSelectedPlayers(getRoundLineupEntry(roundData, 'men'))
-    : 0;
-
-  const womenReady = womenCount >= 2 || getTeamLineupCountFromMatch(roundMatch, teamId, 'women') >= 2;
-  const mixedReady = mixedCount >= 2 || getTeamLineupCountFromMatch(roundMatch, teamId, 'mixed') >= 2;
-  const menReady = menCount >= 2 || getTeamLineupCountFromMatch(roundMatch, teamId, 'men') >= 2;
-
-  return hasSubmittedAt || (womenReady && mixedReady && menReady);
+  return getTeamRoundStage(teamId, roundNo) === 'submitted';
 }
 function recalcMatchTotals(match) {
   const winsA = ['women','mixed','men'].reduce((sum, type) => sum + ((Number(match.games?.[type]?.a) || 0) > (Number(match.games?.[type]?.b) || 0) ? 1 : 0), 0);
@@ -678,15 +668,23 @@ async function persistAndRender() {
 function renderSubmissionStatus(match){
   const teamA = getTeamById(match.teamAId);
   const teamB = getTeamById(match.teamBId);
-  const aOk = isTeamRoundSubmitted(match.teamAId, match.roundNo);
-  const bOk = isTeamRoundSubmitted(match.teamBId, match.roundNo);
+  const aStage = getTeamRoundStage(match.teamAId, match.roundNo);
+  const bStage = getTeamRoundStage(match.teamBId, match.roundNo);
+  const stageInfo = (stage) => {
+    if (stage === 'submitted') return { cls:'status-green', text:'최종 제출 완료' };
+    if (stage === 'roles_ready') return { cls:'status-blue', text:'심판 선택 완료' };
+    if (stage === 'lineup_ready') return { cls:'status-yellow', text:'선수 선택 완료' };
+    return { cls:'status-red', text:'오더 미제출' };
+  };
+  const aInfo = stageInfo(aStage);
+  const bInfo = stageInfo(bStage);
 
-  el('teamAStatus').className = `status-pill ${aOk ? 'status-green' : 'status-red'}`;
-  el('teamBStatus').className = `status-pill ${bOk ? 'status-green' : 'status-red'}`;
-  el('teamAStatus').innerHTML = `<span class="dot"></span>${aOk ? '오더 제출 완료' : '오더 미제출'}`;
-  el('teamBStatus').innerHTML = `<span class="dot"></span>${bOk ? '오더 제출 완료' : '오더 미제출'}`;
+  el('teamAStatus').className = `status-pill ${aInfo.cls}`;
+  el('teamBStatus').className = `status-pill ${bInfo.cls}`;
+  el('teamAStatus').innerHTML = `<span class="dot"></span>${aInfo.text}`;
+  el('teamBStatus').innerHTML = `<span class="dot"></span>${bInfo.text}`;
 
-  const canStart = aOk && bOk && !match.started;
+  const canStart = aStage === 'submitted' && bStage === 'submitted' && !match.started;
   const startBtn = el('startBtn');
   if(match.started){
     startBtn.disabled = true;
@@ -699,14 +697,14 @@ function renderSubmissionStatus(match){
     startBtn.disabled = false;
     startBtn.className = 'btn green';
     startBtn.textContent = '경기 시작';
-    el('startHint').textContent = '양쪽 팀 오더 제출이 확인되었습니다. 시작 버튼을 누르면 점수 입력이 열립니다.';
+    el('startHint').textContent = '양쪽 팀이 역할 포함 오더를 최종 제출했습니다. 시작 버튼을 누르면 점수 입력이 열립니다.';
     el('matchStatePill').className = 'status-pill status-green';
     el('matchStatePill').innerHTML = '<span class="dot"></span>시작 가능';
   } else {
     startBtn.disabled = true;
     startBtn.className = 'btn gray';
     startBtn.textContent = '오더 제출 대기';
-    el('startHint').textContent = '양쪽 팀이 모두 오더를 제출하면 경기 시작 버튼을 누를 수 있습니다.';
+    el('startHint').textContent = '양쪽 팀이 역할까지 포함해 최종 제출해야 경기 시작 버튼이 활성화됩니다.';
     el('matchStatePill').className = 'status-pill status-yellow';
     el('matchStatePill').innerHTML = '<span class="dot"></span>오더 확인 중';
   }
@@ -716,8 +714,8 @@ function renderSubmissionStatus(match){
   const teamBLabel = teamB?.name || `${getTeamLetter(teamB) || 'B'}조`;
   el('scoreTeamA').textContent = teamALabel;
   el('scoreTeamB').textContent = teamBLabel;
-  el('statsTeamA').textContent = `${teamALabel} 기록`;
-  el('statsTeamB').textContent = `${teamBLabel} 기록`;
+  const statsPanel = el('statsPanel');
+  if (statsPanel) statsPanel.style.display = 'none';
   el('pageTitle').textContent = `${round}라운드 · ${matchNo}경기 심판 입력`;
   el('pageSubline').textContent = `${teamA?.name || 'A조'} vs ${teamB?.name || 'B조'} 경기 전용 모바일 심판 화면입니다.`;
 }
@@ -746,18 +744,8 @@ function syncOverlayButtons(match){
   overlayUndoBtn.style.display = (match.started && ended) ? 'inline-flex' : 'none';
 }
 function renderStats(match){
-  const stats = ensureMatchStats(match);
-  const active = !!match.started;
-  const typeEnded = !!(match.games?.[match.activeGame || 'women'] || {}).finished;
-  const disabled = !active || typeEnded;
-  ['statAServeSuccess','statAServeFail','statAAttackSuccess','statAAttackFail','statBServeSuccess','statBServeFail','statBAttackSuccess','statBAttackFail'].forEach(id => {
-    const button = el(id);
-    if (button) button.disabled = disabled;
-  });
-  el('serveRateA').textContent = calcRate(stats.A.serve_success, stats.A.serve_fail);
-  el('attackRateA').textContent = calcRate(stats.A.attack_success, stats.A.attack_fail);
-  el('serveRateB').textContent = calcRate(stats.B.serve_success, stats.B.serve_fail);
-  el('attackRateB').textContent = calcRate(stats.B.attack_success, stats.B.attack_fail);
+  const statsPanel = el('statsPanel');
+  if (statsPanel) statsPanel.style.display = 'none';
 }
 
 function renderScore(match){

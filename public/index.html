@@ -134,7 +134,7 @@
 .lineup-link-card input{width:100%;background:#0e1c33;color:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 10px;}
 .lineup-qr-wrap{display:flex;justify-content:center;align-items:center;padding:10px 0 4px;}
 .lineup-qr-img{width:170px;height:170px;border-radius:14px;background:#fff;padding:10px;border:1px solid rgba(255,255,255,.12);}
-.lineup-mini{font-size:.78rem;color:var(--muted);line-height:1.55;margin-top:6px;word-break:break-all;}
+.lineup-mini{font-size:.78rem;color:var(--muted);line-height:1.55;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .lineup-status-box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:12px;min-height:100%;}
 .lineup-status-list{display:grid;gap:8px;margin-top:8px;}
 .lineup-status-item{display:flex;justify-content:space-between;gap:8px;padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.04);font-size:.84rem;}
@@ -643,31 +643,61 @@
     .qr-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;}
     .qr-card{
       background:linear-gradient(180deg,rgba(22,35,61,.96),rgba(13,22,39,.96));
-      border:1px solid var(--line);border-radius:20px;padding:18px;min-height:260px;
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:18px;
+      min-height:0;
+      display:grid;
+      grid-template-columns:minmax(320px,.9fr) minmax(0,1.35fr);
+      column-gap:18px;
+      row-gap:10px;
+      align-items:start;
     }
-    .qr-card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;}
-    .qr-card-title{margin:0;font-size:1.15rem;line-height:1.3;}
+    .qr-card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;grid-column:1 / -1;align-self:start;width:100%;}
+    .qr-card-title{margin:0;font-size:1.05rem;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
     .qr-sub{margin-top:6px;color:var(--muted);font-size:.88rem;line-height:1.5;}
     .qr-badge{display:inline-flex;padding:8px 10px;border-radius:999px;background:rgba(99,164,255,.12);border:1px solid rgba(99,164,255,.35);color:#bfd8ff;font-weight:800;font-size:.75rem;white-space:nowrap}
-    .qr-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:16px 0}
-    .qr-meta .box{background:rgba(8,16,30,.45);border:1px solid rgba(65,95,139,.6);padding:12px;border-radius:14px}
+    .qr-meta{display:grid;grid-template-columns:1fr;gap:8px;grid-column:1;align-self:start;}
+    .qr-meta .box{background:rgba(8,16,30,.45);border:1px solid rgba(65,95,139,.6);padding:10px 12px;border-radius:14px}
     .qr-label{font-size:.75rem;color:var(--muted);margin-bottom:4px}
-    .qr-value{font-size:1rem;font-weight:800}
-    .qr-qr-wrap{display:flex;justify-content:center;align-items:center;padding:10px 0 4px;min-height:190px;}
-    .qr-qr-canvas{display:flex;justify-content:center;align-items:center;width:170px;height:170px;border-radius:16px;background:#fff;padding:10px;border:1px solid rgba(255,255,255,.10);overflow:hidden;}
+    .qr-value{font-size:.98rem;font-weight:800;line-height:1.35}
+    .qr-qr-wrap{display:flex;justify-content:center;align-items:flex-start;grid-column:2;grid-row:2 / span 3;align-self:start;min-height:100%;padding:0;}
+    .qr-qr-canvas{display:flex;justify-content:center;align-items:center;width:292px;height:292px;border-radius:18px;background:#fff;padding:6px;border:1px solid rgba(255,255,255,.10);overflow:hidden;box-shadow:0 10px 26px rgba(0,0,0,.18);margin-top:0;}
     .qr-qr-canvas canvas,.qr-qr-canvas img{max-width:100%;max-height:100%;display:block;}
-    .qr-qr-img{display:block;width:170px;height:170px;border-radius:16px;background:#fff;padding:10px;border:1px solid rgba(255,255,255,.10);object-fit:contain;}
+    .qr-qr-img{display:block;width:276px;height:276px;border-radius:18px;background:#fff;padding:8px;border:1px solid rgba(255,255,255,.10);object-fit:contain;box-shadow:0 10px 26px rgba(0,0,0,.18);}
     .qr-linkview{
-      margin-top:12px;padding:12px 14px;background:rgba(8,16,30,.56);border-radius:14px;border:1px solid rgba(65,95,139,.55);
-      color:#d9e8ff;font-size:.82rem;word-break:break-all
+      grid-column:1 / -1;
+      margin-top:0;
+      padding:12px 14px;
+      background:rgba(8,16,30,.56);
+      border-radius:14px;
+      border:1px solid rgba(65,95,139,.55);
+      color:#d9e8ff;
+      font-size:.82rem;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis
     }
-    .qr-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .qr-linkview::before{content:'QR주소';display:block;margin-bottom:6px;color:var(--muted);font-size:.74rem;font-weight:700;letter-spacing:.01em;}
+    .qr-actions{display:flex;gap:10px;flex-wrap:wrap;grid-column:1 / -1;margin-top:0}
+    .qr-card-head,.qr-meta{max-width:100%;}
+    .qr-linkview,.qr-actions{max-width:none;}
     .qr-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
     .qr-summary-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:14px;}
     .qr-summary-card h4{margin:0 0 8px;font-size:1rem;}
     .qr-status-row{display:flex;gap:6px;flex-wrap:wrap;}
+    @media (max-width: 1200px){
+      .qr-card{grid-template-columns:minmax(320px,1.02fr) minmax(0,1.16fr);}
+      .qr-qr-canvas{width:280px;height:280px;}.qr-qr-img{width:264px;height:264px;}
+    }
     @media (max-width: 980px){
-      .qr-grid{grid-template-columns:1fr;} .qr-summary{grid-template-columns:repeat(2,minmax(0,1fr));}
+      .qr-grid{grid-template-columns:1fr;}
+      .qr-card{grid-template-columns:minmax(300px,1.02fr) minmax(0,1.12fr);}
+      .qr-summary{grid-template-columns:repeat(2,minmax(0,1fr));}
+    }
+    @media (max-width: 760px){
+      .qr-card{grid-template-columns:1fr;}
+      .qr-card-head,.qr-meta,.qr-linkview,.qr-actions,.qr-qr-wrap{grid-column:1;grid-row:auto;}
+      .qr-qr-wrap{min-height:0;padding-top:4px;}
+      .qr-qr-canvas{width:272px;height:272px;}.qr-qr-img{width:256px;height:256px;}
     }
 
     .page{display:none;padding-bottom:36px;}
@@ -2574,6 +2604,19 @@
 .broadcast-queue-badge{padding:5px 9px;border-radius:999px;background:rgba(77,163,255,.12);font-size:.76rem;font-weight:900;color:#dcebff;}
 .broadcast-queue-meta{font-size:.82rem;color:#9eb1d0;line-height:1.5;}
 .broadcast-queue-score{font-size:.88rem;font-weight:900;color:#dce8ff;}
+.broadcast-info-toggle{display:inline-flex;gap:6px;padding:4px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);}
+.broadcast-info-toggle-btn{border:none;background:transparent;color:#9eb1d0;padding:7px 12px;border-radius:999px;font-size:.8rem;font-weight:900;cursor:pointer;}
+.broadcast-info-toggle-btn.active{background:rgba(77,163,255,.16);color:#eef5ff;box-shadow:inset 0 0 0 1px rgba(77,163,255,.24);}
+.broadcast-role-list{display:grid;gap:10px;}
+.broadcast-role-card{padding:12px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);display:grid;gap:10px;}
+.broadcast-role-match{display:grid;gap:6px;}
+.broadcast-role-title{font-size:1rem;font-weight:1000;color:#eef5ff;line-height:1.3;}
+.broadcast-role-sub{font-size:.82rem;color:#9eb1d0;line-height:1.5;}
+.broadcast-role-grid{display:grid;gap:8px;}
+.broadcast-role-row{display:grid;grid-template-columns:86px 1fr;gap:10px;align-items:start;padding:8px 10px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);}
+.broadcast-role-label{font-size:.8rem;font-weight:900;color:#9fb3d4;}
+.broadcast-role-value{font-size:.86rem;font-weight:800;color:#eef5ff;line-height:1.45;word-break:keep-all;}
+.broadcast-role-empty{padding:18px 14px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);color:#9eb1d0;font-size:.88rem;line-height:1.6;}
 @media (max-width: 1280px){
   .broadcast-stadium-top{padding:14px 18px 8px;}
   .broadcast-stadium-main-row{padding:8px 18px 10px;}
@@ -2771,6 +2814,7 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
       <button class="view-tab active" data-view="setup" onclick="switchView('setup')">조편성</button>
       <button class="view-tab" data-view="run" onclick="switchView('run')">경기 운영</button>
       <button class="view-tab" data-view="qr" onclick="switchView('qr')">QR코드</button>
+      <button class="view-tab" data-view="data" onclick="switchView('data')">데이터 확인</button>
       <button class="view-tab" data-view="singles" onclick="switchView('singles')">단식</button>
     </div>
     <div class="admin-sync-wrap">
@@ -3104,11 +3148,14 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
         <aside class="broadcast-sidebar">
           <div class="broadcast-side-card" id="broadcastQueueCard">
             <div class="broadcast-side-head">
-              <div class="broadcast-side-title">다음 경기</div>
-              <div class="broadcast-badge">자동 갱신</div>
+              <div class="broadcast-side-title">경기 안내</div>
+              <div class="broadcast-info-toggle" role="tablist" aria-label="전광판 역할 안내 전환">
+                <button type="button" class="broadcast-info-toggle-btn active" id="broadcastCurrentInfoBtn" onclick="setBroadcastInfoView('current')">현재 경기</button>
+                <button type="button" class="broadcast-info-toggle-btn" id="broadcastNextInfoBtn" onclick="setBroadcastInfoView('next')">다음 경기</button>
+              </div>
             </div>
             <div class="broadcast-side-body broadcast-side-scroll">
-              <div class="broadcast-queue-list" id="broadcastQueueList"></div>
+              <div class="broadcast-role-list" id="broadcastQueueList"></div>
             </div>
           </div>
 
@@ -3165,6 +3212,7 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
               <div class="qr-mode-tabs" id="qrModeTabs">
                 <button class="qr-mode-tab active" data-mode="order" onclick="setQrMode('order')">오더 제출 QR</button>
                 <button class="qr-mode-tab" data-mode="referee" onclick="setQrMode('referee')">심판용 QR</button>
+                <button class="qr-mode-tab" data-mode="data" onclick="setQrMode('data')">데이터 QR</button>
               </div>
             </div>
           </div>
@@ -3183,6 +3231,10 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
               <div class="qr-grid" id="qrRefereeGrid"></div>
             </div>
 
+            <div id="qrDataView" style="display:none;">
+              <div class="qr-grid" id="qrDataGrid"></div>
+            </div>
+
             <div class="panel" style="margin-top:18px;background:rgba(255,255,255,.025);">
               <div class="panel-header">
                 <div>
@@ -3194,6 +3246,48 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
                 <div class="qr-summary" id="qrSummaryGrid"></div>
               </div>
             </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="page" id="dataPage">
+      <div class="section-stack">
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">데이터 확인</div>
+              <div class="tiny muted">데이터 QR로 제출된 기록을 경기별과 선수별로 확인합니다.</div>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="control-row">
+              <label class="tiny muted">보기 방식</label>
+              <select id="dataViewMode" onchange="renderDataInsightsPage()">
+                <option value="match">경기별 보기</option>
+                <option value="player">선수별 보기</option>
+              </select>
+              <label class="tiny muted">라운드</label>
+              <select id="dataRoundFilter" onchange="renderDataInsightsPage()">
+                <option value="all">전체</option>
+                <option value="1">1라운드</option>
+                <option value="2">2라운드</option>
+                <option value="3">3라운드</option>
+              </select>
+              <label class="tiny muted">조</label>
+              <select id="dataTeamFilter" onchange="renderDataInsightsPage()">
+                <option value="all">전체</option>
+              </select>
+              <label class="tiny muted">종목</label>
+              <select id="dataGameFilter" onchange="renderDataInsightsPage()">
+                <option value="all">전체</option>
+                <option value="women">여복</option>
+                <option value="mixed">혼복</option>
+                <option value="men">남복</option>
+              </select>
+            </div>
+            <div id="dataInsightSummary" class="footer-note" style="margin-top:12px;">수집된 데이터가 여기에 표시됩니다.</div>
+            <div id="dataInsightList" class="history-list" style="margin-top:12px;"></div>
           </div>
         </section>
       </div>
@@ -3349,6 +3443,7 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
     const CLASS_COUNT = 7;
     let currentClass = 1;
     let broadcastSportMode = 'doubles';
+let broadcastInfoView = 'current';
     let pendingEvent = null;
     let trendChart = null;
     let eventChart = null;
@@ -3719,6 +3814,7 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
       leagueArchives: [],
       leagueCounter: 0,
       lineupSubmissions: {},
+      dataObservations: {},
       singlesLeague: { menMatches: [], womenMatches: [], courtCount: 2 }
     });
 
@@ -3826,7 +3922,7 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
 function switchView(view) {
       currentView = IS_BROADCAST_MODE
         ? 'broadcast'
-        : (['roster','setup','run','qr','singles','broadcast'].includes(view) ? view : 'setup');
+        : (['roster','setup','run','qr','data','singles','broadcast'].includes(view) ? view : 'setup');
       document.querySelectorAll('.view-tab').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.view === currentView);
       });
@@ -3834,12 +3930,14 @@ function switchView(view) {
       const runPage = document.getElementById('runPage');
       const qrPage = document.getElementById('qrPage');
       const singlesPage = document.getElementById('singlesPage');
+      const dataPage = document.getElementById('dataPage');
       const broadcastPage = document.getElementById('broadcastPage');
       const setupWizardPanel = document.getElementById('setupWizardPanel');
       const rawRosterPanel = document.getElementById('rawRosterPanel');
       if (setupPage) setupPage.classList.toggle('active', currentView === 'setup' || currentView === 'roster');
       if (runPage) runPage.classList.toggle('active', currentView === 'run');
       if (qrPage) qrPage.classList.toggle('active', currentView === 'qr');
+      if (dataPage) dataPage.classList.toggle('active', currentView === 'data');
       if (singlesPage) singlesPage.classList.toggle('active', currentView === 'singles');
       if (broadcastPage) broadcastPage.classList.toggle('active', currentView === 'broadcast');
       if (setupWizardPanel) setupWizardPanel.style.display = currentView === 'roster' ? 'none' : '';
@@ -4565,13 +4663,8 @@ function switchView(view) {
 
             <div class="current-admin-side">
               <div class="admin-side-card event-card">
-                <div class="admin-side-title">빠른 경기 기록</div>
-                <div class="quick-event-row">
-                  <button class="event-btn" onclick="openEventModal('${m.id}','servePoint')">서브 득점</button>
-                  <button class="event-btn" onclick="openEventModal('${m.id}','attackSuccess')">공격 성공</button>
-                  <button class="event-btn" onclick="openEventModal('${m.id}','attackError')">공격 범실</button>
-                  <button class="event-btn" onclick="openEventModal('${m.id}','serveError')">서브 범실</button>
-                </div>
+                <div class="admin-side-title">데이터 제출 현황</div>
+                <div class="footer-note" style="margin:0;">${gameLabel(activeType)} · ${escapeHtml(teamA.name)}조 데이터 ${getDataSubmittedCount(teamA.id, m.roundNo, activeType)}/2 제출<br>${gameLabel(activeType)} · ${escapeHtml(teamB.name)}조 데이터 ${getDataSubmittedCount(teamB.id, m.roundNo, activeType)}/2 제출</div>
               </div>
 
               <div class="admin-side-card current-log-box">
@@ -4597,10 +4690,7 @@ function switchView(view) {
                   <button class="btn small primary" onclick="finishMatch('${m.id}')">전체 경기 종료</button>
                 </div>
                 <div class="current-stats-inline">
-                  <span>서브 득점 ${countEvents.servePoint}</span>
-                  <span>공격 성공 ${countEvents.attackSuccess}</span>
-                  <span>공격 범실 ${countEvents.attackError}</span>
-                  <span>서브 범실 ${countEvents.serveError}</span>
+                  <span>${gameLabel(activeType)} 데이터 기록은 데이터 QR과 데이터 확인 탭에서 확인</span>
                 </div>
               </div>
             </div>
@@ -5605,6 +5695,7 @@ function normalizeTeamForLoad(team = {}) {
 
 function normalizeGameBlock(block = {}) {
   return {
+    ...block,
     a: Number(block.a) || 0,
     b: Number(block.b) || 0,
     lineupA: Array.isArray(block.lineupA) ? block.lineupA : ['', ''],
@@ -5669,6 +5760,7 @@ function normalizeClassDataForLoad(raw = {}) {
     leagueArchives: Array.isArray(raw.leagueArchives) ? raw.leagueArchives : [],
     leagueCounter: Number(raw.leagueCounter) || 0,
     lineupSubmissions: raw.lineupSubmissions && typeof raw.lineupSubmissions === 'object' ? raw.lineupSubmissions : {},
+    dataObservations: raw.dataObservations && typeof raw.dataObservations === 'object' ? raw.dataObservations : {},
     singlesLeague: normalizeSinglesLeagueForLoad(raw.singlesLeague || {})
   };
 }
@@ -6070,7 +6162,7 @@ function renderLineupStatusSummary() {
 const qrManageState = { mode: 'order', round: 1 };
 
 function setQrMode(mode) {
-  qrManageState.mode = mode === 'referee' ? 'referee' : 'order';
+  qrManageState.mode = ['order','referee','data'].includes(mode) ? mode : 'order';
   renderQrManagement();
 }
 function setQrRound(roundNo) {
@@ -6132,7 +6224,7 @@ function getOrderQrUrl(teamLetter, roundNo) {
 }
 
 function getQrImageUrl(link) {
-  return `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data=${encodeURIComponent(link)}`;
+  return `https://api.qrserver.com/v1/create-qr-code/?size=600x600&margin=0&data=${encodeURIComponent(link)}`;
 }
 
 function renderQrBox(box, link) {
@@ -6143,8 +6235,8 @@ function renderQrBox(box, link) {
   img.src = url;
   img.alt = 'QR';
   img.loading = 'lazy';
-  img.style.width = '150px';
-  img.style.height = '150px';
+  img.style.width = '100%';
+  img.style.height = '100%';
   img.style.display = 'block';
   img.style.objectFit = 'contain';
   img.referrerPolicy = 'no-referrer';
@@ -6161,6 +6253,69 @@ function getRefereeQrUrl(roundNo, matchNo) {
   url.searchParams.set('round', String(roundNo));
   url.searchParams.set('match', String(matchNo));
   return url.toString();
+}
+function getTeamMatchForRound(teamId, roundNo) {
+  const targetRound = Number(roundNo);
+  const pools = [currentData().liveMatches || [], currentData().completedMatches || []];
+  for (const pool of pools) {
+    const found = pool.find(m => Number(m.roundNo) === targetRound && (m.teamAId === teamId || m.teamBId === teamId));
+    if (found) return found;
+  }
+  return null;
+}
+function getObservedPlayerForTeamRoundGameSlot(teamId, roundNo, gameType, slotNo) {
+  const match = getTeamMatchForRound(teamId, roundNo);
+  const team = getTeamById(teamId);
+  if (!match || !team) return { match:null, team, playerId:'', playerName:'선수 미지정', side:'', game:null };
+  const isA = match.teamAId === teamId;
+  const game = match.games?.[gameType] || {};
+  const lineup = isA ? (game.lineupA || []) : (game.lineupB || []);
+  const playerId = lineup[Math.max(0, Number(slotNo) - 1)] || '';
+  const player = playerId ? getPlayerById(playerId) : null;
+  return { match, team, game, playerId, playerName: player?.name || '선수 미지정', side: isA ? 'A' : 'B' };
+}
+function getDataQrUrl(teamLetter, roundNo, gameType, slotNo) {
+  const url = new URL('data_input.html', getQrBaseUrl());
+  url.search = '';
+  url.searchParams.set('classNo', String(currentClass));
+  url.searchParams.set('team', String(teamLetter));
+  url.searchParams.set('round', String(roundNo));
+  url.searchParams.set('game', String(gameType));
+  url.searchParams.set('slot', String(slotNo));
+  return url.toString();
+}
+function getDataRecord(teamId, roundNo, gameType, slotNo) {
+  return currentData().dataObservations?.[teamId]?.[String(roundNo)]?.[gameType]?.[String(slotNo)] || null;
+}
+function getDataSubmittedCount(teamId, roundNo, gameType) {
+  let count = 0;
+  [1,2].forEach(slotNo => {
+    const rec = getDataRecord(teamId, roundNo, gameType, slotNo);
+    if (rec && rec.submittedAt) count += 1;
+  });
+  return count;
+}
+function calcRate(success, fail) {
+  const total = Number(success || 0) + Number(fail || 0);
+  return total > 0 ? Math.round((Number(success || 0) / total) * 100) : 0;
+}
+function getRateComment(label, success, fail) {
+  const total = Number(success || 0) + Number(fail || 0);
+  const rate = calcRate(success, fail);
+  if (!total) return `${label} 자료 없음`;
+  if (rate >= 70) return `${label}가 안정적임`;
+  if (rate >= 45) return `${label}가 보통 수준`;
+  return `${label} 보완이 필요함`;
+}
+function getDataSummaryFromRecord(rec = {}) {
+  return {
+    serveRate: calcRate(rec.serveSuccess, rec.serveFail),
+    attackRate: calcRate(rec.attackSuccess, rec.attackFail),
+    defenseRate: calcRate(rec.defenseSuccess, rec.defenseFail),
+    serveComment: getRateComment('서브', rec.serveSuccess, rec.serveFail),
+    attackComment: getRateComment('공격', rec.attackSuccess, rec.attackFail),
+    defenseComment: getRateComment('수비', rec.defenseSuccess, rec.defenseFail)
+  };
 }
 function renderQrOrderCards() {
   const grid = document.getElementById('qrOrderGrid');
@@ -6275,6 +6430,53 @@ function renderQrRefereeCards() {
   ensureQrCanvases(grid);
 }
 
+function renderQrDataCards() {
+  const grid = document.getElementById('qrDataGrid');
+  if (!grid) return;
+  const teams = currentData().teams || [];
+  if (!teams.length) {
+    grid.innerHTML = '<div class="footer-note">설정 페이지에서 팀 구성을 먼저 완료하면 데이터 QR이 생성됩니다.</div>';
+    return;
+  }
+  const cards = [];
+  teams.forEach(team => {
+    const letter = getTeamLetter(team) || team.name || '조';
+    ['women','mixed','men'].forEach(gameType => {
+      [1,2].forEach(slotNo => {
+        const info = getObservedPlayerForTeamRoundGameSlot(team.id, qrManageState.round, gameType, slotNo);
+        const link = getDataQrUrl(letter, qrManageState.round, gameType, slotNo);
+        const rec = getDataRecord(team.id, qrManageState.round, gameType, slotNo);
+        const stateTone = rec?.submittedAt ? 'status-green' : 'status-red';
+        const stateText = rec?.submittedAt ? '제출완료' : '입력대기';
+        cards.push(`
+          <article class="qr-card">
+            <div class="qr-card-head">
+              <div>
+                <h3 class="qr-card-title">${currentClass}반 ${escapeHtml(letter)}조 ${qrManageState.round}라운드 ${gameLabel(gameType)} 데이터${slotNo} QR</h3>
+                <div class="qr-sub">관찰 대상: ${escapeHtml(info.playerName || '선수 미지정')}</div>
+              </div>
+              <span class="qr-badge">데이터 입력</span>
+            </div>
+            <div class="qr-meta">
+              <div class="box"><div class="qr-label">조</div><div class="qr-value">${escapeHtml(letter)}조</div></div>
+              <div class="box"><div class="qr-label">종목</div><div class="qr-value">${gameLabel(gameType)} · 데이터${slotNo}</div></div>
+              <div class="box"><div class="qr-label">상태</div><div class="qr-value"><span class="status-dot ${stateTone}">${stateText}</span></div></div>
+              <div class="box" style="grid-column:1 / -1"><div class="qr-label">관찰 선수</div><div class="qr-value">${escapeHtml(info.playerName || '선수 미지정')}</div></div>
+            </div>
+            <div class="qr-qr-wrap"><div class="qr-qr-canvas" data-qr-text="${escapeAttr(link)}"></div></div>
+            <div class="qr-linkview">${escapeHtml(link)}</div>
+            <div class="qr-actions">
+              <button class="btn small" onclick="copyText('${escapeAttr(link)}')">링크 복사</button>
+              <button class="btn small" onclick="window.open('${escapeAttr(link)}','_blank')">열기</button>
+            </div>
+          </article>`);
+      });
+    });
+  });
+  grid.innerHTML = cards.join('');
+  ensureQrCanvases(grid);
+}
+
 function renderQrSummary() {
   const grid = document.getElementById('qrSummaryGrid');
   if (!grid) return;
@@ -6302,16 +6504,19 @@ function renderQrManagement() {
   const desc = document.getElementById('qrPanelDesc');
   const orderView = document.getElementById('qrOrderView');
   const refView = document.getElementById('qrRefereeView');
+  const dataView = document.getElementById('qrDataView');
   const heroPill = document.getElementById('qrHeroPill');
   if (heroPill) heroPill.textContent = `● ${currentClass}반 기준`;
-  if (title) title.textContent = qrManageState.mode === 'order' ? '오더 제출 QR 관리' : '심판용 QR 관리';
+  if (title) title.textContent = qrManageState.mode === 'order' ? '오더 제출 QR 관리' : (qrManageState.mode === 'referee' ? '심판용 QR 관리' : '데이터 QR 관리');
   if (desc) desc.textContent = qrManageState.mode === 'order'
     ? '조별로 오더를 작성할 수 있도록, 라운드별 조 전용 링크를 표시합니다.'
-    : '실제 경기판 기준으로, 라운드별 경기 전용 심판 링크를 표시합니다.';
+    : (qrManageState.mode === 'referee' ? '실제 경기판 기준으로, 라운드별 경기 전용 심판 링크를 표시합니다.' : '경기별 데이터 담당 학생이 바로 기록 화면으로 들어갈 수 있는 전용 링크를 표시합니다.');
   if (orderView) orderView.style.display = qrManageState.mode === 'order' ? '' : 'none';
   if (refView) refView.style.display = qrManageState.mode === 'referee' ? '' : 'none';
+  if (dataView) dataView.style.display = qrManageState.mode === 'data' ? '' : 'none';
   renderQrOrderCards();
   renderQrRefereeCards();
+  renderQrDataCards();
   renderQrSummary();
 }
 
@@ -6952,6 +7157,70 @@ function syncBroadcastToggleButtons() {
   if (singlesBtn) singlesBtn.classList.toggle('active', broadcastSportMode === 'singles');
 }
 
+function setBroadcastInfoView(view) {
+  broadcastInfoView = view === 'next' ? 'next' : 'current';
+  renderBroadcastPage();
+}
+
+function syncBroadcastInfoToggleButtons() {
+  const currentBtn = document.getElementById('broadcastCurrentInfoBtn');
+  const nextBtn = document.getElementById('broadcastNextInfoBtn');
+  if (currentBtn) currentBtn.classList.toggle('active', broadcastInfoView === 'current');
+  if (nextBtn) nextBtn.classList.toggle('active', broadcastInfoView === 'next');
+}
+
+function getBroadcastRoleName(value) {
+  if (!value) return '미지정';
+  if (typeof value === 'string') return getPlayerById(value)?.name || value;
+  if (typeof value === 'object') return value.name || getPlayerById(value.id || value.playerId || '')?.name || '미지정';
+  return '미지정';
+}
+
+function getBroadcastRoleSummary(match, gameType) {
+  const game = match?.games?.[gameType] || {};
+  const roles = game.roles || game.roleAssignments || {};
+  const judgeTeam = roles.judgeTeam || roles.judgeSide || roles.refereeTeam || '';
+  const referee = getBroadcastRoleName(roles.referee || roles.umpire || roles.judge || roles.mainReferee);
+  const assistant = getBroadcastRoleName(roles.assistant || roles.subReferee || roles.subJudge || roles.assistantReferee);
+  const score = getBroadcastRoleName(roles.score || roles.scorer || roles.scoreKeeper);
+  const line = getBroadcastRoleName(roles.line || roles.lineJudge || roles.linesman);
+  const dataNames = [roles.data1, roles.data2, roles.observer1, roles.observer2].filter(Boolean).map(getBroadcastRoleName).filter(Boolean);
+  return {
+    judgeTeam: judgeTeam ? `${judgeTeam}팀` : '미지정',
+    referee,
+    assistant,
+    score,
+    line,
+    data: dataNames.length ? dataNames.join(', ') : '미지정'
+  };
+}
+
+function renderBroadcastInfoCards(targetMatches, modeLabel) {
+  if (!targetMatches.length) return '<div class="broadcast-role-empty">' + escapeHtml(modeLabel) + ' 정보가 아직 없습니다.</div>';
+  return targetMatches.map((match, index) => {
+    const activeType = match.activeGame || 'women';
+    const teamAName = getTeamById(match.teamAId)?.name || 'A조';
+    const teamBName = getTeamById(match.teamBId)?.name || 'B조';
+    const role = getBroadcastRoleSummary(match, activeType);
+    const titlePrefix = broadcastInfoView === 'current' ? '현재 경기' : '다음 경기';
+    return `
+      <div class="broadcast-role-card">
+        <div class="broadcast-role-match">
+          <div class="broadcast-role-title">${titlePrefix} ${targetMatches.length > 1 ? index + 1 : ''}</div>
+          <div class="broadcast-role-sub">${escapeHtml(gameLabel(activeType))} · ${escapeHtml(teamAName)} vs ${escapeHtml(teamBName)} · ${Number(match.courtNo) || 1}코트</div>
+        </div>
+        <div class="broadcast-role-grid">
+          <div class="broadcast-role-row"><div class="broadcast-role-label">주심팀</div><div class="broadcast-role-value">${escapeHtml(role.judgeTeam)}</div></div>
+          <div class="broadcast-role-row"><div class="broadcast-role-label">주심</div><div class="broadcast-role-value">${escapeHtml(role.referee)}</div></div>
+          <div class="broadcast-role-row"><div class="broadcast-role-label">부심</div><div class="broadcast-role-value">${escapeHtml(role.assistant)}</div></div>
+          <div class="broadcast-role-row"><div class="broadcast-role-label">점수</div><div class="broadcast-role-value">${escapeHtml(role.score)}</div></div>
+          <div class="broadcast-role-row"><div class="broadcast-role-label">선심</div><div class="broadcast-role-value">${escapeHtml(role.line)}</div></div>
+          <div class="broadcast-role-row"><div class="broadcast-role-label">데이터</div><div class="broadcast-role-value">${escapeHtml(role.data)}</div></div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
 function getSinglesPlayerName(playerId) {
   return getPlayerById(playerId)?.name || '이름없음';
 }
@@ -6978,6 +7247,7 @@ function renderBroadcastPage() {
   if (!board || !doublesRank || !menSinglesRank || !womenSinglesRank || !modePill || !doublesCard || !menSinglesCard || !womenSinglesCard || !broadcastShell || !queueList || !queueCard) return;
 
   syncBroadcastToggleButtons();
+  syncBroadcastInfoToggleButtons();
 
   const isSingles = broadcastSportMode === 'singles';
   const matches = isSingles ? getBroadcastCurrentSinglesMatches() : getBroadcastCurrentDoublesMatches();
@@ -7148,26 +7418,8 @@ function renderBroadcastPage() {
 
       board.innerHTML = liveMatches.map((match, index) => renderStadiumMatchCard(match, index, liveMatches.length)).join('');
 
-      queueList.innerHTML = queueMatches.length ? queueMatches.map((m, index) => {
-        const team1 = getTeamById(m.teamAId)?.name || 'A조';
-        const team2 = getTeamById(m.teamBId)?.name || 'B조';
-        const active = m.activeGame || 'women';
-        const g = m.games?.[active] || { a:0, b:0, finished:false };
-        const stateText = g.finished ? '현재 종목 종료' : (m.started ? '진행중' : '대기');
-        return `
-          <div class="broadcast-queue-item">
-            <div class="broadcast-queue-top">
-              <div class="broadcast-queue-title">${index + 1}순위 표시 경기</div>
-              <div class="broadcast-queue-badge">${Number(m.courtNo) || 1}코트 · ${Number(m.roundNo) || 0}R</div>
-            </div>
-            <div class="broadcast-queue-meta">${escapeHtml(team1)} vs ${escapeHtml(team2)} · ${escapeHtml(gameLabel(active))}</div>
-            <div class="broadcast-queue-top">
-              <div class="broadcast-queue-score">${Number(g.a) || 0} : ${Number(g.b) || 0}</div>
-              <div class="broadcast-queue-meta">${stateText}</div>
-            </div>
-          </div>
-        `;
-      }).join('') : '<div class="footer-note">다음 경기 정보가 아직 없습니다.</div>';
+      const infoMatches = broadcastInfoView === 'current' ? liveMatches : queueMatches;
+      queueList.innerHTML = renderBroadcastInfoCards(infoMatches, broadcastInfoView === 'current' ? '현재 경기 역할' : '다음 경기 역할');
       modePill.textContent = liveMatches.length >= 2 ? `복식 · 동시 ${liveMatches.length}경기` : `복식 · 현재 ${matches.length}경기`;
     }
   }
@@ -7186,6 +7438,107 @@ function renderBroadcastPage() {
 
 
 
+function populateDataTeamFilter() {
+  const sel = document.getElementById('dataTeamFilter');
+  if (!sel) return;
+  const prev = sel.value || 'all';
+  const teams = currentData().teams || [];
+  sel.innerHTML = '<option value="all">전체</option>' + teams.map(team => {
+    const label = getTeamLetter(team) || team.name || '조';
+    return `<option value="${escapeAttr(team.id)}">${escapeHtml(label)}조</option>`;
+  }).join('');
+  if ([...sel.options].some(opt => opt.value === prev)) sel.value = prev;
+}
+function renderDataInsightsPage() {
+  populateDataTeamFilter();
+  const list = document.getElementById('dataInsightList');
+  const summary = document.getElementById('dataInsightSummary');
+  if (!list || !summary) return;
+  const mode = document.getElementById('dataViewMode')?.value || 'match';
+  const roundFilter = document.getElementById('dataRoundFilter')?.value || 'all';
+  const teamFilter = document.getElementById('dataTeamFilter')?.value || 'all';
+  const gameFilter = document.getElementById('dataGameFilter')?.value || 'all';
+  const observations = currentData().dataObservations || {};
+  const rows = [];
+  Object.entries(observations).forEach(([teamId, byRound]) => {
+    if (teamFilter !== 'all' && teamFilter !== teamId) return;
+    Object.entries(byRound || {}).forEach(([roundNo, byGame]) => {
+      if (roundFilter !== 'all' && String(roundNo) !== String(roundFilter)) return;
+      Object.entries(byGame || {}).forEach(([gameType, bySlot]) => {
+        if (gameFilter !== 'all' && gameType !== gameFilter) return;
+        Object.entries(bySlot || {}).forEach(([slotNo, rec]) => {
+          const team = getTeamById(teamId);
+          const teamLabel = getTeamLetter(team) || team?.name || '조';
+          const playerName = rec?.playerName || getObservedPlayerForTeamRoundGameSlot(teamId, roundNo, gameType, slotNo).playerName;
+          rows.push({ teamId, teamLabel, roundNo:Number(roundNo), gameType, slotNo:Number(slotNo), rec: rec || {}, playerName });
+        });
+      });
+    });
+  });
+  if (!rows.length) {
+    summary.textContent = '아직 수집된 데이터가 없습니다.';
+    list.innerHTML = '<div class="footer-note">데이터 QR로 기록을 제출하면 여기서 경기별·선수별 요약을 확인할 수 있습니다.</div>';
+    return;
+  }
+  rows.sort((a,b) => (a.roundNo - b.roundNo) || a.gameType.localeCompare(b.gameType) || a.teamLabel.localeCompare(b.teamLabel) || (a.slotNo - b.slotNo));
+  if (mode === 'match') {
+    summary.textContent = `${rows.length}건의 데이터 기록이 저장되어 있습니다.`;
+    list.innerHTML = rows.map(row => {
+      const s = getDataSummaryFromRecord(row.rec);
+      const strengths = Array.isArray(row.rec.strengths) ? row.rec.strengths.join(', ') : '';
+      const weaknesses = Array.isArray(row.rec.weaknesses) ? row.rec.weaknesses.join(', ') : '';
+      return `
+        <div class="history-item">
+          <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;">
+            <strong>${row.roundNo}라운드 · ${gameLabel(row.gameType)} · ${escapeHtml(row.teamLabel)}조 · 데이터${row.slotNo}</strong>
+            <span class="status-dot ${row.rec.submittedAt ? 'status-green' : 'status-yellow'}">${row.rec.submittedAt ? '제출완료' : '임시저장'}</span>
+          </div>
+          <div class="tiny muted" style="margin-top:6px;">관찰 선수: ${escapeHtml(row.playerName)}</div>
+          <div class="insight-grid" style="margin-top:10px;">
+            <div class="insight-card"><div class="label">서브</div><div class="value">성공 ${Number(row.rec.serveSuccess||0)} / 실패 ${Number(row.rec.serveFail||0)} / ${s.serveRate}%</div><div class="sub">${s.serveComment}</div></div>
+            <div class="insight-card"><div class="label">공격</div><div class="value">성공 ${Number(row.rec.attackSuccess||0)} / 실패 ${Number(row.rec.attackFail||0)} / ${s.attackRate}%</div><div class="sub">${s.attackComment}</div></div>
+            <div class="insight-card"><div class="label">수비</div><div class="value">성공 ${Number(row.rec.defenseSuccess||0)} / 실패 ${Number(row.rec.defenseFail||0)} / ${s.defenseRate}%</div><div class="sub">${s.defenseComment}</div></div>
+            <div class="insight-card"><div class="label">해석 요약</div><div class="sub">강점: ${escapeHtml(strengths || '선택 없음')}<br>보완점: ${escapeHtml(weaknesses || '선택 없음')}</div></div>
+          </div>
+          <div class="footer-note" style="margin-top:10px;">기타 메모: ${escapeHtml(row.rec.memo || '없음')}</div>
+        </div>`;
+    }).join('');
+  } else {
+    const grouped = {};
+    rows.forEach(row => {
+      const key = row.playerName || `${row.teamId}-${row.slotNo}`;
+      if (!grouped[key]) grouped[key] = { playerName: row.playerName, entries: [], serveSuccess:0, serveFail:0, attackSuccess:0, attackFail:0, defenseSuccess:0, defenseFail:0, strengths:[], weaknesses:[] };
+      grouped[key].entries.push(row);
+      grouped[key].serveSuccess += Number(row.rec.serveSuccess || 0);
+      grouped[key].serveFail += Number(row.rec.serveFail || 0);
+      grouped[key].attackSuccess += Number(row.rec.attackSuccess || 0);
+      grouped[key].attackFail += Number(row.rec.attackFail || 0);
+      grouped[key].defenseSuccess += Number(row.rec.defenseSuccess || 0);
+      grouped[key].defenseFail += Number(row.rec.defenseFail || 0);
+      grouped[key].strengths.push(...(Array.isArray(row.rec.strengths) ? row.rec.strengths : []));
+      grouped[key].weaknesses.push(...(Array.isArray(row.rec.weaknesses) ? row.rec.weaknesses : []));
+    });
+    const players = Object.values(grouped).sort((a,b) => (a.playerName || '').localeCompare(b.playerName || ''));
+    summary.textContent = `${players.length}명의 선수 누적 데이터가 있습니다.`;
+    list.innerHTML = players.map(player => {
+      const s = getDataSummaryFromRecord(player);
+      const topStrength = [...new Set(player.strengths)].slice(0,3).join(', ');
+      const topWeakness = [...new Set(player.weaknesses)].slice(0,3).join(', ');
+      return `
+        <div class="history-item">
+          <strong>${escapeHtml(player.playerName || '선수')}</strong>
+          <div class="tiny muted" style="margin-top:6px;">기록 경기 수: ${player.entries.length}회</div>
+          <div class="insight-grid" style="margin-top:10px;">
+            <div class="insight-card"><div class="label">서브</div><div class="value">성공 ${player.serveSuccess} / 실패 ${player.serveFail} / ${s.serveRate}%</div><div class="sub">${s.serveComment}</div></div>
+            <div class="insight-card"><div class="label">공격</div><div class="value">성공 ${player.attackSuccess} / 실패 ${player.attackFail} / ${s.attackRate}%</div><div class="sub">${s.attackComment}</div></div>
+            <div class="insight-card"><div class="label">수비</div><div class="value">성공 ${player.defenseSuccess} / 실패 ${player.defenseFail} / ${s.defenseRate}%</div><div class="sub">${s.defenseComment}</div></div>
+            <div class="insight-card"><div class="label">해석 요약</div><div class="sub">강점: ${escapeHtml(topStrength || '없음')}<br>보완점: ${escapeHtml(topWeakness || '없음')}</div></div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+}
+
 function renderAll() {
       recomputeAllStats();
       renderRoster();
@@ -7201,6 +7554,7 @@ function renderAll() {
       renderLineupLinkPanel();
       renderLineupStatusSummary();
       renderQrManagement();
+      renderDataInsightsPage();
       renderSinglesLeague();
       renderBroadcastPage();
       if (IS_BROADCAST_MODE) applyBroadcastOnlyLayout();

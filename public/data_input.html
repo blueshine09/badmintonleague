@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>데이터 입력</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#08111f;--bg2:#0a1730;--panel:rgba(15,28,51,.94);--line:#294063;--text:#e9f1ff;--muted:#9db3d5;
+      --accent:#5ab1ff;--green:#53d769;--warn:#ffd166;--danger:#ff7a7a;--shadow:0 12px 28px rgba(0,0,0,.28);
+      --radius:22px;--radius-sm:16px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Pretendard,Arial,sans-serif;color:var(--text);background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);min-height:100vh}
+    .shell{max-width:860px;margin:0 auto;padding:18px 14px 28px;display:grid;gap:14px}
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+    .card-head{padding:16px 18px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0))}
+    .card-title{font-size:1.06rem;font-weight:800;margin:0}
+    .sub{margin-top:6px;color:var(--muted);font-size:.84rem;line-height:1.55}
+    .card-body{padding:16px 18px 18px}
+    .pill-row{display:flex;flex-wrap:wrap;gap:8px}
+    .pill{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:999px;background:rgba(90,177,255,.12);border:1px solid rgba(90,177,255,.24);font-weight:800;font-size:.84rem}
+    .pill.warn{background:rgba(255,209,102,.12);border-color:rgba(255,209,102,.28);color:#ffe39c}
+    .status-box{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);border-radius:var(--radius-sm);padding:12px 14px;display:flex;justify-content:space-between;gap:12px;align-items:center}
+    .status-label{font-size:.82rem;color:var(--muted)}
+    .status-pill{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;font-size:.76rem;font-weight:800}
+    .status-draft{background:rgba(255,209,102,.15);color:#ffe08a}.status-done{background:rgba(83,215,105,.15);color:#9ff2ae}.status-lock{background:rgba(124,141,166,.18);color:#d8e2f2}
+    .section-box{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);border-radius:18px;padding:14px;display:grid;gap:12px}
+    .section-title{font-size:.98rem;font-weight:800}
+    .meta-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .meta-item{padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06)}
+    .meta-label{font-size:.76rem;color:var(--muted)}
+    .meta-value{font-weight:800;margin-top:4px;line-height:1.4}
+    .counter-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .counter-card{padding:12px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);display:grid;gap:10px}
+    .counter-title{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:.92rem;font-weight:800}
+    .counter-sub{font-size:.75rem;color:var(--muted);line-height:1.45}
+    .action-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .btn{border:1px solid var(--line);background:#102038;color:var(--text);cursor:pointer;border-radius:13px;min-height:44px;padding:10px 14px;font-weight:800;font-size:.9rem;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+    .btn.primary,.btn.blue{background:linear-gradient(135deg,#2d73ff,#45b3ff);border:none}
+    .btn.green{background:linear-gradient(135deg,#1d9d68,#36c98a);border:none}
+    .btn.red{background:linear-gradient(135deg,#d45757,#ff7a7a);border:none}
+    .btn[disabled]{opacity:.55;cursor:not-allowed}
+    .summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .summary-card{padding:12px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07)}
+    .summary-label{font-size:.78rem;color:var(--muted)}
+    .summary-value{font-size:1rem;font-weight:800;margin-top:6px}
+    .summary-sub{margin-top:6px;font-size:.78rem;color:#cfe0ff;line-height:1.5}
+    .check-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .check-card{padding:12px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);display:grid;gap:10px}
+    .choice-list{display:grid;gap:8px}
+    .choice-item{display:flex;gap:8px;align-items:flex-start;padding:8px 10px;border-radius:12px;background:rgba(8,24,49,.9);border:1px solid rgba(92,131,190,.35)}
+    .choice-item input{margin-top:2px}
+    textarea{width:100%;background:#0e1c33;color:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 12px;font:inherit;resize:vertical;min-height:86px}
+    textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(90,177,255,.15)}
+    .hint{font-size:.78rem;color:var(--muted);line-height:1.55}
+    .help-btn{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);font-size:.78rem;font-weight:800;cursor:pointer}
+    .help-box{display:none;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);font-size:.78rem;line-height:1.55;color:#cfe0ff}
+    .help-box.show{display:block}
+    .footer-note{font-size:.78rem;color:var(--muted);line-height:1.6}
+    @media (max-width:700px){.meta-grid,.counter-grid,.summary-grid,.check-grid,.action-row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="card">
+      <div class="card-head">
+        <h1 class="card-title">데이터 입력</h1>
+        <div class="sub">경기별 데이터 QR로 접속한 담당 학생이 관찰 선수 1명에 대한 기록을 입력합니다.</div>
+      </div>
+      <div class="card-body">
+        <div class="pill-row" id="headerPills"></div>
+        <div class="status-box" style="margin-top:12px;">
+          <div>
+            <div class="status-label">현재 제출 상태</div>
+            <div id="statusText" style="font-weight:800;margin-top:4px">데이터를 불러오는 중입니다.</div>
+          </div>
+          <div class="status-pill status-draft" id="statusPill">임시저장</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <div class="card-title">관찰 대상 정보</div>
+        <div class="sub">누구를 관찰하는지 먼저 확인한 뒤 입력합니다.</div>
+      </div>
+      <div class="card-body">
+        <div class="meta-grid">
+          <div class="meta-item"><div class="meta-label">관찰 팀</div><div class="meta-value" id="teamName">-</div></div>
+          <div class="meta-item"><div class="meta-label">관찰 종목</div><div class="meta-value" id="gameLabel">-</div></div>
+          <div class="meta-item"><div class="meta-label">관찰 선수</div><div class="meta-value" id="playerName">-</div></div>
+          <div class="meta-item"><div class="meta-label">데이터 역할</div><div class="meta-value" id="slotLabel">-</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <div class="card-title">경기 중 기록</div>
+        <div class="sub">횟수 버튼으로 바로 기록하고, 오른쪽 ! 버튼을 눌러 기준을 확인할 수 있습니다.</div>
+      </div>
+      <div class="card-body" style="display:grid;gap:12px;">
+        <div class="counter-grid">
+          <div class="counter-card">
+            <div class="counter-title">서브 <button type="button" class="help-btn" onclick="toggleHelp('serveHelp')">!</button></div>
+            <div id="serveHelp" class="help-box">서브 성공: 서브를 넣은 뒤 정상적으로 랠리가 이어진 경우. 서브 실패: 서브가 네트에 걸리거나 아웃되어 바로 실점한 경우.</div>
+            <div class="action-row">
+              <button class="btn green" type="button" onclick="changeCounter('serveSuccess',1)">성공 +1</button>
+              <button class="btn red" type="button" onclick="changeCounter('serveFail',1)">실패 +1</button>
+            </div>
+            <div class="action-row">
+              <button class="btn" type="button" onclick="changeCounter('serveSuccess',-1)">성공 -1</button>
+              <button class="btn" type="button" onclick="changeCounter('serveFail',-1)">실패 -1</button>
+            </div>
+            <div class="counter-sub" id="serveCounterText">성공 0회 / 실패 0회</div>
+          </div>
+          <div class="counter-card">
+            <div class="counter-title">공격 <button type="button" class="help-btn" onclick="toggleHelp('attackHelp')">!</button></div>
+            <div id="attackHelp" class="help-box">공격 성공: 이 선수가 친 공으로 득점이 났을 때. 공격 실패: 공격 시도가 네트, 아웃, 실수로 바로 실점으로 이어졌을 때.</div>
+            <div class="action-row">
+              <button class="btn green" type="button" onclick="changeCounter('attackSuccess',1)">성공 +1</button>
+              <button class="btn red" type="button" onclick="changeCounter('attackFail',1)">실패 +1</button>
+            </div>
+            <div class="action-row">
+              <button class="btn" type="button" onclick="changeCounter('attackSuccess',-1)">성공 -1</button>
+              <button class="btn" type="button" onclick="changeCounter('attackFail',-1)">실패 -1</button>
+            </div>
+            <div class="counter-sub" id="attackCounterText">성공 0회 / 실패 0회</div>
+          </div>
+          <div class="counter-card">
+            <div class="counter-title">수비 <button type="button" class="help-btn" onclick="toggleHelp('defenseHelp')">!</button></div>
+            <div id="defenseHelp" class="help-box">수비 성공: 상대 공격을 받아내고 랠리를 이어간 경우. 수비 실패: 상대 공을 받지 못해 바로 실점한 경우.</div>
+            <div class="action-row">
+              <button class="btn green" type="button" onclick="changeCounter('defenseSuccess',1)">성공 +1</button>
+              <button class="btn red" type="button" onclick="changeCounter('defenseFail',1)">실패 +1</button>
+            </div>
+            <div class="action-row">
+              <button class="btn" type="button" onclick="changeCounter('defenseSuccess',-1)">성공 -1</button>
+              <button class="btn" type="button" onclick="changeCounter('defenseFail',-1)">실패 -1</button>
+            </div>
+            <div class="counter-sub" id="defenseCounterText">성공 0회 / 실패 0회</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <div class="card-title">자동 요약</div>
+        <div class="sub">성공·실패 횟수와 성공률을 바탕으로 자동 해석합니다.</div>
+      </div>
+      <div class="card-body">
+        <div class="summary-grid">
+          <div class="summary-card"><div class="summary-label">서브</div><div class="summary-value" id="serveSummary">0 / 0 / 0%</div><div class="summary-sub" id="serveComment">서브 자료 없음</div></div>
+          <div class="summary-card"><div class="summary-label">공격</div><div class="summary-value" id="attackSummary">0 / 0 / 0%</div><div class="summary-sub" id="attackComment">공격 자료 없음</div></div>
+          <div class="summary-card"><div class="summary-label">수비</div><div class="summary-value" id="defenseSummary">0 / 0 / 0%</div><div class="summary-sub" id="defenseComment">수비 자료 없음</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <div class="card-title">경기 후 체크</div>
+        <div class="sub">보기 체크와 간단한 직접 입력을 함께 사용합니다.</div>
+      </div>
+      <div class="card-body" style="display:grid;gap:12px;">
+        <div class="check-grid">
+          <div class="check-card">
+            <div class="section-title">잘한 점</div>
+            <div class="choice-list" id="strengthList"></div>
+          </div>
+          <div class="check-card">
+            <div class="section-title">보완할 점</div>
+            <div class="choice-list" id="weaknessList"></div>
+          </div>
+        </div>
+        <label class="hint">기타 잘한 점
+          <textarea id="extraStrength" placeholder="짧게 적어 주세요."></textarea>
+        </label>
+        <label class="hint">기타 보완할 점
+          <textarea id="extraWeakness" placeholder="짧게 적어 주세요."></textarea>
+        </label>
+        <label class="hint">기타 메모
+          <textarea id="memo" placeholder="필요한 경우에만 적어 주세요."></textarea>
+        </label>
+        <div class="action-row">
+          <button class="btn" id="saveDraftBtn" type="button">임시저장</button>
+          <button class="btn green" id="submitBtn" type="button">제출하기</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="./firebase-config.js"></script>
+  <script type="module">
+    import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
+    import { getDatabase, ref, get, set, onValue } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js';
+
+    const STRENGTH_OPTIONS = ['서브가 안정적이었음','공격 연결이 좋았음','수비가 안정적이었음','위치 이동이 빨랐음','집중력이 좋았음'];
+    const WEAKNESS_OPTIONS = ['서브 실수가 있었음','공격 정확도가 아쉬움','수비 대응이 늦었음','준비 자세가 늦었음','위치 선정이 아쉬움'];
+    const GAME_LABEL = { women: '여복', mixed: '혼복', men: '남복' };
+    const firebaseConfig = window.DEFAULT_FIREBASE_CONFIG;
+    if (!firebaseConfig) throw new Error('firebase-config.js를 찾지 못했습니다.');
+    const firebaseApp = getApps().find(app => app.name === 'badminton-app') || initializeApp(firebaseConfig, 'badminton-app');
+    const db = getDatabase(firebaseApp);
+
+    const qs = new URLSearchParams(location.search);
+    const classNo = Math.max(1, Number(qs.get('classNo') || 1));
+    const teamLetter = String(qs.get('team') || '').toUpperCase();
+    const roundNo = Math.max(1, Number(qs.get('round') || 1));
+    const gameType = ['women','mixed','men'].includes(qs.get('game')) ? qs.get('game') : 'women';
+    const slotNo = [1,2].includes(Number(qs.get('slot'))) ? Number(qs.get('slot')) : 1;
+
+    const headerPills = document.getElementById('headerPills');
+    const statusText = document.getElementById('statusText');
+    const statusPill = document.getElementById('statusPill');
+    const teamNameEl = document.getElementById('teamName');
+    const gameLabelEl = document.getElementById('gameLabel');
+    const playerNameEl = document.getElementById('playerName');
+    const slotLabelEl = document.getElementById('slotLabel');
+    const saveDraftBtn = document.getElementById('saveDraftBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const serveCounterText = document.getElementById('serveCounterText');
+    const attackCounterText = document.getElementById('attackCounterText');
+    const defenseCounterText = document.getElementById('defenseCounterText');
+    const serveSummary = document.getElementById('serveSummary');
+    const attackSummary = document.getElementById('attackSummary');
+    const defenseSummary = document.getElementById('defenseSummary');
+    const serveComment = document.getElementById('serveComment');
+    const attackComment = document.getElementById('attackComment');
+    const defenseComment = document.getElementById('defenseComment');
+    const strengthList = document.getElementById('strengthList');
+    const weaknessList = document.getElementById('weaknessList');
+    const extraStrengthEl = document.getElementById('extraStrength');
+    const extraWeaknessEl = document.getElementById('extraWeakness');
+    const memoEl = document.getElementById('memo');
+
+    let appData = emptyClassData();
+    let activeTeam = null;
+    let activeMatch = null;
+    let activePlayer = null;
+    let watchUnsubscribe = null;
+    let formState = defaultRecord();
+
+    function emptyClassData() {
+      return { roster: [], teams: [], liveMatches: [], completedMatches: [], dataObservations: {} };
+    }
+    function defaultRecord() {
+      return {
+        serveSuccess: 0, serveFail: 0,
+        attackSuccess: 0, attackFail: 0,
+        defenseSuccess: 0, defenseFail: 0,
+        strengths: [], weaknesses: [],
+        extraStrength: '', extraWeakness: '', memo: '',
+        submittedAt: ''
+      };
+    }
+    function escapeHtml(v) {
+      return String(v == null ? '' : v)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+    function normalizeGender(value) {
+      const raw = String(value ?? '').trim().toUpperCase();
+      if (['M','MALE','남','남자','BOY','MAN'].includes(raw)) return 'M';
+      if (['F','FEMALE','여','여자','GIRL','WOMAN'].includes(raw)) return 'F';
+      return '';
+    }
+    function normalizePlayer(raw = {}) {
+      const id = String(raw.id ?? raw.playerId ?? raw.name ?? '').trim();
+      return { ...raw, id, name: String(raw.name ?? raw.playerName ?? id).trim(), gender: normalizeGender(raw.gender ?? raw.sex), manualGroup: String(raw.manualGroup ?? raw.group ?? '').trim().toUpperCase() };
+    }
+    function normalizeTeam(raw = {}) {
+      const letter = String(raw.letter ?? raw.name ?? '').replace('조','').trim().toUpperCase();
+      const players = Array.isArray(raw.players) && raw.players.length ? raw.players : (Array.isArray(raw.playerIds) ? raw.playerIds : []);
+      return { ...raw, id: String(raw.id ?? letter).trim(), name: String(raw.name ?? `${letter}조`), letter, players, playerIds: players };
+    }
+    function normalizeGame(block = {}) {
+      return {
+        ...block,
+        lineupA: Array.isArray(block.lineupA) ? block.lineupA : ['', ''],
+        lineupB: Array.isArray(block.lineupB) ? block.lineupB : ['', '']
+      };
+    }
+    function normalizeMatch(raw = {}) {
+      return {
+        ...raw,
+        roundNo: Number(raw.roundNo ?? raw.round ?? 0),
+        teamAId: String(raw.teamAId ?? '').trim(),
+        teamBId: String(raw.teamBId ?? '').trim(),
+        games: {
+          women: normalizeGame(raw.games?.women || {}),
+          mixed: normalizeGame(raw.games?.mixed || {}),
+          men: normalizeGame(raw.games?.men || {})
+        }
+      };
+    }
+    function normalizeClassData(raw = {}) {
+      return {
+        roster: Array.isArray(raw.roster) ? raw.roster.map(normalizePlayer) : [],
+        teams: Array.isArray(raw.teams) ? raw.teams.map(normalizeTeam) : [],
+        liveMatches: Array.isArray(raw.liveMatches) ? raw.liveMatches.map(normalizeMatch) : [],
+        completedMatches: Array.isArray(raw.completedMatches) ? raw.completedMatches.map(normalizeMatch) : [],
+        dataObservations: raw.dataObservations && typeof raw.dataObservations === 'object' ? raw.dataObservations : {}
+      };
+    }
+    function getTeamByLetter(letter) {
+      return appData.teams.find(team => (team.letter || '').toUpperCase() === String(letter || '').toUpperCase()) || null;
+    }
+    function getPlayerById(id) {
+      return appData.roster.find(player => player.id === id) || null;
+    }
+    function getMatchForTeamRound(teamId, roundNum) {
+      const pools = [appData.liveMatches || [], appData.completedMatches || []];
+      for (const pool of pools) {
+        const found = pool.find(match => Number(match.roundNo) === Number(roundNum) && (match.teamAId === teamId || match.teamBId === teamId));
+        if (found) return found;
+      }
+      return null;
+    }
+    function getObservedPlayer(teamId, roundNum, type, slot) {
+      const match = getMatchForTeamRound(teamId, roundNum);
+      if (!match) return null;
+      const isA = match.teamAId === teamId;
+      const game = match.games?.[type] || {};
+      const lineup = isA ? (game.lineupA || []) : (game.lineupB || []);
+      return getPlayerById(lineup[Math.max(0, slot - 1)] || '');
+    }
+    function getRecord() {
+      const teamId = activeTeam?.id;
+      if (!teamId) return null;
+      return appData.dataObservations?.[teamId]?.[String(roundNo)]?.[gameType]?.[String(slotNo)] || null;
+    }
+    function setStatus(kind, text) {
+      statusPill.className = 'status-pill';
+      if (kind === 'done') {
+        statusPill.classList.add('status-done');
+        statusPill.textContent = '제출완료';
+      } else {
+        statusPill.classList.add('status-draft');
+        statusPill.textContent = '임시저장';
+      }
+      statusText.textContent = text;
+    }
+    function renderChoices(target, options, key) {
+      target.innerHTML = options.map((label, idx) => `
+        <label class="choice-item">
+          <input type="checkbox" data-key="${key}" value="${escapeHtml(label)}" onchange="toggleChoice(this)">
+          <span>${escapeHtml(label)}</span>
+        </label>
+      `).join('');
+    }
+    window.toggleChoice = function(el) {
+      const key = el.dataset.key;
+      const arr = Array.isArray(formState[key]) ? [...formState[key]] : [];
+      const value = el.value;
+      const next = el.checked ? [...new Set([...arr, value])] : arr.filter(item => item !== value);
+      formState[key] = next;
+      refreshSummary();
+    };
+    window.toggleHelp = function(id) {
+      document.getElementById(id)?.classList.toggle('show');
+    };
+    window.changeCounter = function(key, delta) {
+      formState[key] = Math.max(0, Number(formState[key] || 0) + Number(delta || 0));
+      refreshSummary();
+    };
+    function calcRate(success, fail) {
+      const total = Number(success || 0) + Number(fail || 0);
+      return total > 0 ? Math.round((Number(success || 0) / total) * 100) : 0;
+    }
+    function rateComment(label, success, fail) {
+      const total = Number(success || 0) + Number(fail || 0);
+      const rate = calcRate(success, fail);
+      if (!total) return `${label} 자료 없음`;
+      if (rate >= 70) return `${label}가 안정적임`;
+      if (rate >= 45) return `${label}가 보통 수준`;
+      return `${label} 보완이 필요함`;
+    }
+    function refreshSummary() {
+      serveCounterText.textContent = `성공 ${Number(formState.serveSuccess || 0)}회 / 실패 ${Number(formState.serveFail || 0)}회`;
+      attackCounterText.textContent = `성공 ${Number(formState.attackSuccess || 0)}회 / 실패 ${Number(formState.attackFail || 0)}회`;
+      defenseCounterText.textContent = `성공 ${Number(formState.defenseSuccess || 0)}회 / 실패 ${Number(formState.defenseFail || 0)}회`;
+      const serveRate = calcRate(formState.serveSuccess, formState.serveFail);
+      const attackRate = calcRate(formState.attackSuccess, formState.attackFail);
+      const defenseRate = calcRate(formState.defenseSuccess, formState.defenseFail);
+      serveSummary.textContent = `${Number(formState.serveSuccess || 0)} / ${Number(formState.serveFail || 0)} / ${serveRate}%`;
+      attackSummary.textContent = `${Number(formState.attackSuccess || 0)} / ${Number(formState.attackFail || 0)} / ${attackRate}%`;
+      defenseSummary.textContent = `${Number(formState.defenseSuccess || 0)} / ${Number(formState.defenseFail || 0)} / ${defenseRate}%`;
+      serveComment.textContent = rateComment('서브', formState.serveSuccess, formState.serveFail);
+      attackComment.textContent = rateComment('공격', formState.attackSuccess, formState.attackFail);
+      defenseComment.textContent = rateComment('수비', formState.defenseSuccess, formState.defenseFail);
+    }
+    function fillFormFromState() {
+      const record = getRecord();
+      formState = { ...defaultRecord(), ...(record || {}) };
+      extraStrengthEl.value = formState.extraStrength || '';
+      extraWeaknessEl.value = formState.extraWeakness || '';
+      memoEl.value = formState.memo || '';
+      document.querySelectorAll('[data-key="strengths"]').forEach(input => input.checked = (formState.strengths || []).includes(input.value));
+      document.querySelectorAll('[data-key="weaknesses"]').forEach(input => input.checked = (formState.weaknesses || []).includes(input.value));
+      setStatus(formState.submittedAt ? 'done' : 'draft', formState.submittedAt ? '제출이 완료되었습니다.' : '아직 최종 제출 전입니다.');
+      refreshSummary();
+    }
+    function renderHeader() {
+      headerPills.innerHTML = [
+        `<span class="pill">${escapeHtml(teamLetter)}조</span>`,
+        `<span class="pill warn">${roundNo}라운드</span>`,
+        `<span class="pill">${GAME_LABEL[gameType] || gameType}</span>`,
+        `<span class="pill">데이터${slotNo}</span>`
+      ].join('');
+      teamNameEl.textContent = activeTeam?.name || `${teamLetter}조`;
+      gameLabelEl.textContent = `${roundNo}라운드 ${GAME_LABEL[gameType] || gameType}`;
+      playerNameEl.textContent = activePlayer?.name || '선수 미지정';
+      slotLabelEl.textContent = `데이터${slotNo}`;
+    }
+    async function saveRecord(isSubmit = false) {
+      if (!activeTeam) return;
+      const snap = await get(ref(db, `appState/classes/${classNo}`));
+      const latest = normalizeClassData(snap.exists() ? snap.val() : emptyClassData());
+      if (!latest.dataObservations) latest.dataObservations = {};
+      if (!latest.dataObservations[activeTeam.id]) latest.dataObservations[activeTeam.id] = {};
+      if (!latest.dataObservations[activeTeam.id][String(roundNo)]) latest.dataObservations[activeTeam.id][String(roundNo)] = {};
+      if (!latest.dataObservations[activeTeam.id][String(roundNo)][gameType]) latest.dataObservations[activeTeam.id][String(roundNo)][gameType] = {};
+      latest.dataObservations[activeTeam.id][String(roundNo)][gameType][String(slotNo)] = {
+        ...formState,
+        playerId: activePlayer?.id || '',
+        playerName: activePlayer?.name || '선수 미지정',
+        teamId: activeTeam.id,
+        teamLetter,
+        roundNo,
+        gameType,
+        slotNo,
+        extraStrength: extraStrengthEl.value.trim(),
+        extraWeakness: extraWeaknessEl.value.trim(),
+        memo: memoEl.value.trim(),
+        updatedAt: new Date().toISOString(),
+        submittedAt: isSubmit ? new Date().toISOString() : (formState.submittedAt || '')
+      };
+      await set(ref(db, `appState/classes/${classNo}`), latest);
+    }
+    async function loadData() {
+      const snap = await get(ref(db, `appState/classes/${classNo}`));
+      appData = normalizeClassData(snap.exists() ? snap.val() : emptyClassData());
+      activeTeam = getTeamByLetter(teamLetter);
+      activeMatch = activeTeam ? getMatchForTeamRound(activeTeam.id, roundNo) : null;
+      activePlayer = activeTeam ? getObservedPlayer(activeTeam.id, roundNo, gameType, slotNo) : null;
+      renderHeader();
+      fillFormFromState();
+      if (!activeTeam) setStatus('draft', '조 정보를 찾지 못했습니다.');
+      if (!activeMatch) setStatus('draft', '해당 라운드 경기 정보를 찾지 못했습니다.');
+      if (!activePlayer) setStatus('draft', '관찰 선수가 아직 배정되지 않았습니다.');
+    }
+    function startWatch() {
+      if (typeof watchUnsubscribe === 'function') watchUnsubscribe();
+      watchUnsubscribe = onValue(ref(db, `appState/classes/${classNo}`), snap => {
+        appData = normalizeClassData(snap.exists() ? snap.val() : emptyClassData());
+        activeTeam = getTeamByLetter(teamLetter);
+        activeMatch = activeTeam ? getMatchForTeamRound(activeTeam.id, roundNo) : null;
+        activePlayer = activeTeam ? getObservedPlayer(activeTeam.id, roundNo, gameType, slotNo) : null;
+        renderHeader();
+        fillFormFromState();
+      });
+    }
+    saveDraftBtn.addEventListener('click', async () => {
+      formState.extraStrength = extraStrengthEl.value.trim();
+      formState.extraWeakness = extraWeaknessEl.value.trim();
+      formState.memo = memoEl.value.trim();
+      await saveRecord(false);
+      setStatus('draft', '임시저장되었습니다.');
+    });
+    submitBtn.addEventListener('click', async () => {
+      formState.extraStrength = extraStrengthEl.value.trim();
+      formState.extraWeakness = extraWeaknessEl.value.trim();
+      formState.memo = memoEl.value.trim();
+      await saveRecord(true);
+      setStatus('done', '최종 제출이 완료되었습니다.');
+    });
+    renderChoices(strengthList, STRENGTH_OPTIONS, 'strengths');
+    renderChoices(weaknessList, WEAKNESS_OPTIONS, 'weaknesses');
+    loadData().then(startWatch).catch(error => {
+      console.error(error);
+      setStatus('draft', error.message || '데이터를 불러오지 못했습니다.');
+    });
+  </script>
+</body>
+</html>

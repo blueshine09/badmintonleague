@@ -8,70 +8,27 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --bg:#08111f;
-      --bg2:#0a1730;
-      --panel:rgba(15,28,51,.94);
-      --line:#294063;
-      --text:#e9f1ff;
-      --muted:#9db3d5;
-      --accent:#5ab1ff;
-      --accent2:#7bffcc;
-      --warn:#ffd166;
-      --danger:#ff7a7a;
-      --shadow:0 12px 28px rgba(0,0,0,.28);
-      --radius:22px;
-      --radius-sm:16px;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:Pretendard, Arial, sans-serif;
-      color:var(--text);
-      background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);
-      min-height:100vh;
-    }
-    .shell{max-width:780px;margin:0 auto;padding:18px 14px 28px;display:grid;gap:14px}
+    :root{--bg:#08111f;--bg2:#0a1730;--panel:rgba(15,28,51,.94);--line:#294063;--text:#e9f1ff;--muted:#9db3d5;--accent:#5ab1ff;--warn:#ffd166;--green:#36c98a;--danger:#ff7a7a;--shadow:0 12px 28px rgba(0,0,0,.28);--radius:22px;--radius-sm:16px}
+    *{box-sizing:border-box} body{margin:0;font-family:Pretendard,Arial,sans-serif;color:var(--text);background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);min-height:100vh}
+    .shell{max-width:900px;margin:0 auto;padding:18px 14px 28px;display:grid;gap:14px}
     .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
-    .card-head{padding:16px 18px;border-bottom:1px solid var(--line);background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,0))}
-    .card-title{font-size:1.04rem;font-weight:800;margin:0}
-    .sub{margin-top:6px;color:var(--muted);font-size:.84rem;line-height:1.55}
-    .card-body{padding:16px 18px 18px}
-    .hero{display:grid;gap:12px}
-    .pill-row{display:flex;flex-wrap:wrap;gap:8px}
-    .pill{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:999px;background:rgba(90,177,255,.12);border:1px solid rgba(90,177,255,.24);font-weight:800;font-size:.86rem}
-    .pill.warn{background:rgba(255,209,102,.13);border-color:rgba(255,209,102,.28);color:#ffe39c}
-    .status-box{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);border-radius:var(--radius-sm);padding:12px 14px;display:flex;justify-content:space-between;gap:12px;align-items:center}
-    .status-label{font-size:.82rem;color:var(--muted)}
-    .status-pill{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;font-size:.76rem;font-weight:800}
-    .status-draft{background:rgba(255,209,102,.15);color:#ffe08a}
-    .status-done{background:rgba(83,215,105,.15);color:#9ff2ae}
-    .status-edit{background:rgba(255,209,102,.15);color:#ffe08a}
-    .status-lock{background:rgba(124,141,166,.18);color:#d8e2f2}
-    .section-box{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);border-radius:18px;padding:14px;display:grid;gap:12px}
-    .section-title{font-size:.98rem;font-weight:800}
+    .card-head{padding:16px 18px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0))}
+    .card-body{padding:16px 18px 18px}.card-title{font-size:1.04rem;font-weight:800;margin:0}.sub{margin-top:6px;color:var(--muted);font-size:.84rem;line-height:1.55}
+    .pill-row{display:flex;flex-wrap:wrap;gap:8px}.pill{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:999px;background:rgba(90,177,255,.12);border:1px solid rgba(90,177,255,.24);font-weight:800;font-size:.86rem}.pill.warn{background:rgba(255,209,102,.13);border-color:rgba(255,209,102,.28);color:#ffe39c}
+    .status-box{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);border-radius:var(--radius-sm);padding:12px 14px;display:flex;justify-content:space-between;gap:12px;align-items:center}.status-label{font-size:.82rem;color:var(--muted)}
+    .status-pill{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;font-size:.76rem;font-weight:800}.status-draft{background:rgba(255,209,102,.15);color:#ffe08a}.status-done{background:rgba(83,215,105,.15);color:#9ff2ae}.status-edit{background:rgba(90,177,255,.16);color:#cae4ff}.status-lock{background:rgba(124,141,166,.18);color:#d8e2f2}
+    .section-box{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);border-radius:18px;padding:14px;display:grid;gap:12px}.section-title{font-size:.98rem;font-weight:800}.section-subtitle{font-size:.82rem;color:var(--muted);line-height:1.5}
     .match-badge{display:inline-flex;align-items:center;justify-content:center;padding:7px 11px;border-radius:999px;background:rgba(123,255,204,.1);border:1px solid rgba(123,255,204,.2);color:#d9fff1;font-weight:800;font-size:.8rem}
-    .form-grid{display:grid;gap:12px}
-    .duo-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .input-label{display:grid;gap:6px;font-size:.84rem;color:var(--muted)}
-    select,input{width:100%;background:#0e1c33;color:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 12px;font:inherit}
+    .form-grid{display:grid;gap:12px}.duo-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.tri-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .input-label{display:grid;gap:6px;font-size:.84rem;color:var(--muted)} select,input{width:100%;background:#0e1c33;color:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 12px;font:inherit}
     select:focus,input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(90,177,255,.15)}
-    .hint{font-size:.78rem;color:var(--muted);line-height:1.55}
-    .hint.warn{color:#ffe39c}
-    .action-row{display:flex;gap:8px;flex-wrap:wrap}
-    .btn{border:1px solid var(--line);background:#102038;color:var(--text);cursor:pointer;border-radius:13px;min-height:44px;padding:10px 14px;font-weight:800;font-size:.9rem;display:inline-flex;align-items:center;justify-content:center;gap:6px}
-    .btn.primary,.btn.blue{background:linear-gradient(135deg,#2d73ff,#45b3ff);border:none}
-    .btn.green{background:linear-gradient(135deg,#1d9d68,#36c98a);border:none}
-    .btn.yellow{background:linear-gradient(135deg,#c4901d,#ffd166);color:#17202e;border:none}
-    .btn.gray{background:linear-gradient(135deg,#5f6b7c,#7f8b99);border:none;color:#eef4ff}
-    .btn[disabled]{opacity:.9;cursor:not-allowed}
-    .summary-list{display:grid;gap:8px}
-    .summary-item{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06)}
-    .summary-main{font-size:.9rem;font-weight:700}
-    .summary-sub{font-size:.76rem;color:var(--muted);margin-top:3px}
-    .footer-note{font-size:.78rem;color:var(--muted);line-height:1.6}
-    .hidden{display:none !important}
-    @media (max-width:640px){.duo-grid{grid-template-columns:1fr}.status-box{display:grid;justify-content:stretch}.action-row .btn{flex:1}}
+    .hint{font-size:.78rem;color:var(--muted);line-height:1.55}.hint.warn{color:#ffe39c}.step-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.step-badge{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;padding:0 10px;border-radius:999px;background:rgba(90,177,255,.18);font-weight:800}
+    .action-row{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:#102038;color:var(--text);cursor:pointer;border-radius:13px;min-height:44px;padding:10px 14px;font-weight:800;font-size:.9rem;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+    .btn.primary,.btn.blue{background:linear-gradient(135deg,#2d73ff,#45b3ff);border:none}.btn.green{background:linear-gradient(135deg,#1d9d68,#36c98a);border:none}.btn.yellow{background:linear-gradient(135deg,#c4901d,#ffd166);color:#17202e;border:none}.btn.gray{background:linear-gradient(135deg,#5f6b7c,#7f8b99);border:none;color:#eef4ff}.btn[disabled]{opacity:.6;cursor:not-allowed}
+    .summary-list{display:grid;gap:8px}.summary-item{padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06)}.summary-main{font-size:.9rem;font-weight:700}.summary-sub{font-size:.78rem;color:var(--muted);margin-top:4px;line-height:1.6}
+    .hidden{display:none!important}.role-box{border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:12px;background:rgba(8,24,49,.55);display:grid;gap:10px}.role-box .role-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.role-status{font-size:.78rem;color:#cfe5ff;font-weight:700}
+    .role-help{font-size:.77rem;color:var(--muted);line-height:1.55}.error-box{border:1px solid rgba(255,122,122,.3);background:rgba(255,122,122,.08);color:#ffd6d6;border-radius:14px;padding:10px 12px;font-size:.8rem;line-height:1.55}.success-box{border:1px solid rgba(83,215,105,.28);background:rgba(83,215,105,.08);color:#cffff0;border-radius:14px;padding:10px 12px;font-size:.8rem;line-height:1.55}
+    @media (max-width:700px){.duo-grid,.tri-grid,.role-grid{grid-template-columns:1fr}.status-box{display:grid;justify-content:stretch}.action-row .btn{flex:1}}
   </style>
 </head>
 <body>
@@ -79,9 +36,9 @@
     <div class="card">
       <div class="card-head">
         <h1 class="card-title">오더 제출</h1>
-        <div class="sub">QR로 열린 조와 라운드의 오더만 입력합니다.</div>
+        <div class="sub">선수 선택을 먼저 완료한 뒤, 경기별 역할을 입력하고 최종 제출합니다.</div>
       </div>
-      <div class="card-body hero">
+      <div class="card-body" style="display:grid;gap:12px">
         <div class="pill-row">
           <span class="pill" id="groupPill">A조</span>
           <span class="pill warn" id="roundPill">1라운드</span>
@@ -90,70 +47,71 @@
         <div class="status-box">
           <div>
             <div class="status-label">현재 제출 상태</div>
-            <div style="font-weight:800;margin-top:4px" id="statusText">기본 명단 상태</div>
+            <div style="font-weight:800;margin-top:4px" id="statusText">선수 선택 전</div>
           </div>
           <div class="status-pill status-draft" id="statusPill">미제출</div>
         </div>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" id="lineupCard">
       <div class="card-head">
-        <div class="card-title">이번 라운드 출전 명단</div>
-        <div class="sub">남복은 남학생만, 여복은 여학생만 표시됩니다. 혼복은 조 인원 구성에 따라 자동으로 중복 제한이 반영됩니다.</div>
+        <div class="step-row"><span class="step-badge">1</span><h2 class="card-title">선수 선택</h2></div>
+        <div class="sub">여복·혼복·남복 선수를 먼저 모두 선택합니다. 선수 선택 완료를 누르면 역할 입력 단계로 넘어갑니다.</div>
       </div>
       <div class="card-body form-grid">
         <div class="section-box">
-          <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;">
-            <div class="section-title">여복</div>
-            <div class="match-badge" id="womenMatchBadge">A조 여복</div>
-          </div>
+          <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;"><div class="section-title">여복</div><div class="match-badge" id="womenMatchBadge">A조 여복</div></div>
           <div class="duo-grid">
             <label class="input-label">선수 1<select id="women1"></select></label>
             <label class="input-label">선수 2<select id="women2"></select></label>
           </div>
           <div class="hint" id="womenHint"></div>
         </div>
-
         <div class="section-box">
-          <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;">
-            <div class="section-title">혼복</div>
-            <div class="match-badge" id="mixedMatchBadge">A조 혼복</div>
-          </div>
+          <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;"><div class="section-title">혼복</div><div class="match-badge" id="mixedMatchBadge">A조 혼복</div></div>
           <div class="duo-grid">
             <label class="input-label">선수 1<select id="mixed1"></select></label>
             <label class="input-label">선수 2<select id="mixed2"></select></label>
           </div>
           <div class="hint" id="mixedHint"></div>
         </div>
-
         <div class="section-box">
-          <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;">
-            <div class="section-title">남복</div>
-            <div class="match-badge" id="menMatchBadge">A조 남복</div>
-          </div>
+          <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;"><div class="section-title">남복</div><div class="match-badge" id="menMatchBadge">A조 남복</div></div>
           <div class="duo-grid">
             <label class="input-label">선수 1<select id="men1"></select></label>
             <label class="input-label">선수 2<select id="men2"></select></label>
           </div>
           <div class="hint" id="menHint"></div>
         </div>
-
         <div class="action-row">
-          <button class="btn" id="saveDraftBtn">임시저장</button>
-          <button class="btn green" id="submitBtn">제출완료</button>
+          <button class="btn" id="saveLineupDraftBtn">임시저장</button>
+          <button class="btn green" id="lineupCompleteBtn">선수 선택 완료</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card hidden" id="rolesCard">
+      <div class="card-head">
+        <div class="step-row"><span class="step-badge">2</span><h2 class="card-title">경기별 역할 선택</h2></div>
+        <div class="sub">현재 경기 선수는 자동으로 제외됩니다. 한 경기 안에서는 한 학생이 한 역할만 맡을 수 있습니다. 다른 경기에서는 중복 가능합니다.</div>
+      </div>
+      <div class="card-body" style="display:grid;gap:12px">
+        <div id="rolesErrorBox" class="error-box hidden"></div>
+        <div id="rolesSuccessBox" class="success-box hidden"></div>
+        <div id="roleSections"></div>
+        <div class="action-row">
+          <button class="btn gray" id="backToLineupBtn">이전</button>
+          <button class="btn blue" id="saveRolesDraftBtn">임시저장</button>
+          <button class="btn yellow" id="rolesCompleteBtn">심판 선택 완료</button>
+          <button class="btn green hidden" id="finalSubmitBtn">제출하기</button>
         </div>
       </div>
     </div>
 
     <div class="card">
-      <div class="card-head">
-        <div class="card-title">입력 요약</div>
-        <div class="sub">지금 열린 조와 라운드의 제출 내용만 보여줍니다.</div>
-      </div>
-      <div class="card-body">
-        <div class="summary-list" id="summaryList"></div>
-      </div>
+      <div class="card-head"><div class="card-title">입력 요약</div><div class="sub">현재 라운드의 선수·역할 정보를 실시간으로 확인합니다.</div></div>
+      <div class="card-body"><div class="summary-list" id="summaryList"></div></div>
     </div>
   </div>
 
@@ -163,9 +121,7 @@
     import { getDatabase, ref, get, set, onValue } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js';
 
     const firebaseConfig = window.DEFAULT_FIREBASE_CONFIG;
-    if (!firebaseConfig) {
-      throw new Error('firebase-config.js를 찾지 못했습니다.');
-    }
+    if (!firebaseConfig) throw new Error('firebase-config.js를 찾지 못했습니다.');
     const firebaseApp = getApps().find(app => app.name === 'badminton-app') || initializeApp(firebaseConfig, 'badminton-app');
     const db = getDatabase(firebaseApp);
 
@@ -173,473 +129,256 @@
     const qs = new URLSearchParams(location.search);
     const classNo = Math.min(CLASS_COUNT, Math.max(1, Number(qs.get('classNo') || 1)));
     const group = (qs.get('group') || 'A').toUpperCase();
-    const round = Math.min(3, Math.max(1, Number(qs.get('round') || 1)));
+    const round = Math.min(9, Math.max(1, Number(qs.get('round') || 1)));
 
-    const selects = {
-      women1: document.getElementById('women1'),
-      women2: document.getElementById('women2'),
-      mixed1: document.getElementById('mixed1'),
-      mixed2: document.getElementById('mixed2'),
-      men1: document.getElementById('men1'),
-      men2: document.getElementById('men2')
+    const GAME_TYPES = ['women','mixed','men'];
+    const GAME_LABELS = { women:'여복', mixed:'혼복', men:'남복' };
+
+    const lineupSelects = {
+      women1: document.getElementById('women1'), women2: document.getElementById('women2'),
+      mixed1: document.getElementById('mixed1'), mixed2: document.getElementById('mixed2'),
+      men1: document.getElementById('men1'), men2: document.getElementById('men2')
     };
-    const saveDraftBtn = document.getElementById('saveDraftBtn');
-    const submitBtn = document.getElementById('submitBtn');
-    const statusText = document.getElementById('statusText');
-    const statusPill = document.getElementById('statusPill');
+    const hints = { women: document.getElementById('womenHint'), mixed: document.getElementById('mixedHint'), men: document.getElementById('menHint') };
+    const roleSections = document.getElementById('roleSections');
+    const rolesCard = document.getElementById('rolesCard');
+    const lineupCard = document.getElementById('lineupCard');
     const summaryList = document.getElementById('summaryList');
-    const hints = {
-      women: document.getElementById('womenHint'),
-      mixed: document.getElementById('mixedHint'),
-      men: document.getElementById('menHint')
-    };
+    const rolesErrorBox = document.getElementById('rolesErrorBox');
+    const rolesSuccessBox = document.getElementById('rolesSuccessBox');
 
     let appData = emptyClassData();
     let activeTeam = null;
     let activeMatch = null;
     let watchUnsubscribe = null;
     let isRefreshingSelects = false;
+    let currentStep = 'lineup';
 
-    function escapeHtml(v) {
-      return String(v == null ? '' : v)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-    }
+    function escapeHtml(v){return String(v == null ? '' : v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+    function emptyClassData(){ return { roster: [], teams: [], liveMatches: [], completedMatches: [], lineupSubmissions: {} }; }
+    function normalizeGender(value){ const raw = String(value ?? '').trim().toUpperCase(); if(['M','MALE','남','남자','BOY','MAN'].includes(raw)) return 'M'; if(['F','FEMALE','여','여자','GIRL','WOMAN'].includes(raw)) return 'F'; return ''; }
+    function normalizePlayerForLoad(raw={}){ const id=String(raw.id ?? raw.playerId ?? raw.name ?? '').trim(); const name=String(raw.name ?? raw.playerName ?? raw.label ?? id).trim(); return {...raw,id,name,gender:normalizeGender(raw.gender ?? raw.sex ?? raw.성별),manualGroup:String(raw.manualGroup ?? raw.group ?? raw.teamLetter ?? '').trim().toUpperCase()}; }
+    function normalizeTeamForLoad(raw={}){ const letter = String(raw.letter ?? raw.name ?? raw.teamName ?? '').replace('조','').trim().toUpperCase(); const players = Array.isArray(raw.players)&&raw.players.length ? raw.players : (Array.isArray(raw.playerIds)? raw.playerIds : []); return {...raw,id:String(raw.id ?? raw.teamId ?? letter).trim(),name:String(raw.name ?? `${letter}조`).trim(),letter,players,playerIds:players}; }
+    function normalizeRoles(raw={}){ return { umpire:String(raw.umpire||''), assistant:String(raw.assistant||''), scorekeeper:String(raw.scorekeeper||''), lineJudge:String(raw.lineJudge||''), data:Array.isArray(raw.data)?raw.data.map(v=>String(v||'')).filter(Boolean).slice(0,2):['',''] }; }
+    function normalizeGame(raw={}){ return { lineupA:Array.isArray(raw.lineupA)?raw.lineupA.map(v=>String(v||'')):[], lineupB:Array.isArray(raw.lineupB)?raw.lineupB.map(v=>String(v||'')):[], umpireTeam:String(raw.umpireTeam||''), rolesA:normalizeRoles(raw.rolesA||{}), rolesB:normalizeRoles(raw.rolesB||{}), a:Number(raw.a)||0, b:Number(raw.b)||0, finished:!!raw.finished }; }
+    function normalizeMatchForLoad(raw={}){ return {...raw, roundNo:Number(raw.roundNo ?? raw.round ?? 0), teamAId:String(raw.teamAId ?? raw.teamA ?? '').trim(), teamBId:String(raw.teamBId ?? raw.teamB ?? '').trim(), started:raw.started===true, finished:raw.finished===true, games:{women:normalizeGame(raw.games?.women||{}),mixed:normalizeGame(raw.games?.mixed||{}),men:normalizeGame(raw.games?.men||{})}}; }
+    function normalizeClassDataForLoad(raw={}){ return { roster:Array.isArray(raw.roster)?raw.roster.map(normalizePlayerForLoad):[], teams:Array.isArray(raw.teams)?raw.teams.map(normalizeTeamForLoad):[], liveMatches:Array.isArray(raw.liveMatches)?raw.liveMatches.map(normalizeMatchForLoad):[], completedMatches:Array.isArray(raw.completedMatches)?raw.completedMatches.map(normalizeMatchForLoad):[], lineupSubmissions: raw.lineupSubmissions && typeof raw.lineupSubmissions === 'object' ? raw.lineupSubmissions : {} }; }
 
-    function emptyClassData() {
-      return { roster: [], teams: [], liveMatches: [], completedMatches: [], lineupSubmissions: {} };
-    }
+    function getTeamLetter(team){ return (team?.letter || (team?.name || '').replace('조','').trim() || '').toUpperCase(); }
+    function getTeamByLetter(letter){ return appData.teams.find(team => getTeamLetter(team) === String(letter || '').toUpperCase()) || null; }
+    function getTeamById(id){ return appData.teams.find(team => team.id === id) || null; }
+    function getPlayerById(id){ return appData.roster.find(player => player.id === id) || null; }
+    function gameLabel(type){ return GAME_LABELS[type] || type; }
+    function getPlayersForTeam(team){ if(!team) return []; const ids = Array.isArray(team.players)&&team.players.length ? team.players : (Array.isArray(team.playerIds)?team.playerIds:[]); const mapped = ids.map(getPlayerById).filter(Boolean); if(mapped.length) return mapped; const letter = getTeamLetter(team); return appData.roster.filter(player => String(player.manualGroup || '').toUpperCase() === letter); }
+    function getRolePool(team, type){ const players = getPlayersForTeam(team); if(type==='women') return players.filter(p=>p.gender==='F'); if(type==='men') return players.filter(p=>p.gender==='M'); return players; }
+    function getCurrentSelections(){ return { women:[lineupSelects.women1.value||'',lineupSelects.women2.value||''], mixed:[lineupSelects.mixed1.value||'',lineupSelects.mixed2.value||''], men:[lineupSelects.men1.value||'',lineupSelects.men2.value||''] }; }
+    function inferMixedCrossRules(team){ const players=getPlayersForTeam(team); const maleIds=players.filter(p=>p.gender==='M').map(p=>p.id); const femaleIds=players.filter(p=>p.gender==='F').map(p=>p.id); return {maleIds,femaleIds,allowMenReuse:maleIds.length<=2,allowWomenReuse:femaleIds.length<=2}; }
+    function buildPlayerOptionHtml(players, selected, excludedSet = new Set()){ const list=['<option value="">선수 선택</option>']; players.forEach(player=>{ if(!player?.id) return; if(excludedSet.has(player.id) && player.id !== selected) return; list.push(`<option value="${escapeHtml(player.id)}"${player.id===selected?' selected':''}>${escapeHtml(player.name)}</option>`); }); return list.join(''); }
+    function getRoundSubmission(teamId){ if(!teamId) return null; const raw = appData.lineupSubmissions?.[teamId]?.[String(round)] || null; if(!raw || typeof raw !== 'object') return null; return raw; }
+    function setRoundSubmission(teamId, payload){ if(!appData.lineupSubmissions) appData.lineupSubmissions = {}; if(!appData.lineupSubmissions[teamId]) appData.lineupSubmissions[teamId] = {}; appData.lineupSubmissions[teamId][String(round)] = payload; }
+    function getMatchGame(type){ return activeMatch?.games?.[type] || normalizeGame({}); }
+    function getTeamSide(){ if(!activeMatch || !activeTeam) return ''; return activeMatch.teamAId === activeTeam.id ? 'A' : 'B'; }
+    function getOpponentTeam(){ if(!activeMatch || !activeTeam) return null; return getTeamById(activeMatch.teamAId === activeTeam.id ? activeMatch.teamBId : activeMatch.teamAId); }
+    function defaultSubmission(){ return { status:'draft', lineups:{women:['',''],mixed:['',''],men:['','']}, games:{ women:{umpireTeam:'', roles:normalizeRoles({})}, mixed:{umpireTeam:'', roles:normalizeRoles({})}, men:{umpireTeam:'', roles:normalizeRoles({})} }, lineupCompletedAt:'', rolesCompletedAt:'', finalSubmittedAt:'', updatedAt:'' }; }
+    function getSubmission(){ const raw = getRoundSubmission(activeTeam?.id); const base = defaultSubmission(); if(!raw) return base; const merged = {...base, ...raw}; merged.lineups = {...base.lineups, ...(raw.lineups||{})}; merged.games = {...base.games}; GAME_TYPES.forEach(type => { merged.games[type] = { umpireTeam:String(raw.games?.[type]?.umpireTeam || raw.umpireTeams?.[type] || activeMatch?.games?.[type]?.umpireTeam || ''), roles: normalizeRoles(raw.games?.[type]?.roles || raw.roles?.[type] || (getTeamSide()==='A' ? activeMatch?.games?.[type]?.rolesA : activeMatch?.games?.[type]?.rolesB) || {}) }; }); return merged; }
+    function roleName(id){ return getPlayerById(id)?.name || '미선택'; }
+    function getTeamSpecificRoles(game){ const side = getTeamSide(); return normalizeRoles(side==='A' ? game.rolesA : game.rolesB); }
+    function getVisibleRoleType(umpireTeam){ if(!umpireTeam || !getTeamSide()) return 'none'; return getTeamSide() === umpireTeam ? 'umpire' : 'assistant'; }
 
-    function normalizeGender(value) {
-      const raw = String(value ?? '').trim().toUpperCase();
-      if (['M', 'MALE', '남', '남자', 'BOY', 'MAN'].includes(raw)) return 'M';
-      if (['F', 'FEMALE', '여', '여자', 'GIRL', 'WOMAN'].includes(raw)) return 'F';
-      return '';
-    }
-
-    function normalizePlayerForLoad(raw = {}) {
-      const id = String(raw.id ?? raw.playerId ?? raw.name ?? '').trim();
-      const name = String(raw.name ?? raw.playerName ?? raw.label ?? id).trim();
-      return {
-        ...raw,
-        id,
-        name,
-        gender: normalizeGender(raw.gender ?? raw.sex ?? raw.성별 ?? raw.genderText),
-        manualGroup: String(raw.manualGroup ?? raw.group ?? raw.teamLetter ?? '').trim().toUpperCase()
-      };
-    }
-
-    function normalizeTeamForLoad(raw = {}) {
-      const letter = String(raw.letter ?? raw.name ?? raw.teamName ?? '').replace('조','').trim().toUpperCase();
-      const players = Array.isArray(raw.players) && raw.players.length ? raw.players : (Array.isArray(raw.playerIds) ? raw.playerIds : []);
-      return {
-        ...raw,
-        id: String(raw.id ?? raw.teamId ?? letter).trim(),
-        name: String(raw.name ?? `${letter}조`).trim(),
-        letter,
-        players,
-        playerIds: players
-      };
-    }
-
-    function normalizeGame(raw = {}) {
-      return {
-        lineupA: Array.isArray(raw.lineupA) ? raw.lineupA.map(v => String(v || '')) : [],
-        lineupB: Array.isArray(raw.lineupB) ? raw.lineupB.map(v => String(v || '')) : [],
-        ...raw
-      };
-    }
-
-    function normalizeMatchForLoad(raw = {}) {
-      return {
-        ...raw,
-        roundNo: Number(raw.roundNo ?? raw.round ?? 0),
-        teamAId: String(raw.teamAId ?? raw.teamA ?? '').trim(),
-        teamBId: String(raw.teamBId ?? raw.teamB ?? '').trim(),
-        started: raw.started === true,
-        finished: raw.finished === true,
-        games: {
-          women: normalizeGame(raw.games?.women || raw.women || {}),
-          mixed: normalizeGame(raw.games?.mixed || raw.mixed || {}),
-          men: normalizeGame(raw.games?.men || raw.men || {})
-        }
-      };
-    }
-
-    function normalizeClassDataForLoad(raw = {}) {
-      const lineupSubmissions = raw.lineupSubmissions && typeof raw.lineupSubmissions === 'object' ? raw.lineupSubmissions : {};
-      return {
-        roster: Array.isArray(raw.roster) ? raw.roster.map(normalizePlayerForLoad) : [],
-        teams: Array.isArray(raw.teams) ? raw.teams.map(normalizeTeamForLoad) : [],
-        liveMatches: Array.isArray(raw.liveMatches) ? raw.liveMatches.map(normalizeMatchForLoad) : [],
-        completedMatches: Array.isArray(raw.completedMatches) ? raw.completedMatches.map(normalizeMatchForLoad) : [],
-        lineupSubmissions
-      };
-    }
-
-    function getTeamLetter(team) {
-      if (!team) return '';
-      return (team.letter || (team.name || '').replace('조', '').trim() || '').toUpperCase();
-    }
-    function getTeamByLetter(letter) {
-      return appData.teams.find(team => getTeamLetter(team) === String(letter || '').toUpperCase()) || null;
-    }
-    function getTeamById(id) {
-      return appData.teams.find(team => team.id === id) || null;
-    }
-    function getPlayerById(id) {
-      return appData.roster.find(player => player.id === id) || null;
-    }
-    function gameLabel(type) {
-      return ({ women: '여복', mixed: '혼복', men: '남복' })[type] || type;
-    }
-
-    function getPlayersForTeam(team) {
-      if (!team) return [];
-      const ids = Array.isArray(team.players) && team.players.length ? team.players : (Array.isArray(team.playerIds) ? team.playerIds : []);
-      const mapped = ids.map(getPlayerById).filter(Boolean);
-      if (mapped.length) return mapped;
-      const letter = getTeamLetter(team);
-      return appData.roster.filter(player => String(player.manualGroup || '').toUpperCase() === letter);
-    }
-
-    function getRolePool(team, type) {
-      const players = getPlayersForTeam(team);
-      if (type === 'women') return players.filter(player => player.gender === 'F');
-      if (type === 'men') return players.filter(player => player.gender === 'M');
-      return players;
-    }
-
-    function getCurrentSelections() {
-      return {
-        women: [selects.women1.value || '', selects.women2.value || ''],
-        mixed: [selects.mixed1.value || '', selects.mixed2.value || ''],
-        men: [selects.men1.value || '', selects.men2.value || '']
-      };
-    }
-
-    function inferMixedCrossRules(team) {
-      const players = getPlayersForTeam(team);
-      const maleIds = players.filter(p => p.gender === 'M').map(p => p.id);
-      const femaleIds = players.filter(p => p.gender === 'F').map(p => p.id);
-      return {
-        maleIds,
-        femaleIds,
-        allowMenReuse: maleIds.length <= 2,
-        allowWomenReuse: femaleIds.length <= 2
-      };
-    }
-
-    function buildPlayerOptionHtml(players, selected, excludedSet = new Set()) {
-      const list = ['<option value="">선수 선택</option>'];
-      players.forEach(player => {
-        if (!player?.id) return;
-        if (excludedSet.has(player.id) && player.id !== selected) return;
-        list.push(`<option value="${escapeHtml(player.id)}"${player.id === selected ? ' selected' : ''}>${escapeHtml(player.name)}</option>`);
-      });
-      return list.join('');
-    }
-
-    function refreshSelectOptions() {
+    function refreshLineupOptions(){
       if (!activeTeam) return;
       isRefreshingSelects = true;
       const current = getCurrentSelections();
-      const womenPool = getRolePool(activeTeam, 'women');
-      const menPool = getRolePool(activeTeam, 'men');
-      const mixedPool = getRolePool(activeTeam, 'mixed');
-      const cross = inferMixedCrossRules(activeTeam);
-
-      const womenExcluded1 = new Set(current.women.filter((id, idx) => idx !== 0 && id));
-      const womenExcluded2 = new Set(current.women.filter((id, idx) => idx !== 1 && id));
-      selects.women1.innerHTML = buildPlayerOptionHtml(womenPool, current.women[0], womenExcluded1);
-      selects.women2.innerHTML = buildPlayerOptionHtml(womenPool, current.women[1], womenExcluded2);
-      selects.women1.value = current.women[0] || '';
-      selects.women2.value = current.women[1] || '';
-
-      const menExcluded1 = new Set(current.men.filter((id, idx) => idx !== 0 && id));
-      const menExcluded2 = new Set(current.men.filter((id, idx) => idx !== 1 && id));
-      selects.men1.innerHTML = buildPlayerOptionHtml(menPool, current.men[0], menExcluded1);
-      selects.men2.innerHTML = buildPlayerOptionHtml(menPool, current.men[1], menExcluded2);
-      selects.men1.value = current.men[0] || '';
-      selects.men2.value = current.men[1] || '';
-
-      const mixedSelectedOther1 = current.mixed[1];
-      const mixedSelectedOther2 = current.mixed[0];
-      const mixedExcluded1 = new Set();
-      const mixedExcluded2 = new Set();
-      if (mixedSelectedOther1) mixedExcluded1.add(mixedSelectedOther1);
-      if (mixedSelectedOther2) mixedExcluded2.add(mixedSelectedOther2);
-
-      if (!cross.allowMenReuse) current.men.filter(Boolean).forEach(id => { if (id !== current.mixed[0]) mixedExcluded1.add(id); if (id !== current.mixed[1]) mixedExcluded2.add(id); });
-      if (!cross.allowWomenReuse) current.women.filter(Boolean).forEach(id => { if (id !== current.mixed[0]) mixedExcluded1.add(id); if (id !== current.mixed[1]) mixedExcluded2.add(id); });
-
-      selects.mixed1.innerHTML = buildPlayerOptionHtml(mixedPool, current.mixed[0], mixedExcluded1);
-      selects.mixed2.innerHTML = buildPlayerOptionHtml(mixedPool, current.mixed[1], mixedExcluded2);
-      selects.mixed1.value = current.mixed[0] || '';
-      selects.mixed2.value = current.mixed[1] || '';
-
+      const womenPool = getRolePool(activeTeam, 'women'); const menPool = getRolePool(activeTeam, 'men'); const mixedPool = getRolePool(activeTeam, 'mixed'); const cross = inferMixedCrossRules(activeTeam);
+      lineupSelects.women1.innerHTML = buildPlayerOptionHtml(womenPool, current.women[0], new Set(current.women.filter((id,idx)=>idx!==0&&id)));
+      lineupSelects.women2.innerHTML = buildPlayerOptionHtml(womenPool, current.women[1], new Set(current.women.filter((id,idx)=>idx!==1&&id)));
+      lineupSelects.men1.innerHTML = buildPlayerOptionHtml(menPool, current.men[0], new Set(current.men.filter((id,idx)=>idx!==0&&id)));
+      lineupSelects.men2.innerHTML = buildPlayerOptionHtml(menPool, current.men[1], new Set(current.men.filter((id,idx)=>idx!==1&&id)));
+      const mixedExcluded1 = new Set(current.mixed[1] ? [current.mixed[1]] : []); const mixedExcluded2 = new Set(current.mixed[0] ? [current.mixed[0]] : []);
+      if(!cross.allowMenReuse) current.men.filter(Boolean).forEach(id=>{ if(id!==current.mixed[0]) mixedExcluded1.add(id); if(id!==current.mixed[1]) mixedExcluded2.add(id); });
+      if(!cross.allowWomenReuse) current.women.filter(Boolean).forEach(id=>{ if(id!==current.mixed[0]) mixedExcluded1.add(id); if(id!==current.mixed[1]) mixedExcluded2.add(id); });
+      lineupSelects.mixed1.innerHTML = buildPlayerOptionHtml(mixedPool, current.mixed[0], mixedExcluded1);
+      lineupSelects.mixed2.innerHTML = buildPlayerOptionHtml(mixedPool, current.mixed[1], mixedExcluded2);
+      Object.entries(current).forEach(([type, ids])=>{ lineupSelects[`${type}1`].value = ids[0] || ''; lineupSelects[`${type}2`].value = ids[1] || ''; });
       hints.women.textContent = womenPool.length <= 2 ? `여학생 ${womenPool.length}명이라 같은 학생 재사용 가능 상황이 생길 수 있습니다.` : '여복은 여학생만 표시됩니다.';
       hints.men.textContent = menPool.length <= 2 ? `남학생 ${menPool.length}명이라 같은 학생 재사용 가능 상황이 생길 수 있습니다.` : '남복은 남학생만 표시됩니다.';
-      hints.mixed.textContent = [
-        !cross.allowMenReuse ? '남복에 이미 선택된 남학생은 혼복 후보에서 자동 제외됩니다.' : `남학생 ${cross.maleIds.length}명이라 남복-혼복 중복이 허용됩니다.`,
-        !cross.allowWomenReuse ? '여복에 이미 선택된 여학생은 혼복 후보에서 자동 제외됩니다.' : `여학생 ${cross.femaleIds.length}명이라 여복-혼복 중복이 허용됩니다.`
-      ].join(' ');
+      hints.mixed.textContent = [!cross.allowMenReuse ? '남복에 이미 선택된 남학생은 혼복 후보에서 자동 제외됩니다.' : `남학생 ${cross.maleIds.length}명이라 남복-혼복 중복이 허용됩니다.`, !cross.allowWomenReuse ? '여복에 이미 선택된 여학생은 혼복 후보에서 자동 제외됩니다.' : `여학생 ${cross.femaleIds.length}명이라 여복-혼복 중복이 허용됩니다.`].join(' ');
       isRefreshingSelects = false;
     }
 
-    function setFormFromMatch() {
-      if (!activeTeam || !activeMatch) return;
-      const isA = activeMatch.teamAId === activeTeam.id;
-      const games = activeMatch.games || {};
-      const getList = (type) => isA ? (games?.[type]?.lineupA || []) : (games?.[type]?.lineupB || []);
-      const women = getList('women');
-      const mixed = getList('mixed');
-      const men = getList('men');
-      selects.women1.value = women[0] || '';
-      selects.women2.value = women[1] || '';
-      selects.mixed1.value = mixed[0] || '';
-      selects.mixed2.value = mixed[1] || '';
-      selects.men1.value = men[0] || '';
-      selects.men2.value = men[1] || '';
-      refreshSelectOptions();
-    }
+    function hydrateContext(){ activeTeam = getTeamByLetter(group); activeMatch = (appData.liveMatches || []).find(match => Number(match.roundNo) === round && (match.teamAId === activeTeam?.id || match.teamBId === activeTeam?.id)) || null; }
 
-    function isTeamRoundSubmitted(teamId, roundNo) {
-      return !!appData.lineupSubmissions?.[teamId]?.[String(roundNo)]?.submittedAt;
-    }
-
-    function setTeamRoundSubmission(teamId, roundNo, payload = {}) {
-      if (!appData.lineupSubmissions) appData.lineupSubmissions = {};
-      if (!appData.lineupSubmissions[teamId]) appData.lineupSubmissions[teamId] = {};
-      appData.lineupSubmissions[teamId][String(roundNo)] = {
-        submittedAt: payload.submittedAt || new Date().toISOString(),
-        status: payload.status || 'submitted'
-      };
-    }
-
-    function hydrateContext() {
-      activeTeam = getTeamByLetter(group);
-      activeMatch = (appData.liveMatches || []).find(match =>
-        Number(match.roundNo) === round && (match.teamAId === activeTeam?.id || match.teamBId === activeTeam?.id)
-      ) || null;
-    }
-
-    function getStatusKind() {
-      if (!activeMatch || !activeTeam) return 'draft';
-      if (activeMatch.started) return 'locked';
-      return isTeamRoundSubmitted(activeTeam.id, round) ? 'done' : 'draft';
-    }
-
-    function setStatus(kind, text) {
-      statusPill.className = 'status-pill';
-      if (kind === 'locked') {
-        statusPill.classList.add('status-lock');
-        statusPill.textContent = '수정잠금';
-      } else if (kind === 'done') {
-        statusPill.classList.add('status-done');
-        statusPill.textContent = '제출완료';
-      } else if (kind === 'edited') {
-        statusPill.classList.add('status-edit');
-        statusPill.textContent = '재제출필요';
-      } else {
-        statusPill.classList.add('status-draft');
-        statusPill.textContent = '미제출';
-      }
-      statusText.textContent = text;
-      const isLocked = kind === 'locked';
-      Object.values(selects).forEach(sel => sel.disabled = isLocked);
-      saveDraftBtn.disabled = isLocked;
-      submitBtn.disabled = isLocked;
-      saveDraftBtn.style.display = isLocked ? 'none' : 'inline-flex';
-      submitBtn.className = 'btn';
-      if (kind === 'locked') {
-        submitBtn.classList.add('gray');
-        submitBtn.textContent = '경기 시작으로 수정 불가';
-      } else if (kind === 'done') {
-        submitBtn.classList.add('blue');
-        submitBtn.textContent = '제출됨';
-      } else if (kind === 'edited') {
-        submitBtn.classList.add('yellow');
-        submitBtn.textContent = '수정내용 다시 제출';
-      } else {
-        submitBtn.classList.add('green');
-        submitBtn.textContent = '제출완료';
-      }
-    }
-
-    function updateSummary() {
-      if (!activeTeam) {
-        summaryList.innerHTML = '<div class="footer-note">해당 조를 찾지 못했습니다.</div>';
-        return;
-      }
+    function validateLineups(){
       const current = getCurrentSelections();
-      summaryList.innerHTML = [['여복', current.women], ['혼복', current.mixed], ['남복', current.men]].map(([title, ids]) => `
-        <div class="summary-item">
-          <div>
-            <div class="summary-main">${title}</div>
-            <div class="summary-sub">${ids.map(id => getPlayerById(id)?.name).filter(Boolean).join(' · ') || '아직 선택되지 않음'}</div>
-          </div>
-          <div class="match-badge">${escapeHtml(group)}조</div>
-        </div>
-      `).join('');
-    }
-
-    function initHeader() {
-      document.getElementById('groupPill').textContent = `${group}조`;
-      document.getElementById('roundPill').textContent = `${round}라운드`;
-      document.getElementById('womenMatchBadge').textContent = `${group}조 여복`;
-      document.getElementById('mixedMatchBadge').textContent = `${group}조 혼복`;
-      document.getElementById('menMatchBadge').textContent = `${group}조 남복`;
-      const matchText = activeMatch ? (() => {
-        const isA = activeMatch.teamAId === activeTeam?.id;
-        const opp = getTeamById(isA ? activeMatch.teamBId : activeMatch.teamAId);
-        return `${group}조 vs ${getTeamLetter(opp) || opp?.name || '-'}`;
-      })() : '상대 조 확인 중';
-      document.getElementById('matchPill').textContent = matchText;
-    }
-
-    function validateSelections() {
-      const current = getCurrentSelections();
-      ['women', 'mixed', 'men'].forEach((key) => {
-        if (!current[key][0] || !current[key][1]) throw new Error(`${gameLabel(key)} 선수 2명을 모두 선택해 주세요.`);
-        if (current[key][0] === current[key][1]) throw new Error(`${gameLabel(key)}에 같은 선수를 중복 선택할 수 없습니다.`);
-      });
-
-      const teamPlayers = getPlayersForTeam(activeTeam);
-      const cross = inferMixedCrossRules(activeTeam);
-      const playerMap = new Map(teamPlayers.map(p => [p.id, p]));
-
-      const mixedPlayers = current.mixed.map(id => playerMap.get(id)).filter(Boolean);
-      if (mixedPlayers.length === 2) {
-        const genders = mixedPlayers.map(p => p.gender).filter(Boolean);
-        if (genders.length === 2 && genders[0] === genders[1] && cross.maleIds.length && cross.femaleIds.length) {
-          throw new Error('혼복은 남학생 1명, 여학생 1명으로 선택해 주세요.');
-        }
-      }
-
-      if (!cross.allowMenReuse) {
-        const overlapMen = current.mixed.filter(id => current.men.includes(id) && cross.maleIds.includes(id));
-        if (overlapMen.length) throw new Error('남학생이 3명 이상인 조는 남복 선수와 혼복 선수를 중복 선택할 수 없습니다.');
-      }
-      if (!cross.allowWomenReuse) {
-        const overlapWomen = current.mixed.filter(id => current.women.includes(id) && cross.femaleIds.includes(id));
-        if (overlapWomen.length) throw new Error('여학생이 3명 이상인 조는 여복 선수와 혼복 선수를 중복 선택할 수 없습니다.');
-      }
+      GAME_TYPES.forEach(type => { if(!current[type][0] || !current[type][1]) throw new Error(`${gameLabel(type)} 선수 2명을 모두 선택해 주세요.`); if(current[type][0] === current[type][1]) throw new Error(`${gameLabel(type)}에 같은 선수를 중복 선택할 수 없습니다.`); });
+      const teamPlayers = getPlayersForTeam(activeTeam); const cross = inferMixedCrossRules(activeTeam); const playerMap = new Map(teamPlayers.map(p=>[p.id,p]));
+      const mixedPlayers = current.mixed.map(id=>playerMap.get(id)).filter(Boolean); if(mixedPlayers.length===2){ const genders = mixedPlayers.map(p=>p.gender).filter(Boolean); if(genders.length===2 && genders[0]===genders[1] && cross.maleIds.length && cross.femaleIds.length) throw new Error('혼복은 남학생 1명, 여학생 1명으로 선택해 주세요.'); }
+      if(!cross.allowMenReuse){ const overlapMen = current.mixed.filter(id => current.men.includes(id) && cross.maleIds.includes(id)); if(overlapMen.length) throw new Error('남학생이 3명 이상인 조는 남복 선수와 혼복 선수를 중복 선택할 수 없습니다.'); }
+      if(!cross.allowWomenReuse){ const overlapWomen = current.mixed.filter(id => current.women.includes(id) && cross.femaleIds.includes(id)); if(overlapWomen.length) throw new Error('여학생이 3명 이상인 조는 여복 선수와 혼복 선수를 중복 선택할 수 없습니다.'); }
       return current;
     }
 
-    function applySelectionsToMatch(current) {
-      if (!activeMatch || !activeTeam) throw new Error('경기 정보를 찾지 못했습니다.');
-      const isA = activeMatch.teamAId === activeTeam.id;
-      ['women','mixed','men'].forEach(type => {
-        if (!activeMatch.games) activeMatch.games = {};
-        if (!activeMatch.games[type]) activeMatch.games[type] = { lineupA: [], lineupB: [] };
-        if (isA) activeMatch.games[type].lineupA = current[type];
-        else activeMatch.games[type].lineupB = current[type];
+    function applyLineupsToMatch(lineups){ if(!activeMatch || !activeTeam) throw new Error('경기 정보를 찾지 못했습니다.'); const isA = activeMatch.teamAId === activeTeam.id; GAME_TYPES.forEach(type => { if(!activeMatch.games) activeMatch.games = {}; if(!activeMatch.games[type]) activeMatch.games[type] = normalizeGame({}); if(isA) activeMatch.games[type].lineupA = lineups[type]; else activeMatch.games[type].lineupB = lineups[type]; }); }
+
+    function getAvailableRolePlayers(type, currentRoles){ const players = getPlayersForTeam(activeTeam).filter(p => !getCurrentSelections()[type].includes(p.id)); const used = new Set(); if(currentRoles){ ['umpire','assistant','scorekeeper','lineJudge'].forEach(key => { if(currentRoles[key]) used.add(currentRoles[key]); }); (currentRoles.data || []).forEach(id => id && used.add(id)); }
+      return { players, used };
+    }
+
+    function renderRoleSections(){
+      const submission = getSubmission();
+      const side = getTeamSide();
+      roleSections.innerHTML = GAME_TYPES.map(type => {
+        const game = getMatchGame(type);
+        const stored = submission.games[type] || { umpireTeam: game.umpireTeam || '', roles: normalizeRoles({}) };
+        const umpireTeam = stored.umpireTeam || game.umpireTeam || '';
+        const visibleRoleType = getVisibleRoleType(umpireTeam);
+        const roles = normalizeRoles(stored.roles || {});
+        const { players } = getAvailableRolePlayers(type, roles);
+        const lineups = getCurrentSelections()[type];
+        const selectedNames = lineups.map(id => roleName(id)).join(' · ');
+        const roleStatus = !umpireTeam ? '주심 담당 조를 먼저 선택하세요.' : (visibleRoleType === 'umpire' ? `우리 조가 ${gameLabel(type)} 주심 담당 조입니다.` : `우리 조가 ${gameLabel(type)} 부심 담당 조입니다.`);
+        const buildOptions = (selectedId, excluded=[]) => ['<option value="">선택</option>'].concat(players.filter(p => !excluded.includes(p.id) || p.id===selectedId).map(p => `<option value="${escapeHtml(p.id)}"${p.id===selectedId?' selected':''}>${escapeHtml(p.name)}</option>`)).join('');
+        const usedForPrimary = [roles.scorekeeper, roles.lineJudge, ...(roles.data||[])].filter(Boolean);
+        const usedForSupport = [roles.umpire, roles.assistant, roles.lineJudge, ...(roles.data||[])].filter(Boolean);
+        const usedForLine = [roles.umpire, roles.assistant, roles.scorekeeper, ...(roles.data||[])].filter(Boolean);
+        const usedForData1 = [roles.umpire, roles.assistant, roles.scorekeeper, roles.lineJudge, roles.data?.[1]].filter(Boolean);
+        const usedForData2 = [roles.umpire, roles.assistant, roles.scorekeeper, roles.lineJudge, roles.data?.[0]].filter(Boolean);
+        return `
+          <div class="role-box" data-type="${type}">
+            <div class="role-head">
+              <div>
+                <div class="section-title">${gameLabel(type)} 역할</div>
+                <div class="section-subtitle">출전 선수: ${escapeHtml(selectedNames)}</div>
+              </div>
+              <span class="match-badge">${getTeamLetter(activeTeam)}조</span>
+            </div>
+            <div class="role-help">${roleStatus}</div>
+            <div class="duo-grid">
+              <label class="input-label">주심 담당 조
+                <select data-role="umpireTeam" data-type="${type}" ${game.umpireTeam && game.umpireTeam !== side ? 'disabled' : ''}>
+                  <option value="">선택</option>
+                  <option value="A" ${umpireTeam==='A'?'selected':''}>A조가 주심</option>
+                  <option value="B" ${umpireTeam==='B'?'selected':''}>B조가 주심</option>
+                </select>
+              </label>
+              <label class="input-label">우리 조 역할
+                <input value="${!umpireTeam ? '미정' : (visibleRoleType === 'umpire' ? '주심 담당 조' : '부심 담당 조')}" disabled>
+              </label>
+            </div>
+            <div class="role-grid">
+              ${visibleRoleType === 'umpire' ? `<label class="input-label">주심<select data-role="umpire" data-type="${type}">${buildOptions(roles.umpire, usedForPrimary)}</select></label>` : `<label class="input-label">부심<select data-role="assistant" data-type="${type}">${buildOptions(roles.assistant, usedForPrimary)}</select></label>`}
+              <label class="input-label">점수<select data-role="scorekeeper" data-type="${type}">${buildOptions(roles.scorekeeper, usedForSupport)}</select></label>
+              <label class="input-label">선심<select data-role="lineJudge" data-type="${type}">${buildOptions(roles.lineJudge, usedForLine)}</select></label>
+              <label class="input-label">데이터 1<select data-role="data0" data-type="${type}">${buildOptions((roles.data||[])[0]||'', usedForData1)}</select></label>
+              <label class="input-label">데이터 2<select data-role="data1" data-type="${type}">${buildOptions((roles.data||[])[1]||'', usedForData2)}</select></label>
+            </div>
+          </div>`;
+      }).join('');
+
+      roleSections.querySelectorAll('select[data-role]').forEach(sel => {
+        sel.addEventListener('change', async () => {
+          const submission = getSubmission();
+          const type = sel.dataset.type; const role = sel.dataset.role;
+          if(role === 'umpireTeam'){ submission.games[type].umpireTeam = sel.value; }
+          else if(role === 'data0' || role === 'data1'){ const idx = role === 'data0' ? 0 : 1; const data = normalizeRoles(submission.games[type].roles).data; data[idx] = sel.value; submission.games[type].roles.data = data; }
+          else { submission.games[type].roles[role] = sel.value; }
+          submission.updatedAt = new Date().toISOString();
+          await persistSubmission('draft', submission, false);
+          renderRoleSections(); updateSummary(); updateStatus();
+        });
       });
     }
 
-    async function saveClassData() {
-      await set(ref(db, `appState/classes/${classNo}`), appData);
+    function validateRoles(){
+      const submission = getSubmission();
+      const errors = [];
+      GAME_TYPES.forEach(type => {
+        const game = submission.games[type]; const roles = normalizeRoles(game.roles); const umpireTeam = game.umpireTeam || ''; const visibleRoleType = getVisibleRoleType(umpireTeam);
+        if(!umpireTeam) errors.push(`${gameLabel(type)} 주심 담당 조를 선택해 주세요.`);
+        const requiredPrimary = visibleRoleType === 'umpire' ? roles.umpire : roles.assistant;
+        if(!requiredPrimary) errors.push(`${gameLabel(type)} ${visibleRoleType === 'umpire' ? '주심' : '부심'}을 선택해 주세요.`);
+        if(!roles.scorekeeper) errors.push(`${gameLabel(type)} 점수를 선택해 주세요.`);
+        if(!roles.lineJudge) errors.push(`${gameLabel(type)} 선심을 선택해 주세요.`);
+        if(!roles.data?.[0] || !roles.data?.[1]) errors.push(`${gameLabel(type)} 데이터 2명을 모두 선택해 주세요.`);
+        const used = [visibleRoleType === 'umpire' ? roles.umpire : roles.assistant, roles.scorekeeper, roles.lineJudge, ...(roles.data || [])].filter(Boolean);
+        if(new Set(used).size !== used.length) errors.push(`${gameLabel(type)} 역할 안에서 같은 학생을 중복 선택할 수 없습니다.`);
+        const lineups = getCurrentSelections()[type];
+        used.forEach(id => { if(lineups.includes(id)) errors.push(`${gameLabel(type)} 출전 선수는 역할에 배정할 수 없습니다.`); });
+      });
+      return { ok: errors.length === 0, errors, submission };
     }
 
-    async function saveDraft() {
-      try {
-        if (!activeMatch || activeMatch.started) return;
-        const current = validateSelections();
-        applySelectionsToMatch(current);
-        await saveClassData();
-        setStatus('edited', '임시저장 완료');
-        updateSummary();
-      } catch (error) {
-        alert(error.message || '임시저장 중 오류가 발생했습니다.');
-      }
+    async function persistClass(){ await set(ref(db, `appState/classes/${classNo}`), appData); }
+    async function persistSubmission(status='draft', submission=getSubmission(), final=false){
+      if(!activeTeam || !activeMatch) throw new Error('팀 또는 경기 정보를 찾지 못했습니다.');
+      const lineups = getCurrentSelections();
+      applyLineupsToMatch(lineups);
+      submission.lineups = lineups;
+      submission.status = status;
+      submission.updatedAt = new Date().toISOString();
+      if(status === 'lineup_ready' && !submission.lineupCompletedAt) submission.lineupCompletedAt = new Date().toISOString();
+      if(status === 'roles_ready') submission.rolesCompletedAt = new Date().toISOString();
+      if(final) submission.finalSubmittedAt = new Date().toISOString();
+      GAME_TYPES.forEach(type => {
+        if(!activeMatch.games[type]) activeMatch.games[type] = normalizeGame({});
+        const g = activeMatch.games[type];
+        g.umpireTeam = submission.games[type].umpireTeam || g.umpireTeam || '';
+        if(getTeamSide()==='A') g.rolesA = normalizeRoles(submission.games[type].roles);
+        else g.rolesB = normalizeRoles(submission.games[type].roles);
+      });
+      setRoundSubmission(activeTeam.id, submission);
+      await persistClass();
     }
 
-    async function submitForm() {
-      try {
-        if (!activeMatch || activeMatch.started) return;
-        const current = validateSelections();
-        applySelectionsToMatch(current);
-        setTeamRoundSubmission(activeTeam.id, round, { status: 'submitted' });
-        await saveClassData();
-        setStatus('done', '제출완료');
-        updateSummary();
-      } catch (error) {
-        alert(error.message || '제출 중 오류가 발생했습니다.');
-      }
+    function setStep(step){ currentStep = step; lineupCard.classList.toggle('hidden', step !== 'lineup'); rolesCard.classList.toggle('hidden', step !== 'roles'); }
+    function updateStatus(){
+      const submission = getSubmission();
+      const locked = !!activeMatch?.started;
+      const stage = locked ? 'locked' : (submission.finalSubmittedAt ? 'done' : (submission.rolesCompletedAt ? 'roles' : (submission.lineupCompletedAt ? 'lineup' : 'draft')));
+      const pill = document.getElementById('statusPill');
+      const text = document.getElementById('statusText');
+      pill.className = 'status-pill ' + (stage==='done' ? 'status-done' : stage==='locked' ? 'status-lock' : stage==='roles' ? 'status-edit' : stage==='lineup' ? 'status-edit' : 'status-draft');
+      pill.textContent = stage==='done' ? '제출완료' : stage==='locked' ? '수정잠금' : stage==='roles' ? '심판 선택 완료' : stage==='lineup' ? '선수 선택 완료' : '미제출';
+      text.textContent = stage==='done' ? '최종 제출이 완료되었습니다.' : stage==='locked' ? '경기 시작으로 수정할 수 없습니다.' : stage==='roles' ? '제출하기 버튼으로 최종 제출하세요.' : stage==='lineup' ? '역할 선택 단계로 진행해 주세요.' : '선수 선택 전';
+      document.querySelectorAll('select, button').forEach(el => { if(['saveLineupDraftBtn','lineupCompleteBtn','backToLineupBtn','saveRolesDraftBtn','rolesCompleteBtn','finalSubmitBtn'].includes(el.id) || el.tagName==='SELECT'){ if(locked) el.disabled = true; } });
+      document.getElementById('finalSubmitBtn').classList.toggle('hidden', !(submission.rolesCompletedAt && !submission.finalSubmittedAt && !locked));
     }
 
-    function renderAll() {
+    function updateSummary(){
+      const submission = getSubmission();
+      const lineupItems = GAME_TYPES.map(type => `<div class="summary-item"><div><div class="summary-main">${gameLabel(type)} 선수</div><div class="summary-sub">${getCurrentSelections()[type].map(roleName).filter(Boolean).join(' · ') || '미선택'}</div></div></div>`).join('');
+      const roleItems = GAME_TYPES.map(type => {
+        const game = submission.games[type]; const roles = normalizeRoles(game.roles); const visibleRoleType = getVisibleRoleType(game.umpireTeam);
+        const primary = visibleRoleType === 'umpire' ? `주심 ${roleName(roles.umpire)}` : visibleRoleType === 'assistant' ? `부심 ${roleName(roles.assistant)}` : '주심/부심 미정';
+        return `<div class="summary-item"><div><div class="summary-main">${gameLabel(type)} 역할</div><div class="summary-sub">${primary}<br>점수 ${roleName(roles.scorekeeper)} · 선심 ${roleName(roles.lineJudge)} · 데이터 ${(roles.data||[]).map(roleName).join(', ') || '미선택'}</div></div></div>`;
+      }).join('');
+      summaryList.innerHTML = lineupItems + roleItems;
+    }
+
+    function initHeader(){ document.getElementById('groupPill').textContent = `${group}조`; document.getElementById('roundPill').textContent = `${round}라운드`; document.getElementById('womenMatchBadge').textContent = `${group}조 여복`; document.getElementById('mixedMatchBadge').textContent = `${group}조 혼복`; document.getElementById('menMatchBadge').textContent = `${group}조 남복`; const opp = getOpponentTeam(); document.getElementById('matchPill').textContent = activeMatch ? `${group}조 vs ${getTeamLetter(opp) || opp?.name || '-'}` : '상대 조 확인 중'; }
+
+    function renderAll(){
       initHeader();
-      if (!activeTeam) {
-        setStatus('draft', `${classNo}반 ${group}조 정보를 찾지 못했습니다.`);
-        summaryList.innerHTML = '<div class="footer-note">교사용 페이지에서 팀 구성을 먼저 저장해 주세요.</div>';
-        Object.values(selects).forEach(sel => sel.innerHTML = '<option value="">선수 선택</option>');
-        return;
-      }
-      if (!activeMatch) {
-        setStatus('draft', `${classNo}반 ${group}조의 ${round}라운드 경기판이 아직 없습니다.`);
-        summaryList.innerHTML = '<div class="footer-note">교사용 페이지에서 경기 생성 후 다시 열어 주세요.</div>';
-        Object.values(selects).forEach(sel => sel.innerHTML = '<option value="">선수 선택</option>');
-        return;
-      }
-      refreshSelectOptions();
-      setFormFromMatch();
-      updateSummary();
-      const kind = getStatusKind();
-      const text = kind === 'locked' ? '경기 시작으로 수정 불가' : kind === 'done' ? '제출완료' : '기본 명단 상태';
-      setStatus(kind, text);
+      if(!activeTeam){ summaryList.innerHTML='<div class="summary-item"><div class="summary-sub">팀 정보를 찾지 못했습니다.</div></div>'; return; }
+      if(!activeMatch){ summaryList.innerHTML='<div class="summary-item"><div class="summary-sub">해당 라운드 경기판이 없습니다.</div></div>'; return; }
+      const submission = getSubmission();
+      if(submission.lineups){ Object.entries(submission.lineups).forEach(([type, ids]) => { if(lineupSelects[`${type}1`]) lineupSelects[`${type}1`].value = ids?.[0] || ''; if(lineupSelects[`${type}2`]) lineupSelects[`${type}2`].value = ids?.[1] || ''; }); }
+      refreshLineupOptions(); renderRoleSections(); updateSummary(); updateStatus();
+      if(submission.lineupCompletedAt && !submission.finalSubmittedAt && currentStep==='lineup') setStep('roles');
     }
 
-    async function loadClass() {
-      const snap = await get(ref(db, `appState/classes/${classNo}`));
-      appData = normalizeClassDataForLoad(snap.exists() ? snap.val() : emptyClassData());
-      hydrateContext();
-      renderAll();
-    }
+    async function loadClass(){ const snap = await get(ref(db, `appState/classes/${classNo}`)); appData = normalizeClassDataForLoad(snap.exists() ? snap.val() : emptyClassData()); hydrateContext(); renderAll(); }
+    function startWatch(){ if(typeof watchUnsubscribe === 'function') watchUnsubscribe(); watchUnsubscribe = onValue(ref(db, `appState/classes/${classNo}`), snap => { const incoming = normalizeClassDataForLoad(snap.exists() ? snap.val() : emptyClassData()); if(JSON.stringify(incoming) === JSON.stringify(appData)) return; appData = incoming; hydrateContext(); renderAll(); }); }
 
-    function startWatch() {
-      if (typeof watchUnsubscribe === 'function') watchUnsubscribe();
-      const watchRef = ref(db, `appState/classes/${classNo}`);
-      watchUnsubscribe = onValue(watchRef, (snap) => {
-        const incoming = normalizeClassDataForLoad(snap.exists() ? snap.val() : emptyClassData());
-        const currentJson = JSON.stringify(appData);
-        const nextJson = JSON.stringify(incoming);
-        if (currentJson === nextJson) return;
-        appData = incoming;
-        hydrateContext();
-        renderAll();
-      });
-    }
+    Object.values(lineupSelects).forEach(sel => sel.addEventListener('change', () => { if(isRefreshingSelects) return; refreshLineupOptions(); updateSummary(); }));
+    document.getElementById('saveLineupDraftBtn').addEventListener('click', async () => { try { validateLineups(); const submission = getSubmission(); submission.status='draft'; await persistSubmission('draft', submission, false); updateStatus(); } catch(error){ alert(error.message || '임시저장 중 오류가 발생했습니다.'); } });
+    document.getElementById('lineupCompleteBtn').addEventListener('click', async () => { try { validateLineups(); const submission = getSubmission(); submission.lineupCompletedAt = new Date().toISOString(); await persistSubmission('lineup_ready', submission, false); setStep('roles'); updateStatus(); } catch(error){ alert(error.message || '선수 선택 완료 처리 중 오류가 발생했습니다.'); } });
+    document.getElementById('backToLineupBtn').addEventListener('click', () => setStep('lineup'));
+    document.getElementById('saveRolesDraftBtn').addEventListener('click', async () => { try { const { submission } = validateRoles(); await persistSubmission('draft', submission, false); rolesSuccessBox.textContent = '역할 임시저장 완료'; rolesSuccessBox.classList.remove('hidden'); setTimeout(()=>rolesSuccessBox.classList.add('hidden'), 1500); updateStatus(); } catch(error){ rolesErrorBox.textContent = error.message || '역할 임시저장 중 오류가 발생했습니다.'; rolesErrorBox.classList.remove('hidden'); } });
+    document.getElementById('rolesCompleteBtn').addEventListener('click', async () => { const result = validateRoles(); if(!result.ok){ rolesErrorBox.innerHTML = result.errors.join('<br>'); rolesErrorBox.classList.remove('hidden'); rolesSuccessBox.classList.add('hidden'); return; } rolesErrorBox.classList.add('hidden'); rolesSuccessBox.textContent = '심판 선택 완료. 제출하기 버튼이 활성화되었습니다.'; rolesSuccessBox.classList.remove('hidden'); result.submission.rolesCompletedAt = new Date().toISOString(); await persistSubmission('roles_ready', result.submission, false); updateStatus(); });
+    document.getElementById('finalSubmitBtn').addEventListener('click', async () => { const result = validateRoles(); if(!result.ok){ rolesErrorBox.innerHTML = result.errors.join('<br>'); rolesErrorBox.classList.remove('hidden'); return; } await persistSubmission('submitted', result.submission, true); rolesErrorBox.classList.add('hidden'); rolesSuccessBox.textContent = '최종 제출이 완료되었습니다.'; rolesSuccessBox.classList.remove('hidden'); updateStatus(); });
 
-    Object.values(selects).forEach(sel => {
-      sel.addEventListener('change', () => {
-        if (isRefreshingSelects) return;
-        refreshSelectOptions();
-        updateSummary();
-        const currentKind = getStatusKind();
-        if (currentKind !== 'locked') {
-          const nextKind = isTeamRoundSubmitted(activeTeam?.id, round) ? 'edited' : 'draft';
-          setStatus(nextKind, nextKind === 'edited' ? '수정내용 다시 제출' : '기본 명단 상태');
-        }
-      });
-    });
-    saveDraftBtn.addEventListener('click', saveDraft);
-    submitBtn.addEventListener('click', submitForm);
-
-    loadClass().then(startWatch).catch((error) => {
-      console.error(error);
-      setStatus('draft', 'Firebase 데이터를 불러오지 못했습니다.');
-      summaryList.innerHTML = `<div class="footer-note">${escapeHtml(error.message || '로드 오류')}</div>`;
-    });
-
-    window.addEventListener('beforeunload', () => {
-      try { if (typeof watchUnsubscribe === 'function') watchUnsubscribe(); } catch (_) {}
-    });
+    loadClass().then(startWatch).catch(error => { console.error(error); summaryList.innerHTML = `<div class="summary-item"><div class="summary-sub">${escapeHtml(error.message || 'Firebase 로드 오류')}</div></div>`; });
   </script>
 </body>
 </html>
