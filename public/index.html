@@ -2674,7 +2674,63 @@ body.broadcast-only .broadcast-board.stadium-layout .broadcast-stadium-status-va
 
 body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);}
 
-</style>
+
+
+    .doubles-shell{display:grid;gap:16px;}
+    .doubles-topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;}
+    .doubles-toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+    .doubles-summary{display:flex;gap:8px;flex-wrap:wrap;}
+    .doubles-chip{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:999px;background:rgba(90,177,255,.14);border:1px solid rgba(90,177,255,.18);font-size:.82rem;font-weight:800;color:#dcebff;}
+    .doubles-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start;}
+    .doubles-round-stack{display:grid;gap:16px;}
+    .doubles-round-section{display:grid;gap:10px;}
+    .doubles-round-grid{display:grid;gap:12px;}
+    .doubles-match-card{border:1px solid rgba(255,255,255,.08);border-radius:18px;background:linear-gradient(180deg, rgba(24,42,73,.92), rgba(13,24,48,.96));padding:14px;display:grid;gap:12px;}
+    .doubles-match-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+    .doubles-match-title{font-size:1rem;font-weight:900;}
+    .doubles-match-sub{font-size:.78rem;color:var(--muted);margin-top:4px;line-height:1.45;}
+    .doubles-state{display:inline-flex;align-items:center;justify-content:center;min-width:58px;padding:6px 10px;border-radius:999px;font-size:.76rem;font-weight:900;}
+    .doubles-state.waiting{background:rgba(255,209,102,.16);color:#ffe39b;}
+    .doubles-state.live{background:rgba(77,163,255,.16);color:#dcebff;}
+    .doubles-state.finished{background:rgba(123,255,204,.15);color:#d7fff0;}
+    .doubles-team-grid{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:12px;align-items:center;}
+    .doubles-team-box{padding:12px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;min-height:68px;text-align:center;}
+    .doubles-team-label{font-size:.76rem;font-weight:900;color:#9fb7da;letter-spacing:.04em;}
+    .doubles-team-name{font-size:1.02rem;font-weight:900;line-height:1.35;word-break:keep-all;margin:0;display:flex;align-items:center;justify-content:center;width:100%;}
+    .doubles-vs{font-size:1.6rem;font-weight:1000;color:#9bc4ff;}
+    .doubles-ref-box{padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);font-size:.84rem;line-height:1.5;color:#dce8ff;}
+    .doubles-ref-box strong{display:block;margin-bottom:4px;}
+    .doubles-score-actions{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:center;}
+    .doubles-score-inline{display:grid;grid-template-columns:minmax(0,1fr) 20px minmax(0,1fr);gap:8px;align-items:center;}
+    .doubles-score-inline input{width:100%;height:48px;border-radius:12px;background:#0e1c33;color:#fff;border:1px solid var(--line);text-align:center;font-size:1.3rem;font-weight:900;}
+    .doubles-score-inline span{text-align:center;font-size:1.4rem;font-weight:900;color:#dce8ff;}
+    .doubles-btn-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+    .doubles-ref-inline{display:inline-flex;align-items:center;min-height:44px;padding:0 10px 0 14px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);font-size:.84rem;line-height:1.2;color:#dce8ff;white-space:nowrap;}
+    .doubles-participants-grid{display:grid;grid-template-columns:1fr;gap:12px;}
+    .doubles-participant-table{width:100%;border-collapse:collapse;min-width:640px;}
+    .doubles-participant-table th,.doubles-participant-table td{padding:10px 8px;border-bottom:1px solid rgba(255,255,255,.06);text-align:center;}
+    .doubles-participant-table th{background:#13223d;color:#cfe0ff;font-size:.82rem;}
+    .doubles-participant-table td{background:transparent;}
+    .doubles-participant-name{font-weight:800;text-align:left;}
+    .doubles-participant-meta{font-size:.76rem;color:var(--muted);margin-top:3px;}
+    .doubles-participant-check{width:18px;height:18px;}
+    .doubles-participant-reason{min-width:120px;background:#0e1c33;color:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 10px;}
+    .doubles-participant-status{display:inline-flex;align-items:center;justify-content:center;min-width:64px;padding:5px 10px;border-radius:999px;font-size:.76rem;font-weight:900;}
+    .doubles-participant-status.active{background:rgba(123,255,204,.15);color:#d7fff0;}
+    .doubles-participant-status.inactive{background:rgba(255,107,107,.16);color:#ffd1d1;}
+    .doubles-rank-wrap,.doubles-participants-scroll{max-height:520px;overflow:auto;}
+    .doubles-participants-wrap{max-height:280px;overflow:auto;border:1px solid rgba(255,255,255,.06);border-radius:16px;}
+    .doubles-op-wrap{padding-top:0;padding-bottom:0;}
+    .doubles-op-scroll{max-height:860px;overflow:auto;}
+    .doubles-participants-wrap,.doubles-op-scroll{scrollbar-width:thin;scrollbar-color:rgba(90,177,255,.42) rgba(255,255,255,.04);}
+    .doubles-participants-wrap::-webkit-scrollbar,.doubles-op-scroll::-webkit-scrollbar{width:8px;height:8px;}
+    .doubles-participants-wrap::-webkit-scrollbar-track,.doubles-op-scroll::-webkit-scrollbar-track{background:rgba(255,255,255,.035);border-radius:999px;}
+    .doubles-participants-wrap::-webkit-scrollbar-thumb,.doubles-op-scroll::-webkit-scrollbar-thumb{background:linear-gradient(180deg, rgba(90,177,255,.55), rgba(45,115,255,.5));border-radius:999px;border:1px solid rgba(255,255,255,.05);}
+    .doubles-participants-wrap::-webkit-scrollbar-thumb:hover,.doubles-op-scroll::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg, rgba(115,190,255,.72), rgba(62,129,255,.68));}
+    .doubles-empty{padding:18px;border-radius:16px;background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.14);color:var(--muted);line-height:1.6;text-align:center;}
+    @media (max-width: 1080px){.doubles-layout{grid-template-columns:1fr;}.doubles-score-actions{grid-template-columns:1fr;}}
+
+  </style>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
@@ -2816,6 +2872,7 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
       <button class="view-tab" data-view="qr" onclick="switchView('qr')">QR코드</button>
       <button class="view-tab" data-view="data" onclick="switchView('data')">데이터 확인</button>
       <button class="view-tab" data-view="singles" onclick="switchView('singles')">단식</button>
+      <button class="view-tab" data-view="doubles" onclick="switchView('doubles')">복식</button>
     </div>
     <div class="admin-sync-wrap">
       <div id="adminSyncPanel" class="admin-sync-panel">
@@ -3125,6 +3182,74 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
       </div>
     </div>
 
+
+
+    <div class="page" id="doublesPage">
+      <div class="doubles-shell">
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">복식 자동 편성</div>
+              <div class="tiny muted">개인 랜덤 복식을 공정성 우선 방식으로 편성하고, 심판 2명을 자동으로 균등 배정합니다.</div>
+            </div>
+            <div class="doubles-summary" id="doublesSummaryPills"></div>
+          </div>
+          <div class="panel-body">
+            <div class="doubles-topbar">
+              <div class="doubles-toolbar">
+                <label class="tiny muted">동시 경기 수
+                  <select id="doublesConcurrentSelect" onchange="updateDoublesConcurrent(this.value)" style="margin-left:8px;background:#0e1c33;color:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;">
+                    <option value="1">1경기</option>
+                    <option value="2" selected>2경기</option>
+                    <option value="3">3경기</option>
+                    <option value="4">4경기</option>
+                  </select>
+                </label>
+                <button class="btn small" onclick="toggleAllDoublesParticipants(true)">전체 선택</button>
+                <button class="btn small" onclick="toggleAllDoublesParticipants(false)">전체 해제</button>
+                <button class="btn primary" onclick="generateInitialDoublesRounds()">초기 2라운드 생성</button>
+                <button class="btn small green" onclick="generateNextDoublesRound()">다음 라운드 생성</button>
+                <button class="btn small" onclick="reshuffleVisibleDoublesRounds()">현재/다음 재편성</button>
+                <button class="btn small red" onclick="resetDoublesAll()">복식 기록 초기화</button>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div class="doubles-layout">
+          <section class="doubles-round-stack">
+            <section class="panel doubles-round-section">
+              <div class="panel-header"><div><div class="panel-title">복식 참여 명단</div><div class="tiny muted">현재 라운드 칸과 같은 폭으로 표시되며, 높이는 고정하고 스크롤로 확인합니다.</div></div></div>
+              <div class="panel-body">
+                <div class="doubles-participants-wrap">
+                  <div id="doublesParticipants" class="doubles-participants-grid"></div>
+                </div>
+              </div>
+            </section>
+            <section class="panel doubles-round-section">
+              <div class="panel-header"><div><div class="panel-title">현재 라운드</div><div class="tiny muted">경기 종료 후에도 결과 수정이 가능합니다.</div></div></div>
+              <div class="panel-body"><div id="doublesCurrentRound" class="doubles-round-grid"></div></div>
+            </section>
+            <section class="panel doubles-round-section">
+              <div class="panel-header"><div><div class="panel-title">다음 라운드</div><div class="tiny muted">다음으로 진행할 복식 경기와 자동 배정된 심판입니다.</div></div></div>
+              <div class="panel-body"><div id="doublesNextRound" class="doubles-round-grid"></div></div>
+            </section>
+          </section>
+          <section class="panel">
+            <div class="panel-header"><div><div class="panel-title">학생별 복식 운영 현황</div><div class="tiny muted">출전 수, 심판 수, 최근 파트너/상대, 중복 정도를 확인할 수 있습니다.</div></div></div>
+            <div class="panel-body doubles-op-wrap">
+              <div class="doubles-op-scroll">
+                <table>
+                  <thead>
+                    <tr><th>번호</th><th>이름</th><th>참여</th><th>출전</th><th>심판</th><th>승</th><th>패</th><th>득점</th><th>실점</th><th>득실</th><th>최근 파트너</th><th>파트너 중복</th><th>최근 상대</th><th>상대 중복</th></tr>
+                  </thead>
+                  <tbody id="doublesOperationBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
 
     <div class="page" id="broadcastPage">
       <div class="broadcast-shell">
@@ -3815,7 +3940,8 @@ let broadcastInfoView = 'current';
       leagueCounter: 0,
       lineupSubmissions: {},
       dataObservations: {},
-      singlesLeague: { menMatches: [], womenMatches: [], courtCount: 2 }
+      singlesLeague: { menMatches: [], womenMatches: [], courtCount: 2 },
+      doubles: null
     });
 
     let appData = { classes: {} };
@@ -3922,7 +4048,7 @@ let broadcastInfoView = 'current';
 function switchView(view) {
       currentView = IS_BROADCAST_MODE
         ? 'broadcast'
-        : (['roster','setup','run','qr','data','singles','broadcast'].includes(view) ? view : 'setup');
+        : (['roster','setup','run','qr','data','singles','doubles','broadcast'].includes(view) ? view : 'setup');
       document.querySelectorAll('.view-tab').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.view === currentView);
       });
@@ -3931,6 +4057,7 @@ function switchView(view) {
       const qrPage = document.getElementById('qrPage');
       const singlesPage = document.getElementById('singlesPage');
       const dataPage = document.getElementById('dataPage');
+      const doublesPage = document.getElementById('doublesPage');
       const broadcastPage = document.getElementById('broadcastPage');
       const setupWizardPanel = document.getElementById('setupWizardPanel');
       const rawRosterPanel = document.getElementById('rawRosterPanel');
@@ -3939,12 +4066,14 @@ function switchView(view) {
       if (qrPage) qrPage.classList.toggle('active', currentView === 'qr');
       if (dataPage) dataPage.classList.toggle('active', currentView === 'data');
       if (singlesPage) singlesPage.classList.toggle('active', currentView === 'singles');
+      if (doublesPage) doublesPage.classList.toggle('active', currentView === 'doubles');
       if (broadcastPage) broadcastPage.classList.toggle('active', currentView === 'broadcast');
       if (setupWizardPanel) setupWizardPanel.style.display = currentView === 'roster' ? 'none' : '';
       if (rawRosterPanel) {
         rawRosterPanel.style.display = currentView === 'roster' ? '' : 'none';
         rawRosterPanel.classList.toggle('collapsed', false);
       }
+      if (currentView === 'doubles') renderDoublesPage();
       if (currentView === 'broadcast') renderBroadcastPage();
     }
 
@@ -4582,11 +4711,9 @@ function switchView(view) {
           <div class="current-match-head">
             <div>
               <div class="court-badge">ROUND ${m.roundNo} · COURT ${m.courtNo}</div>
-              <div class="mini-round">관리자가 지금 수정하는 종목은 <strong>${gameLabel(activeType)}</strong>입니다. ${m.started ? '점수와 로그가 실시간 반영 중입니다.' : '경기 시작 전 상태입니다.'}</div>
             </div>
             <div class="current-head-meta">
               <span class="head-meta-pill ${m.started ? 'live' : 'wait'}">${m.started ? '실시간 반영' : '시작 대기'}</span>
-              <span class="head-meta-note">Firebase 즉시 동기화</span>
             </div>
           </div>
 
@@ -6770,6 +6897,7 @@ function startLineupPolling() {
       else match.scoreB = safe;
       saveData();
       renderSinglesLeague();
+      renderDoublesPage();
       renderBroadcastPage();
       if (IS_REFEREE_INPUT_MODE) renderRefereeMode();
     }
@@ -7538,6 +7666,405 @@ function renderDataInsightsPage() {
     }).join('');
   }
 }
+
+
+
+    function defaultDoublesState() {
+      return {
+        settings: { concurrentMatches: 2, refereesPerMatch: 2 },
+        participants: {},
+        rounds: { nextRoundNo: 1, queue: [], archive: [] },
+        stats: {},
+        history: { edits: [] }
+      };
+    }
+    function makeEmptyDoublesStat(playerId) {
+      return { playerId, playCount: 0, refereeCount: 0, win: 0, lose: 0, scoreFor: 0, scoreAgainst: 0, diff: 0, partnerCounts: {}, opponentCounts: {}, recentPartners: [], recentOpponents: [], lastRoundPlayed: 0, lastRoundRefereed: 0 };
+    }
+    function ensureDoublesData(dataObj = currentData()) {
+      if (!dataObj.doubles || typeof dataObj.doubles !== 'object') dataObj.doubles = defaultDoublesState();
+      const d = dataObj.doubles;
+      d.settings = Object.assign({ concurrentMatches: 2, refereesPerMatch: 2 }, d.settings || {});
+      d.participants = d.participants || {};
+      d.rounds = d.rounds || { nextRoundNo: 1, queue: [], archive: [] };
+      if (!Array.isArray(d.rounds.queue)) d.rounds.queue = [];
+      if (!Array.isArray(d.rounds.archive)) d.rounds.archive = [];
+      d.history = d.history || { edits: [] };
+      if (!Array.isArray(d.history.edits)) d.history.edits = [];
+      d.stats = d.stats || {};
+      (dataObj.roster || []).forEach(player => {
+        if (!player || !player.id) return;
+        if (!d.participants[player.id]) d.participants[player.id] = { enabled: !!String(player.name || '').trim(), excludedReason: '' };
+        if (!d.stats[player.id]) d.stats[player.id] = makeEmptyDoublesStat(player.id);
+      });
+      Object.keys(d.participants).forEach(pid => {
+        if (!(dataObj.roster || []).some(p => p && p.id === pid)) delete d.participants[pid];
+      });
+      return d;
+    }
+    function getDoublesPlayer(playerId) { return (currentData().roster || []).find(p => p && p.id === playerId) || null; }
+    function getPlayerNameById(pid) { const p = getDoublesPlayer(pid); return p ? (p.name || '학생') : '미배정'; }
+    function getDoublesEnabledPlayers() {
+      const d = ensureDoublesData();
+      return (currentData().roster || []).filter(p => p && String(p.name || '').trim() && d.participants[p.id] && d.participants[p.id].enabled && !d.participants[p.id].excludedReason);
+    }
+    function getDoublesPendingRounds() {
+      const d = ensureDoublesData();
+      return (d.rounds.queue || []).filter(r => r && r.status !== 'archived').sort((a,b)=>Number(a.roundNo||0)-Number(b.roundNo||0));
+    }
+    function normalizeDoublesQueue() {
+      const d = ensureDoublesData();
+      d.rounds.queue = (d.rounds.queue || []).filter(round => round && Array.isArray(round.matches) && round.matches.length);
+      d.rounds.queue.sort((a,b)=>Number(a.roundNo||0)-Number(b.roundNo||0));
+      d.rounds.queue.forEach((round, idx) => { round.status = idx === 0 ? 'current' : (idx === 1 ? 'next' : 'queued'); });
+      const maxRound = [...d.rounds.queue, ...(d.rounds.archive || [])].reduce((m, round) => Math.max(m, Number(round.roundNo || 0)), 0);
+      d.rounds.nextRoundNo = maxRound + 1;
+    }
+    function recomputeDoublesStats(shouldRender = true) {
+      const d = ensureDoublesData();
+      d.stats = {};
+      (currentData().roster || []).forEach(p => { if (p && p.id) d.stats[p.id] = makeEmptyDoublesStat(p.id); });
+      const allRounds = [...(d.rounds.queue || []), ...(d.rounds.archive || [])];
+      allRounds.forEach(round => {
+        (round.matches || []).forEach(match => {
+          (match.referees || []).forEach(pid => {
+            if (!d.stats[pid]) d.stats[pid] = makeEmptyDoublesStat(pid);
+            d.stats[pid].refereeCount += 1;
+            d.stats[pid].lastRoundRefereed = Math.max(d.stats[pid].lastRoundRefereed || 0, Number(round.roundNo || 0));
+          });
+          if (match.status !== 'finished') return;
+          const teamA = match.teamA || [];
+          const teamB = match.teamB || [];
+          const scoreA = Number(match.scoreA) || 0;
+          const scoreB = Number(match.scoreB) || 0;
+          const winA = scoreA > scoreB;
+          [...teamA, ...teamB].forEach(pid => {
+            if (!d.stats[pid]) d.stats[pid] = makeEmptyDoublesStat(pid);
+            d.stats[pid].playCount += 1;
+            d.stats[pid].lastRoundPlayed = Math.max(d.stats[pid].lastRoundPlayed || 0, Number(round.roundNo || 0));
+          });
+          teamA.forEach(pid => {
+            d.stats[pid].scoreFor += scoreA; d.stats[pid].scoreAgainst += scoreB; d.stats[pid].diff = d.stats[pid].scoreFor - d.stats[pid].scoreAgainst;
+            if (winA) d.stats[pid].win += 1; else d.stats[pid].lose += 1;
+            teamA.filter(x => x !== pid).forEach(other => d.stats[pid].partnerCounts[other] = (d.stats[pid].partnerCounts[other] || 0) + 1);
+            teamB.forEach(opp => d.stats[pid].opponentCounts[opp] = (d.stats[pid].opponentCounts[opp] || 0) + 1);
+            d.stats[pid].recentPartners = teamA.filter(x => x !== pid).slice(-2);
+            d.stats[pid].recentOpponents = teamB.slice(-2);
+          });
+          teamB.forEach(pid => {
+            d.stats[pid].scoreFor += scoreB; d.stats[pid].scoreAgainst += scoreA; d.stats[pid].diff = d.stats[pid].scoreFor - d.stats[pid].scoreAgainst;
+            if (!winA) d.stats[pid].win += 1; else d.stats[pid].lose += 1;
+            teamB.filter(x => x !== pid).forEach(other => d.stats[pid].partnerCounts[other] = (d.stats[pid].partnerCounts[other] || 0) + 1);
+            teamA.forEach(opp => d.stats[pid].opponentCounts[opp] = (d.stats[pid].opponentCounts[opp] || 0) + 1);
+            d.stats[pid].recentPartners = teamB.filter(x => x !== pid).slice(-2);
+            d.stats[pid].recentOpponents = teamA.slice(-2);
+          });
+        });
+      });
+      if (shouldRender) renderDoublesPage();
+    }
+    function updateDoublesConcurrent(value) {
+      const d = ensureDoublesData();
+      d.settings.concurrentMatches = Math.max(1, Math.min(4, Number(value) || 2));
+      saveData();
+      renderDoublesPage();
+    }
+    function toggleAllDoublesParticipants(enabled) {
+      const d = ensureDoublesData();
+      (currentData().roster || []).forEach(player => {
+        if (!player || !player.id || !String(player.name || '').trim()) return;
+        d.participants[player.id] = d.participants[player.id] || { enabled: true, excludedReason: '' };
+        d.participants[player.id].enabled = !!enabled;
+        d.participants[player.id].excludedReason = enabled ? '' : (d.participants[player.id].excludedReason || '제외');
+      });
+      saveData();
+      renderDoublesPage();
+    }
+    function toggleDoublesParticipant(playerId, enabled) {
+      const d = ensureDoublesData();
+      d.participants[playerId] = d.participants[playerId] || { enabled: true, excludedReason: '' };
+      d.participants[playerId].enabled = !!enabled;
+      if (enabled && d.participants[playerId].excludedReason) d.participants[playerId].excludedReason = '';
+      saveData();
+      renderDoublesPage();
+    }
+    function setDoublesParticipantReason(playerId, reason) {
+      const d = ensureDoublesData();
+      d.participants[playerId] = d.participants[playerId] || { enabled: true, excludedReason: '' };
+      d.participants[playerId].excludedReason = String(reason || '');
+      d.participants[playerId].enabled = !reason;
+      saveData();
+      renderDoublesPage();
+    }
+    function getPairPenalty(a, b, d) { return ((d.stats[a]?.partnerCounts?.[b] || 0) + (d.stats[b]?.partnerCounts?.[a] || 0)) * 5; }
+    function getOppPenalty(teamA, teamB, d) { let score = 0; teamA.forEach(a => teamB.forEach(b => { score += ((d.stats[a]?.opponentCounts?.[b] || 0) + (d.stats[b]?.opponentCounts?.[a] || 0)) * 2; })); return score; }
+    function chooseBestPairing(ids, d) {
+      const options = [ [[ids[0], ids[1]], [ids[2], ids[3]]], [[ids[0], ids[2]], [ids[1], ids[3]]], [[ids[0], ids[3]], [ids[1], ids[2]]] ];
+      options.sort((x, y) => {
+        const px = getPairPenalty(x[0][0], x[0][1], d) + getPairPenalty(x[1][0], x[1][1], d) + getOppPenalty(x[0], x[1], d);
+        const py = getPairPenalty(y[0][0], y[0][1], d) + getPairPenalty(y[1][0], y[1][1], d) + getOppPenalty(y[0], y[1], d);
+        return px - py;
+      });
+      return options[0];
+    }
+    function assignFairReferees(matchPlayers, matchCount) {
+      const d = ensureDoublesData();
+      const candidates = getDoublesEnabledPlayers().filter(p => !matchPlayers.includes(p.id)).map(player => ({ player, stat: d.stats[player.id] || makeEmptyDoublesStat(player.id) }))
+        .sort((a,b) => (a.stat.refereeCount - b.stat.refereeCount) || (b.stat.playCount - a.stat.playCount) || ((a.stat.lastRoundRefereed || 0) - (b.stat.lastRoundRefereed || 0)) || String(a.player.name || '').localeCompare(String(b.player.name || ''), 'ko'));
+      const refs = [];
+      let cursor = 0;
+      for (let i = 0; i < matchCount; i++) {
+        const group = [];
+        for (let j = 0; j < 2; j++) {
+          if (cursor < candidates.length) group.push(candidates[cursor++].player.id);
+        }
+        refs.push(group);
+      }
+      return refs;
+    }
+    function buildDoublesRound(roundNo) {
+      const d = ensureDoublesData();
+      const concurrent = Math.max(1, Math.min(4, Number(d.settings.concurrentMatches) || 2));
+      const pool = getDoublesEnabledPlayers().map(player => ({ player, stat: d.stats[player.id] || makeEmptyDoublesStat(player.id) }))
+        .sort((a,b) => (a.stat.playCount - b.stat.playCount) || ((a.stat.lastRoundPlayed === roundNo - 1 ? 1 : 0) - (b.stat.lastRoundPlayed === roundNo - 1 ? 1 : 0)) || String(a.player.name || '').localeCompare(String(b.player.name || ''), 'ko'));
+      const matchCount = Math.min(concurrent, Math.floor(pool.length / 4));
+      if (!matchCount) return null;
+      const selected = pool.slice(0, matchCount * 4).map(entry => entry.player.id);
+      const matches = [];
+      for (let i = 0; i < matchCount; i++) {
+        const ids = selected.slice(i * 4, i * 4 + 4);
+        const best = chooseBestPairing(ids, d);
+        matches.push({ teamA: best[0], teamB: best[1] });
+      }
+      const allPlayers = matches.flatMap(match => [...match.teamA, ...match.teamB]);
+      const refGroups = assignFairReferees(allPlayers, matches.length);
+      return { roundNo, status: 'queued', matches: matches.map((m, idx) => ({ matchId: cryptoRandom(), roundNo, courtNo: idx + 1, status: 'waiting', teamA: m.teamA, teamB: m.teamB, referees: refGroups[idx] || [], scoreA: '', scoreB: '', startedAt: null, finishedAt: null, editedAt: null })) };
+    }
+    function generateInitialDoublesRounds() {
+      const d = ensureDoublesData();
+      d.rounds.queue = []; d.rounds.archive = [];
+      const r1 = buildDoublesRound(1); const r2 = buildDoublesRound(2);
+      if (r1) d.rounds.queue.push(r1);
+      if (r2) d.rounds.queue.push(r2);
+      if (!d.rounds.queue.length) { alert('복식 편성에 필요한 참여 학생이 부족합니다.'); return; }
+      normalizeDoublesQueue();
+      saveData(); renderDoublesPage();
+    }
+    function generateNextDoublesRound() {
+      const d = ensureDoublesData();
+      const next = buildDoublesRound(Number(d.rounds.nextRoundNo || 1));
+      if (!next) { alert('복식 편성에 필요한 참여 학생이 부족합니다. 최소 4명이 필요합니다.'); return; }
+      d.rounds.queue.push(next); normalizeDoublesQueue(); saveData(); renderDoublesPage();
+    }
+    function reshuffleVisibleDoublesRounds() {
+      const d = ensureDoublesData();
+      const visible = getDoublesPendingRounds().slice(0, 2);
+      const tail = getDoublesPendingRounds().slice(2);
+      const rebuilt = visible.map(round => (round.matches || []).some(match => match.status !== 'waiting') ? round : buildDoublesRound(round.roundNo)).filter(Boolean);
+      d.rounds.queue = [...rebuilt, ...tail]; normalizeDoublesQueue(); saveData(); renderDoublesPage();
+    }
+    function getDoublesMatch(matchId) {
+      const d = ensureDoublesData();
+      for (const round of [...(d.rounds.queue || []), ...(d.rounds.archive || [])]) {
+        const match = (round.matches || []).find(m => m.matchId === matchId);
+        if (match) return { round, match };
+      }
+      return { round: null, match: null };
+    }
+    function startDoublesMatch(matchId) {
+      const found = getDoublesMatch(matchId); if (!found.match) return;
+      found.match.status = 'live'; found.match.startedAt = found.match.startedAt || new Date().toISOString();
+      saveData(); renderDoublesPage();
+    }
+    function getDoublesScoreInputs(matchId) {
+      return { a: document.getElementById('dblScoreA_' + matchId), b: document.getElementById('dblScoreB_' + matchId) };
+    }
+    function finishDoublesMatch(matchId) {
+      const found = getDoublesMatch(matchId); if (!found.match) return;
+      const inputs = getDoublesScoreInputs(matchId);
+      const scoreA = Number(inputs.a?.value ?? found.match.scoreA); const scoreB = Number(inputs.b?.value ?? found.match.scoreB);
+      if (!Number.isFinite(scoreA) || !Number.isFinite(scoreB)) { alert('점수를 입력하세요.'); return; }
+      found.match.scoreA = scoreA; found.match.scoreB = scoreB; found.match.status = 'finished'; found.match.finishedAt = new Date().toISOString();
+      recomputeDoublesStats(false); advanceDoublesRoundsIfReady(); saveData(); renderDoublesPage();
+    }
+    function editDoublesMatch(matchId) {
+      const found = getDoublesMatch(matchId); if (!found.match) return;
+      const inputs = getDoublesScoreInputs(matchId);
+      const scoreA = Number(inputs.a?.value ?? found.match.scoreA); const scoreB = Number(inputs.b?.value ?? found.match.scoreB);
+      if (!Number.isFinite(scoreA) || !Number.isFinite(scoreB)) { alert('점수를 입력하세요.'); return; }
+      found.match.scoreA = scoreA; found.match.scoreB = scoreB; found.match.status = 'finished'; found.match.editedAt = new Date().toISOString();
+      const d = ensureDoublesData();
+      d.history.edits.push({ matchId, editedAt: found.match.editedAt, scoreA, scoreB });
+      recomputeDoublesStats(false); saveData(); renderDoublesPage();
+    }
+    function reassignDoublesReferees(matchId) {
+      const found = getDoublesMatch(matchId); if (!found.match) return;
+      const players = [...(found.match.teamA || []), ...(found.match.teamB || [])];
+      const refs = assignFairReferees(players, 1);
+      found.match.referees = refs[0] || [];
+      recomputeDoublesStats(false); saveData(); renderDoublesPage();
+    }
+    function advanceDoublesRoundsIfReady() {
+      const d = ensureDoublesData();
+      normalizeDoublesQueue();
+      while (d.rounds.queue.length && (d.rounds.queue[0].matches || []).every(match => match.status === 'finished')) {
+        const finishedRound = d.rounds.queue.shift();
+        finishedRound.status = 'archived';
+        d.rounds.archive.push(finishedRound);
+        normalizeDoublesQueue();
+      }
+    }
+    function resetDoublesAll() {
+      if (!confirm('복식 경기 기록과 편성 내용을 모두 초기화할까요?')) return;
+      currentData().doubles = defaultDoublesState();
+      saveData(); renderDoublesPage();
+    }
+    function renderDoublesParticipants() {
+      const wrap = document.getElementById('doublesParticipants'); if (!wrap) return;
+      const d = ensureDoublesData();
+      const roster = (currentData().roster || []).filter(player => player && String(player.name || '').trim());
+      if (!roster.length) {
+        wrap.innerHTML = '<div class="doubles-empty">학생 명단을 먼저 입력해 주세요.</div>';
+        return;
+      }
+      wrap.innerHTML = `
+        <table class="doubles-participant-table">
+          <thead>
+            <tr>
+              <th style="width:70px;">번호</th>
+              <th>이름</th>
+              <th style="width:90px;">참여</th>
+              <th style="width:150px;">사유</th>
+              <th style="width:90px;">상태</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${roster.map((player, idx) => {
+              const participant = d.participants[player.id] || { enabled: true, excludedReason: '' };
+              const enabled = !!participant.enabled && !participant.excludedReason;
+              const reason = participant.excludedReason || '';
+              const statusLabel = enabled ? '참여' : (reason || '제외');
+              return `<tr>
+                <td>${idx + 1}</td>
+                <td class="doubles-participant-name">
+                  ${escapeHtml(player.name || '')}
+                  <div class="doubles-participant-meta">${player.gender === 'M' ? '남' : player.gender === 'F' ? '여' : '-'} · ${escapeHtml(player.manualGroup || '공통 명단')}</div>
+                </td>
+                <td><input class="doubles-participant-check" type="checkbox" ${enabled ? 'checked' : ''} onchange="toggleDoublesParticipant('${player.id}', this.checked)"></td>
+                <td>
+                  <select class="doubles-participant-reason" onchange="setDoublesParticipantReason('${player.id}', this.value)">
+                    <option value="" ${reason === '' ? 'selected' : ''}>없음</option>
+                    <option value="결석" ${reason === '결석' ? 'selected' : ''}>결석</option>
+                    <option value="부상" ${reason === '부상' ? 'selected' : ''}>부상</option>
+                    <option value="제외" ${reason === '제외' ? 'selected' : ''}>제외</option>
+                  </select>
+                </td>
+                <td><span class="doubles-participant-status ${enabled ? 'active' : 'inactive'}">${escapeHtml(statusLabel)}</span></td>
+              </tr>`;
+            }).join('')}
+          </tbody>
+        </table>`;
+    }
+    function renderDoublesSummary() {
+      const wrap = document.getElementById('doublesSummaryPills'); if (!wrap) return;
+      const d = ensureDoublesData();
+      const enabledCount = getDoublesEnabledPlayers().length;
+      const excludedCount = (currentData().roster || []).filter(player => player && String(player.name || '').trim()).length - enabledCount;
+      const current = getDoublesPendingRounds()[0]; const next = getDoublesPendingRounds()[1];
+      wrap.innerHTML = `
+        <span class="doubles-chip">참여 ${enabledCount}명</span>
+        <span class="doubles-chip">제외 ${Math.max(0, excludedCount)}명</span>
+        <span class="doubles-chip">동시 ${d.settings.concurrentMatches}경기</span>
+        <span class="doubles-chip">현재 ${current ? current.roundNo : '-'}라운드</span>
+        <span class="doubles-chip">다음 ${next ? next.roundNo : '-'}라운드</span>`;
+      const sel = document.getElementById('doublesConcurrentSelect'); if (sel) sel.value = String(d.settings.concurrentMatches || 2);
+    }
+    function renderSingleDoublesMatch(match, allowEdit = true) {
+      const teamA = (match.teamA || []).map(getPlayerNameById).join(' · ');
+      const teamB = (match.teamB || []).map(getPlayerNameById).join(' · ');
+      const refs = (match.referees || []).length ? match.referees.map(getPlayerNameById).join(' · ') : '미배정';
+      const stateLabel = match.status === 'finished' ? '종료' : match.status === 'live' ? '진행중' : '대기';
+      return `
+        <div class="doubles-match-card">
+          <div class="doubles-match-top">
+            <div><div class="doubles-match-title">${match.roundNo}라운드 · ${match.courtNo}경기</div><div class="doubles-match-sub">경기당 심판 2명 자동 배정 · 종료 후 수정 가능</div></div>
+            <span class="doubles-state ${match.status}">${stateLabel}</span>
+          </div>
+          <div class="doubles-team-grid">
+            <div class="doubles-team-box"><div class="doubles-team-name">${escapeHtml(teamA)}</div></div>
+            <div class="doubles-vs">VS</div>
+            <div class="doubles-team-box"><div class="doubles-team-name">${escapeHtml(teamB)}</div></div>
+          </div>
+          <div class="doubles-score-actions">
+            <div class="doubles-score-inline">
+              <input id="dblScoreA_${match.matchId}" type="number" min="0" value="${match.scoreA === '' ? '' : Number(match.scoreA)}">
+              <span>:</span>
+              <input id="dblScoreB_${match.matchId}" type="number" min="0" value="${match.scoreB === '' ? '' : Number(match.scoreB)}">
+            </div>
+            <div class="doubles-btn-row">
+              ${match.status === 'waiting' ? `<button class="btn small" onclick="startDoublesMatch('${match.matchId}')">경기 시작</button>` : ''}
+              <button class="btn small primary" onclick="finishDoublesMatch('${match.matchId}')">경기 종료</button>
+              <button class="btn small" onclick="editDoublesMatch('${match.matchId}')">결과 수정</button>
+              <button class="btn small" onclick="reassignDoublesReferees('${match.matchId}')">심판 재배정</button>
+              <span class="doubles-ref-inline">심판 ${escapeHtml(refs)}</span>
+            </div>
+          </div>
+        </div>`;
+    }
+    function renderDoublesRounds() {
+      const currentWrap = document.getElementById('doublesCurrentRound');
+      const nextWrap = document.getElementById('doublesNextRound');
+      if (!currentWrap || !nextWrap) return;
+      const rounds = getDoublesPendingRounds();
+      const current = rounds[0]; const next = rounds[1];
+      currentWrap.innerHTML = current ? (current.matches || []).map(match => renderSingleDoublesMatch(match)).join('') : '<div class="doubles-empty">현재 라운드가 없습니다. “초기 2라운드 생성”을 눌러 주세요.</div>';
+      nextWrap.innerHTML = next ? (next.matches || []).map(match => renderSingleDoublesMatch(match)).join('') : '<div class="doubles-empty">다음 라운드가 없습니다. “다음 라운드 생성”을 눌러 주세요.</div>';
+    }
+    function getDoublesRankingRows() {
+      const d = ensureDoublesData();
+      return getDoublesEnabledPlayers().map(player => ({ player, stat: d.stats[player.id] || makeEmptyDoublesStat(player.id) })).sort((a,b) => (b.stat.win - a.stat.win) || (b.stat.diff - a.stat.diff) || (b.stat.scoreFor - a.stat.scoreFor) || String(a.player.name || '').localeCompare(String(b.player.name || ''), 'ko'));
+    }
+    function renderDoublesRanking() {
+      const tbody = document.getElementById('doublesRankBody'); if (!tbody) return;
+      const rows = getDoublesRankingRows();
+      tbody.innerHTML = rows.length ? rows.map((row, idx) => `<tr><td>${idx + 1}</td><td>${escapeHtml(row.player.name || '')}</td><td>${row.stat.win}</td><td>${row.stat.lose}</td><td>${row.stat.scoreFor}</td><td>${row.stat.scoreAgainst}</td><td>${row.stat.diff}</td><td>${row.stat.playCount}</td></tr>`).join('') : '<tr><td colspan="8" class="tiny muted">복식 참여 학생이 없습니다.</td></tr>';
+    }
+    function renderDoublesOperation() {
+      const tbody = document.getElementById('doublesOperationBody'); if (!tbody) return;
+      const d = ensureDoublesData();
+      const roster = (currentData().roster || []).filter(player => player && String(player.name || '').trim());
+      tbody.innerHTML = roster.length ? roster.map((player, idx) => {
+        const stat = d.stats[player.id] || makeEmptyDoublesStat(player.id);
+        const partnerDup = Object.values(stat.partnerCounts || {}).reduce((sum, count) => sum + Math.max(0, Number(count || 0) - 1), 0);
+        const oppDup = Object.values(stat.opponentCounts || {}).reduce((sum, count) => sum + Math.max(0, Number(count || 0) - 1), 0);
+        return `<tr>
+          <td>${idx + 1}</td>
+          <td>${escapeHtml(player.name || '')}</td>
+          <td>${(d.participants[player.id]?.enabled && !d.participants[player.id]?.excludedReason) ? '참여' : (d.participants[player.id]?.excludedReason || '제외')}</td>
+          <td>${stat.playCount}</td>
+          <td>${stat.refereeCount}</td>
+          <td>${stat.win}</td>
+          <td>${stat.lose}</td>
+          <td>${stat.scoreFor}</td>
+          <td>${stat.scoreAgainst}</td>
+          <td>${stat.diff}</td>
+          <td>${escapeHtml((stat.recentPartners || []).map(getPlayerNameById).join(' · ') || '-')}</td>
+          <td>${partnerDup}</td>
+          <td>${escapeHtml((stat.recentOpponents || []).map(getPlayerNameById).join(' · ') || '-')}</td>
+          <td>${oppDup}</td>
+        </tr>`;
+      }).join('') : '<tr><td colspan="14" class="tiny muted">학생 명단이 없습니다.</td></tr>';
+    }
+    function renderDoublesPage() {
+      const page = document.getElementById('doublesPage');
+      if (!page) return;
+      ensureDoublesData();
+      renderDoublesParticipants();
+      renderDoublesSummary();
+      renderDoublesRounds();
+      renderDoublesRanking();
+      renderDoublesOperation();
+    }
 
 function renderAll() {
       recomputeAllStats();
