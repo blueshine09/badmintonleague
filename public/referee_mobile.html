@@ -42,7 +42,8 @@
     .team-meta{color:var(--muted);font-size:.8rem;line-height:1.5}
     .center-stage{display:grid;align-content:center;justify-items:center;gap:10px;min-width:120px;padding:4px}
     .vs-mark{font-size:1.8rem;font-weight:900;color:#8ebcff}
-    .hint{text-align:center;color:var(--muted);font-size:.78rem;line-height:1.5;max-width:210px}
+    .hint{text-align:center;color:var(--muted);font-size:.78rem;line-height:1.5;max-width:240px}
+    .auto-referee{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:9px 12px;border-radius:14px;border:1px solid rgba(90,177,255,.35);background:rgba(90,177,255,.10);color:#ddecff;font-weight:800;font-size:.86rem;text-align:center}
     .btn-stack{display:grid;gap:8px;width:100%}
 
     .type-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
@@ -104,10 +105,10 @@
     .player-pick-meta{font-size:.76rem;color:var(--muted);font-weight:700}
 
     .fullscreen-score{background:linear-gradient(180deg,#040915 0%,#08111f 100%);overflow:hidden !important;padding:6px}
-    .fullscreen-score .panel-body{padding:6px;height:calc(100vh - 56px);display:grid}
-    .fullscreen-score .scoreboard{height:100%}
+    .fullscreen-score .panel-body{padding:6px;height:100vh;display:grid;align-items:stretch}
+    .fullscreen-score .scoreboard{height:100%;grid-template-rows:1fr auto}
     .fullscreen-score .score-head{display:none}
-    .fullscreen-score .score-grid{grid-template-columns:1fr auto 1fr;gap:8px;align-items:stretch}
+    .fullscreen-score .score-grid{grid-template-columns:1fr auto 1fr;gap:8px;align-items:stretch;min-height:0;height:100%}
     .fullscreen-score .score-team{padding:8px;display:grid;grid-template-rows:auto 1fr auto;gap:8px;min-height:0}
     .fullscreen-score .stats-panel{margin-top:8px;grid-template-columns:1fr 1fr}
     .fullscreen-score .stats-team{padding:8px;gap:6px}
@@ -122,8 +123,9 @@
     .fullscreen-score .score-center{min-width:66px;gap:8px}
     .fullscreen-score .score-vs{font-size:clamp(1rem,2vw,1.8rem)}
     .fullscreen-score .live-badge{font-size:.78rem;padding:7px 10px;text-align:center}
-    .fullscreen-score .score-toolbar{grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+    .fullscreen-score .score-toolbar{grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px}
     .fullscreen-score .panel-header{padding:8px 10px}
+    .fullscreen-score .score-actions{align-self:end}
     .tiny{color:var(--muted);line-height:1.5;font-size:.78rem}
 
     @media (orientation:landscape) and (max-width:980px){
@@ -176,6 +178,7 @@
           </div>
           <div class="center-stage">
             <div class="vs-mark">VS</div>
+            <div id="autoRefereeBadge" class="auto-referee">자동 주심 배정 중</div>
             <div class="btn-stack">
               <button id="startBtn" class="btn gray" disabled>오더 제출 대기</button>
             </div>
@@ -229,6 +232,7 @@
       <div class="fullscreen-top-actions">
         <button id="overlayEndBtn" class="overlay-btn danger">종료</button>
         <button id="overlayUndoBtn" class="overlay-btn warn" style="display:none;">되돌림</button>
+        <button id="overlayEndMatchBtn" class="overlay-btn">전체 종료</button>
         <button id="overlayExitBtn" class="overlay-btn overlay-icon-btn" title="전체화면 닫기" aria-label="전체화면 닫기">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
@@ -304,6 +308,7 @@
           <div class="score-toolbar">
             <button id="endBtn" class="btn red">현재 종목 경기 종료</button>
             <button id="undoEndBtn" class="btn yellow" style="display:none;">종료 되돌리기</button>
+            <button id="endMatchBtn" class="btn gray">전체 경기 종료</button>
           </div>
         </div>
       </div>
@@ -426,7 +431,9 @@ function normalizeMatchForLoad(match = {}) {
     events: Array.isArray(match.events) ? match.events : [],
     stats: normalizeStatsForLoad(match.stats || {}),
     finished: !!match.finished,
-    completedAt: match.completedAt || ''
+    completedAt: match.completedAt || '',
+    refereeSide: match.refereeSide || '',
+    refereeTeamId: match.refereeTeamId || ''
   };
 }
 function normalizeClassDataForLoad(raw = {}) {
@@ -503,6 +510,7 @@ async function startWatch() {
     if (currentJson === nextJson) return;
     appData = incoming;
     renderAll();
+    ensureAutoReferee(getCurrentMatch()).catch(console.error);
   });
 }
 
@@ -665,6 +673,63 @@ async function persistAndRender() {
   await apiRequest('saveClass', { data: appData });
   renderAll();
 }
+async function savePartial(paths = {}) {
+  const entries = Object.entries(paths).filter(([, value]) => value !== undefined);
+  if (!entries.length) return;
+  const { db, ref, update } = await getFirebaseHelpers();
+  const payload = {};
+  for (const [path, value] of entries) payload[`appState/classes/${classNo}/${path}`] = value;
+  payload['appState/meta/updatedAt'] = new Date().toISOString();
+  payload['appState/meta/lastAction'] = `partialSave:${classNo}`;
+  payload['appState/meta/lastClassNo'] = classNo;
+  await update(ref(db), payload);
+  renderAll();
+}
+function getLiveMatchIndex(matchId) {
+  return appData.liveMatches.findIndex(match => match.id === matchId);
+}
+function getCompletedMatchIndex(matchId) {
+  return appData.completedMatches.findIndex(match => match.id === matchId);
+}
+function getRefereeInfo(match) {
+  if (!match) return { side: '', teamId: '', label: '미지정' };
+  if (match.refereeSide && match.refereeTeamId) {
+    const team = getTeamById(match.refereeTeamId);
+    return { side: match.refereeSide, teamId: match.refereeTeamId, label: team?.name || `${match.refereeSide}조` };
+  }
+  const history = [...appData.completedMatches, ...appData.liveMatches]
+    .filter(item => item.id !== match.id)
+    .filter(item => {
+      const sameOrder = item.teamAId === match.teamAId && item.teamBId === match.teamBId;
+      const reverseOrder = item.teamAId === match.teamBId && item.teamBId === match.teamAId;
+      return sameOrder || reverseOrder;
+    })
+    .sort((a, b) => {
+      const aRound = Number(a.roundNo) || 0;
+      const bRound = Number(b.roundNo) || 0;
+      if (aRound !== bRound) return bRound - aRound;
+      return (Number(b.courtNo) || 0) - (Number(a.courtNo) || 0);
+    });
+  let side = 'A';
+  if (history.length) {
+    const last = history[0];
+    const lastSide = last.refereeTeamId === match.teamAId ? 'A' : (last.refereeTeamId === match.teamBId ? 'B' : (last.refereeSide || 'A'));
+    side = lastSide === 'A' ? 'B' : 'A';
+  }
+  const teamId = side === 'A' ? match.teamAId : match.teamBId;
+  const team = getTeamById(teamId);
+  return { side, teamId, label: team?.name || `${side}조` };
+}
+async function ensureAutoReferee(match) {
+  if (!match || (match.refereeSide && match.refereeTeamId)) return;
+  const info = getRefereeInfo(match);
+  match.refereeSide = info.side;
+  match.refereeTeamId = info.teamId;
+  const matchIndex = getLiveMatchIndex(match.id);
+  if (matchIndex >= 0) {
+    await savePartial({ [`liveMatches/${matchIndex}/refereeSide`]: match.refereeSide, [`liveMatches/${matchIndex}/refereeTeamId`]: match.refereeTeamId });
+  }
+}
 function renderSubmissionStatus(match){
   const teamA = getTeamById(match.teamAId);
   const teamB = getTeamById(match.teamBId);
@@ -672,7 +737,7 @@ function renderSubmissionStatus(match){
   const bStage = getTeamRoundStage(match.teamBId, match.roundNo);
   const stageInfo = (stage) => {
     if (stage === 'submitted') return { cls:'status-green', text:'최종 제출 완료' };
-    if (stage === 'roles_ready') return { cls:'status-blue', text:'심판 선택 완료' };
+    if (stage === 'roles_ready') return { cls:'status-blue', text:'오더 확인 완료' };
     if (stage === 'lineup_ready') return { cls:'status-yellow', text:'선수 선택 완료' };
     return { cls:'status-red', text:'오더 미제출' };
   };
@@ -684,9 +749,18 @@ function renderSubmissionStatus(match){
   el('teamAStatus').innerHTML = `<span class="dot"></span>${aInfo.text}`;
   el('teamBStatus').innerHTML = `<span class="dot"></span>${bInfo.text}`;
 
-  const canStart = aStage === 'submitted' && bStage === 'submitted' && !match.started;
+  const refereeInfo = getRefereeInfo(match);
+  el('autoRefereeBadge').innerHTML = `<span class="dot"></span>자동 주심 · ${escapeHtml(refereeInfo.label)}`;
+  const canStart = aStage === 'submitted' && bStage === 'submitted' && !match.started && !match.finished;
   const startBtn = el('startBtn');
-  if(match.started){
+  if(match.finished){
+    startBtn.disabled = true;
+    startBtn.className = 'btn gray';
+    startBtn.textContent = '전체 경기 종료됨';
+    el('startHint').textContent = '전체 경기가 종료되어 점수 입력이 잠겨 있습니다.';
+    el('matchStatePill').className = 'status-pill status-gray';
+    el('matchStatePill').innerHTML = '<span class="dot"></span>전체 경기 종료';
+  } else if(match.started){
     startBtn.disabled = true;
     startBtn.className = 'btn gray';
     startBtn.textContent = '경기 진행 중';
@@ -740,8 +814,10 @@ function syncOverlayButtons(match){
   const overlayUndoBtn = el('overlayUndoBtn');
   if(!overlayEndBtn || !overlayUndoBtn) return;
   const ended = !!game.finished;
-  overlayEndBtn.style.display = (match.started && !ended) ? 'inline-flex' : 'none';
-  overlayUndoBtn.style.display = (match.started && ended) ? 'inline-flex' : 'none';
+  overlayEndBtn.style.display = (match.started && !ended && !match.finished) ? 'inline-flex' : 'none';
+  overlayUndoBtn.style.display = (match.started && ended && !match.finished) ? 'inline-flex' : 'none';
+  const overlayEndMatchBtn = el('overlayEndMatchBtn');
+  if (overlayEndMatchBtn) overlayEndMatchBtn.style.display = (match.started && !match.finished) ? 'inline-flex' : 'none';
 }
 function renderStats(match){
   const statsPanel = el('statsPanel');
@@ -754,18 +830,21 @@ function renderScore(match){
   const teamB = getTeamById(match.teamBId);
   const game = match.games?.[type] || { a:0, b:0, finished:false };
   const active = !!match.started;
+  const matchEnded = !!match.finished;
   el('scoreboard').classList.toggle('show', active);
   el('scoreWaiting').classList.toggle('show', !active);
   el('fullscreenBtn').style.display = active ? 'inline-flex' : 'none';
   el('scoreTitle').textContent = `${gameLabel(type)} 점수 입력`;
-  el('scoreSub').textContent = `${teamA?.name || 'A조'} vs ${teamB?.name || 'B조'} · ${round}라운드 ${matchNo}경기`;
+  const refereeInfo = getRefereeInfo(match);
+  el('scoreSub').textContent = `${teamA?.name || 'A조'} vs ${teamB?.name || 'B조'} · ${round}라운드 ${matchNo}경기 · 자동 주심 ${refereeInfo.label}`;
   el('scoreA').textContent = Number(game.a) || 0;
   el('scoreB').textContent = Number(game.b) || 0;
   const ended = !!game.finished;
-  el('liveBadge').textContent = ended ? `${gameLabel(type)} 종료` : '실시간 입력';
-  ['plusA','minusA','plusB','minusB'].forEach(id => el(id).disabled = !match.started || ended);
-  el('endBtn').style.display = (match.started && !document.fullscreenElement && !ended) ? '' : 'none';
-  el('undoEndBtn').style.display = (match.started && ended && !document.fullscreenElement) ? '' : 'none';
+  el('liveBadge').textContent = matchEnded ? '전체 경기 종료' : (ended ? `${gameLabel(type)} 종료` : '실시간 입력');
+  ['plusA','minusA','plusB','minusB'].forEach(id => el(id).disabled = !match.started || ended || matchEnded);
+  el('endBtn').style.display = (match.started && !document.fullscreenElement && !ended && !matchEnded) ? '' : 'none';
+  el('undoEndBtn').style.display = (match.started && ended && !document.fullscreenElement && !matchEnded) ? '' : 'none';
+  el('endMatchBtn').style.display = (match.started && !document.fullscreenElement && !matchEnded) ? '' : 'none';
   el('endBtn').textContent = `${gameLabel(type)} 경기 종료`;
   renderStats(match);
   syncOverlayButtons(match);
@@ -858,7 +937,13 @@ async function commitPlayerStat(playerId){
   });
 
   closePlayerPicker();
-  await persistAndRender();
+  const matchIndex = getLiveMatchIndex(match.id);
+  if (matchIndex < 0 || playerIndex < 0) return persistAndRender();
+  await savePartial({
+    [`liveMatches/${matchIndex}/stats`]: match.stats,
+    [`liveMatches/${matchIndex}/events`]: match.events,
+    [`roster/${playerIndex}/stats`]: player.stats
+  });
 }
 async function updateStat(team, type){
   openPlayerPicker(team, type);
@@ -866,14 +951,60 @@ async function updateStat(team, type){
 
 async function updateScore(side, delta){
   const match = getCurrentMatch();
-  if(!match || !match.started) return;
+  if(!match || !match.started || match.finished) return;
   const type = match.activeGame || 'women';
   const game = match.games?.[type];
   if(!game || game.finished) return;
   if(side === 'a') game.a = Math.max(0, (Number(game.a) || 0) + delta);
   if(side === 'b') game.b = Math.max(0, (Number(game.b) || 0) + delta);
   recalcMatchTotals(match);
-  await persistAndRender();
+  const matchIndex = getLiveMatchIndex(match.id);
+  if (matchIndex < 0) return persistAndRender();
+  await savePartial({
+    [`liveMatches/${matchIndex}/games/${type}/a`]: Number(match.games[type].a) || 0,
+    [`liveMatches/${matchIndex}/games/${type}/b`]: Number(match.games[type].b) || 0,
+    [`liveMatches/${matchIndex}/scoreA`]: Number(match.scoreA) || 0,
+    [`liveMatches/${matchIndex}/scoreB`]: Number(match.scoreB) || 0,
+    [`liveMatches/${matchIndex}/trendA`]: match.trendA || [0],
+    [`liveMatches/${matchIndex}/trendB`]: match.trendB || [0]
+  });
+}
+async function finishCurrentGame(undo = false) {
+  const match = getCurrentMatch();
+  if (!match || !match.started || match.finished) return;
+  const type = match.activeGame || 'women';
+  if (!match.games?.[type]) return;
+  match.games[type].finished = !undo;
+  recalcMatchTotals(match);
+  const matchIndex = getLiveMatchIndex(match.id);
+  if (matchIndex < 0) return persistAndRender();
+  await savePartial({
+    [`liveMatches/${matchIndex}/games/${type}/finished`]: match.games[type].finished,
+    [`liveMatches/${matchIndex}/scoreA`]: Number(match.scoreA) || 0,
+    [`liveMatches/${matchIndex}/scoreB`]: Number(match.scoreB) || 0,
+    [`liveMatches/${matchIndex}/trendA`]: match.trendA || [0],
+    [`liveMatches/${matchIndex}/trendB`]: match.trendB || [0]
+  });
+}
+async function finishEntireMatch() {
+  const match = getCurrentMatch();
+  if (!match || !match.started || match.finished) return;
+  ['women','mixed','men'].forEach(type => {
+    if (match.games?.[type]) match.games[type].finished = true;
+  });
+  match.finished = true;
+  match.completedAt = new Date().toISOString();
+  recalcMatchTotals(match);
+  const liveIndex = getLiveMatchIndex(match.id);
+  if (liveIndex < 0) return persistAndRender();
+  const completedList = Array.isArray(appData.completedMatches) ? structuredClone(appData.completedMatches) : [];
+  const existingCompletedIndex = getCompletedMatchIndex(match.id);
+  if (existingCompletedIndex >= 0) completedList[existingCompletedIndex] = structuredClone(match);
+  else completedList.push(structuredClone(match));
+  await savePartial({
+    [`liveMatches/${liveIndex}`]: match,
+    [`completedMatches`]: completedList
+  });
 }
 function toggleFullscreen(){
   const panel = el('scorePanel');
@@ -895,15 +1026,27 @@ $$('.type-tab').forEach(btn => btn.addEventListener('click', async () => {
   const match = getCurrentMatch();
   if (!match) return;
   match.activeGame = btn.dataset.type;
-  await persistAndRender();
+  const matchIndex = getLiveMatchIndex(match.id);
+  if (matchIndex < 0) return persistAndRender();
+  await savePartial({ [`liveMatches/${matchIndex}/activeGame`]: match.activeGame });
 }));
 el('startBtn').addEventListener('click', async () => {
   const match = getCurrentMatch();
   if(!match) return;
-  if(!(isTeamRoundSubmitted(match.teamAId, match.roundNo) && isTeamRoundSubmitted(match.teamBId, match.roundNo)) || match.started) return;
+  if(!(isTeamRoundSubmitted(match.teamAId, match.roundNo) && isTeamRoundSubmitted(match.teamBId, match.roundNo)) || match.started || match.finished) return;
+  const refereeInfo = getRefereeInfo(match);
   match.started = true;
   match.startedAt = new Date().toISOString();
-  await persistAndRender();
+  match.refereeSide = refereeInfo.side;
+  match.refereeTeamId = refereeInfo.teamId;
+  const matchIndex = getLiveMatchIndex(match.id);
+  if (matchIndex < 0) return persistAndRender();
+  await savePartial({
+    [`liveMatches/${matchIndex}/started`]: true,
+    [`liveMatches/${matchIndex}/startedAt`]: match.startedAt,
+    [`liveMatches/${matchIndex}/refereeSide`]: match.refereeSide,
+    [`liveMatches/${matchIndex}/refereeTeamId`]: match.refereeTeamId
+  });
 });
 el('plusA').addEventListener('click', () => updateScore('a', 1));
 el('minusA').addEventListener('click', () => updateScore('a', -1));
@@ -917,37 +1060,15 @@ el('statBServeSuccess').addEventListener('click', () => updateStat('B', 'serve_s
 el('statBServeFail').addEventListener('click', () => updateStat('B', 'serve_fail'));
 el('statBAttackSuccess').addEventListener('click', () => updateStat('B', 'attack_success'));
 el('statBAttackFail').addEventListener('click', () => updateStat('B', 'attack_fail'));
-el('endBtn').addEventListener('click', async () => {
-  const match = getCurrentMatch();
-  if (!match) return;
-  match.games[match.activeGame || 'women'].finished = true;
-  recalcMatchTotals(match);
-  await persistAndRender();
-});
-el('undoEndBtn').addEventListener('click', async () => {
-  const match = getCurrentMatch();
-  if (!match) return;
-  match.games[match.activeGame || 'women'].finished = false;
-  recalcMatchTotals(match);
-  await persistAndRender();
-});
+el('endBtn').addEventListener('click', () => finishCurrentGame(false));
+el('undoEndBtn').addEventListener('click', () => finishCurrentGame(true));
+el('endMatchBtn').addEventListener('click', () => finishEntireMatch());
 el('fullscreenBtn').addEventListener('click', toggleFullscreen);
 el('exitFullscreenBtn').addEventListener('click', () => { if(document.fullscreenElement){ document.exitFullscreen(); } });
 el('overlayExitBtn').addEventListener('click', () => { if(document.fullscreenElement){ document.exitFullscreen(); } });
-el('overlayEndBtn').addEventListener('click', async () => {
-  const match = getCurrentMatch();
-  if(!match || !match.started) return;
-  match.games[match.activeGame || 'women'].finished = true;
-  recalcMatchTotals(match);
-  await persistAndRender();
-});
-el('overlayUndoBtn').addEventListener('click', async () => {
-  const match = getCurrentMatch();
-  if(!match || !match.started) return;
-  match.games[match.activeGame || 'women'].finished = false;
-  recalcMatchTotals(match);
-  await persistAndRender();
-});
+el('overlayEndBtn').addEventListener('click', () => finishCurrentGame(false));
+el('overlayUndoBtn').addEventListener('click', () => finishCurrentGame(true));
+el('overlayEndMatchBtn').addEventListener('click', () => finishEntireMatch());
 
 el('playerPickerClose').addEventListener('click', closePlayerPicker);
 el('playerPickerCancel').addEventListener('click', closePlayerPicker);
@@ -972,6 +1093,7 @@ function renderAll(){
     const data = await apiRequest('loadClass');
     appData = normalizeClassDataForLoad(data.data || {});
     renderAll();
+    await ensureAutoReferee(getCurrentMatch());
     await startWatch();
   } catch (error) {
     console.error(error);

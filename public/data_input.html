@@ -343,9 +343,13 @@
       if (kind === 'done') {
         statusPill.classList.add('status-done');
         statusPill.textContent = '제출완료';
+        submitBtn.textContent = '제출완료';
+        submitBtn.disabled = true;
       } else {
         statusPill.classList.add('status-draft');
         statusPill.textContent = '임시저장';
+        submitBtn.textContent = '제출하기';
+        submitBtn.disabled = false;
       }
       statusText.textContent = text;
     }

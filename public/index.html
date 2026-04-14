@@ -429,6 +429,9 @@
 
     .chart-wrap { height: 300px; }
     .history-list { display: grid; gap: 10px; max-height: 300px; overflow: auto; }
+    #dataPage .section-stack{display:block;}
+    #dataPage .panel{overflow:visible;}
+    #dataPage #dataInsightList{display:grid;gap:10px;max-height:none;overflow:visible;min-height:640px;}
     .history-item { padding: 12px; border-radius: 14px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.05); }
 
     .modal {
@@ -4815,9 +4818,6 @@ function switchView(view) {
                     onclick="undoFinishActiveGame('${m.id}')"
                   >${activeGame.finished ? `${shortGameLabel(activeType)} 종료 취소` : `${shortGameLabel(activeType)} 종료 전`}</button>
                   <button class="btn small primary" onclick="finishMatch('${m.id}')">전체 경기 종료</button>
-                </div>
-                <div class="current-stats-inline">
-                  <span>${gameLabel(activeType)} 데이터 기록은 데이터 QR과 데이터 확인 탭에서 확인</span>
                 </div>
               </div>
             </div>
