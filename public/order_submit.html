@@ -28,7 +28,18 @@
     .summary-list{display:grid;gap:8px}.summary-item{padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06)}.summary-main{font-size:.9rem;font-weight:700}.summary-sub{font-size:.78rem;color:var(--muted);margin-top:4px;line-height:1.6}
     .hidden{display:none!important}.role-box{border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:12px;background:rgba(8,24,49,.55);display:grid;gap:10px}.role-box .role-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.role-status{font-size:.78rem;color:#cfe5ff;font-weight:700}
     .role-help{font-size:.77rem;color:var(--muted);line-height:1.55}.error-box{border:1px solid rgba(255,122,122,.3);background:rgba(255,122,122,.08);color:#ffd6d6;border-radius:14px;padding:10px 12px;font-size:.8rem;line-height:1.55}.success-box{border:1px solid rgba(83,215,105,.28);background:rgba(83,215,105,.08);color:#cffff0;border-radius:14px;padding:10px 12px;font-size:.8rem;line-height:1.55}
-    @media (max-width:700px){.duo-grid,.tri-grid,.role-grid{grid-template-columns:1fr}.status-box{display:grid;justify-content:stretch}.action-row .btn{flex:1}}
+    .ai-guide-card{border:1px solid rgba(90,177,255,.2);background:linear-gradient(180deg,rgba(90,177,255,.08),rgba(255,255,255,.03));}
+    .ai-guide-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+    .ai-badge{display:inline-flex;align-items:center;gap:6px;padding:7px 11px;border-radius:999px;background:rgba(90,177,255,.14);border:1px solid rgba(90,177,255,.24);font-weight:800;font-size:.8rem;color:#d9ecff}
+    .ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .ai-strategy-list{display:grid;gap:8px}
+    .ai-strategy-item{padding:12px;border-radius:14px;background:rgba(8,24,49,.55);border:1px solid rgba(255,255,255,.08)}
+    .ai-strategy-title{font-size:.9rem;font-weight:800}
+    .ai-strategy-meta{margin-top:4px;font-size:.74rem;color:#b8d6ff;font-weight:700}
+    .ai-loading{opacity:.7;pointer-events:none}
+    .mini-check{display:flex;gap:8px;align-items:flex-start;color:var(--muted);font-size:.82rem}
+    .mini-check input{width:auto;min-width:16px;margin-top:2px}
+    @media (max-width:700px){.duo-grid,.tri-grid,.role-grid,.ai-grid{grid-template-columns:1fr}.status-box{display:grid;justify-content:stretch}.action-row .btn{flex:1}}
   </style>
 </head>
 <body>
@@ -88,6 +99,44 @@
           <button class="btn" id="saveLineupDraftBtn">임시저장</button>
           <button class="btn green" id="lineupCompleteBtn">선수 선택 완료</button>
         </div>
+
+        <div class="section-box ai-guide-card" id="aiGuideSection">
+          <div class="ai-guide-top">
+            <div>
+              <div class="section-title">AI 전술 가이드</div>
+              <div class="section-subtitle">현재 선택한 선수 구성과 상대 조 데이터를 바탕으로 경기 전략을 제안합니다.</div>
+            </div>
+            <div class="ai-badge" id="aiGuideStatusBadge">전략 미생성</div>
+          </div>
+
+          <div class="ai-grid" id="aiCompareSummary">
+            <div class="summary-item">
+              <div class="summary-main">우리 조 전력</div>
+              <div class="summary-sub">선수 선택 후 AI 전략 생성을 누르면 전력 요약이 표시됩니다.</div>
+            </div>
+            <div class="summary-item">
+              <div class="summary-main">상대 조 전력</div>
+              <div class="summary-sub">상대 조 경기 기록 또는 기본 추정값을 바탕으로 전략을 생성합니다.</div>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button type="button" class="btn blue" id="generateAiGuideBtn">AI 전략 생성</button>
+            <button type="button" class="btn gray" id="regenerateAiGuideBtn" disabled>다시 생성</button>
+          </div>
+
+          <div class="ai-strategy-list" id="aiGuideList">
+            <div class="summary-item">
+              <div class="summary-sub">아직 생성된 전략이 없습니다.</div>
+            </div>
+          </div>
+
+          <label class="mini-check">
+            <input type="checkbox" id="aiGuideReviewed" />
+            <span>AI 전략을 참고하여 오더를 검토했습니다. 최종 결정은 학생이 수행합니다.</span>
+          </label>
+          <div class="hint" id="aiGuideHint">현재 파일은 기본적으로 Firebase 데이터를 읽고, AI 서버 함수가 없을 경우 규칙 기반 전술 가이드를 대신 생성합니다.</div>
+        </div>
       </div>
     </div>
 
@@ -119,11 +168,16 @@
   <script type="module">
     import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
     import { getDatabase, ref, get, set, onValue } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js';
+    import { getFunctions, httpsCallable } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-functions.js';
 
     const firebaseConfig = window.DEFAULT_FIREBASE_CONFIG;
     if (!firebaseConfig) throw new Error('firebase-config.js를 찾지 못했습니다.');
     const firebaseApp = getApps().find(app => app.name === 'badminton-app') || initializeApp(firebaseConfig, 'badminton-app');
     const db = getDatabase(firebaseApp);
+    const functions = getFunctions(firebaseApp);
+    const AI_ENDPOINT = typeof window.AI_TACTIC_ENDPOINT === 'string' ? window.AI_TACTIC_ENDPOINT.trim() : '';
+    const AI_FUNCTION_NAME = typeof window.AI_TACTIC_FUNCTION_NAME === 'string' && window.AI_TACTIC_FUNCTION_NAME.trim() ? window.AI_TACTIC_FUNCTION_NAME.trim() : 'generateTacticGuide';
+    const aiCallable = httpsCallable(functions, AI_FUNCTION_NAME);
 
     const CLASS_COUNT = 7;
     const qs = new URLSearchParams(location.search);
@@ -289,6 +343,248 @@
       });
     }
 
+
+    function getAiGuideKey(){
+      return `round${round}_${group}`;
+    }
+
+    function safeNumber(value, fallback=0){
+      const n = Number(value);
+      return Number.isFinite(n) ? n : fallback;
+    }
+
+    function getTeamStatsMap(){
+      return appData?.teamStats || appData?.statsByTeam || {};
+    }
+
+    function getDefaultTeamStats(teamObj){
+      const name = getTeamLetter(teamObj) || teamObj?.name || '-';
+      return {
+        team: name,
+        winRate: 50,
+        scoreDiff: 0,
+        strengths: ['기본 수비', '기본 연결'],
+        weaknesses: ['전위 압박', '수비 전환']
+      };
+    }
+
+    function normalizeTeamStats(stats, teamObj){
+      const base = getDefaultTeamStats(teamObj);
+      if(!stats || typeof stats !== 'object') return base;
+      const strengths = Array.isArray(stats.strengths) && stats.strengths.length ? stats.strengths : base.strengths;
+      const weaknesses = Array.isArray(stats.weaknesses) && stats.weaknesses.length ? stats.weaknesses : base.weaknesses;
+      return {
+        team: stats.team || base.team,
+        winRate: safeNumber(stats.winRate, base.winRate),
+        scoreDiff: safeNumber(stats.scoreDiff, base.scoreDiff),
+        strengths,
+        weaknesses
+      };
+    }
+
+    function getComparisonStats(){
+      const statsMap = getTeamStatsMap();
+      const opponent = getOpponentTeam();
+      const myKey = getTeamLetter(activeTeam) || activeTeam?.id || group;
+      const oppKey = getTeamLetter(opponent) || opponent?.id || '';
+      const myStats = normalizeTeamStats(statsMap[myKey] || statsMap[activeTeam?.id], activeTeam);
+      const oppStats = normalizeTeamStats(statsMap[oppKey] || statsMap[opponent?.id], opponent);
+      return { myTeam: myStats, opponentTeam: oppStats };
+    }
+
+    function getAiGuideStore(){
+      if(!appData.aiTacticGuides || typeof appData.aiTacticGuides !== 'object') appData.aiTacticGuides = {};
+      return appData.aiTacticGuides;
+    }
+
+    function getSavedAiGuide(){
+      return getAiGuideStore()[getAiGuideKey()] || null;
+    }
+
+    function setSavedAiGuide(guide){
+      getAiGuideStore()[getAiGuideKey()] = guide;
+    }
+
+    function buildAiPayload(){
+      return {
+        matchInfo: {
+          classNo,
+          round,
+          team: group,
+          opponent: getTeamLetter(getOpponentTeam()) || '',
+          matchId: activeMatch?.id || ''
+        },
+        lineup: getCurrentSelections(),
+        stats: getComparisonStats()
+      };
+    }
+
+    function renderAiCompareSummary(payload){
+      const { myTeam, opponentTeam } = payload.stats;
+      aiCompareSummary.innerHTML = `
+        <div class="summary-item">
+          <div class="summary-main">우리 조 전력 · ${escapeHtml(myTeam.team)}</div>
+          <div class="summary-sub">승률 ${myTeam.winRate}% · 득실차 ${myTeam.scoreDiff >= 0 ? '+' : ''}${myTeam.scoreDiff}<br>강점: ${myTeam.strengths.map(escapeHtml).join(', ')}<br>약점: ${myTeam.weaknesses.map(escapeHtml).join(', ')}</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-main">상대 조 전력 · ${escapeHtml(opponentTeam.team)}</div>
+          <div class="summary-sub">승률 ${opponentTeam.winRate}% · 득실차 ${opponentTeam.scoreDiff >= 0 ? '+' : ''}${opponentTeam.scoreDiff}<br>강점: ${opponentTeam.strengths.map(escapeHtml).join(', ')}<br>약점: ${opponentTeam.weaknesses.map(escapeHtml).join(', ')}</div>
+        </div>
+      `;
+    }
+
+    function renderAiGuideStrategies(strategies=[]){
+      if(!Array.isArray(strategies) || !strategies.length){
+        aiGuideList.innerHTML = `<div class="summary-item"><div class="summary-sub">생성된 전략이 없습니다.</div></div>`;
+        return;
+      }
+      aiGuideList.innerHTML = strategies.map((item, index) => `
+        <div class="ai-strategy-item">
+          <div class="ai-strategy-title">${index+1}. ${escapeHtml(item.title || `전략 ${index+1}`)}</div>
+          <div class="ai-strategy-meta">${escapeHtml(item.focus || 'general')}</div>
+          <div class="summary-sub">${escapeHtml(item.guide || '')}</div>
+        </div>
+      `).join('');
+    }
+
+    function setAiGuideLoading(isLoading){
+      aiGuideSection.classList.toggle('ai-loading', isLoading);
+      generateAiGuideBtn.disabled = isLoading;
+      regenerateAiGuideBtn.disabled = isLoading;
+      aiGuideStatusBadge.textContent = isLoading ? '전략 생성 중' : (getSavedAiGuide() ? '전략 생성 완료' : '전략 미생성');
+    }
+
+    function heuristicStrategies(payload){
+      const { myTeam, opponentTeam } = payload.stats;
+      const firstWeakness = opponentTeam.weaknesses[0] || '전위 수비';
+      const firstStrength = myTeam.strengths[0] || '기본 연결';
+      const secondStrength = myTeam.strengths[1] || '후위 공격';
+      return {
+        strategies: [
+          {
+            title: `${firstStrength} 활용`,
+            focus: 'our_strength',
+            guide: `우리 조의 강점인 ${firstStrength}을 초반에 적극 활용해 경기 흐름을 먼저 잡습니다. ${secondStrength}이 가능하면 후위와 전위를 분명히 나누어 연결합니다.`
+          },
+          {
+            title: `${firstWeakness} 공략`,
+            focus: 'opp_weakness',
+            guide: `상대 조의 약점으로 보이는 ${firstWeakness}을 집중적으로 공략합니다. 짧은 드롭이나 빠른 연결로 상대가 불편한 위치에서 공을 처리하게 합니다.`
+          },
+          {
+            title: '역할 분담 유지',
+            focus: 'role',
+            guide: '현재 오더 기준으로 경기별 역할을 분명히 정하고, 혼복에서는 전위와 후위 역할을 빠르게 교대하지 않도록 합니다. 득점 후에도 같은 원칙을 유지합니다.'
+          }
+        ],
+        source: 'fallback-rule'
+      };
+    }
+
+    function normalizeAiGuideResult(raw){
+      const data = raw?.data ?? raw;
+      if(data && Array.isArray(data.strategies)) return { strategies: data.strategies, source: data.source || 'ai-function' };
+      const text = String(data?.text || data?.output_text || data?.outputText || '').trim();
+      if(text){
+        try{
+          const parsed = JSON.parse(text);
+          if(Array.isArray(parsed?.strategies)) return { strategies: parsed.strategies, source: data?.source || 'ai-function' };
+        }catch(error){
+          const match = text.match(/\{[\s\S]*\}/);
+          if(match){
+            const parsed = JSON.parse(match[0]);
+            if(Array.isArray(parsed?.strategies)) return { strategies: parsed.strategies, source: data?.source || 'ai-function' };
+          }
+        }
+      }
+      throw new Error('AI 전략 응답 형식이 올바르지 않습니다.');
+    }
+
+    async function requestAiStrategies(payload){
+      if(AI_ENDPOINT){
+        const response = await fetch(AI_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if(!response.ok) throw new Error('AI 전략 호출에 실패했습니다.');
+        const data = await response.json();
+        return normalizeAiGuideResult(data);
+      }
+
+      try{
+        const result = await aiCallable(payload);
+        return normalizeAiGuideResult(result);
+      }catch(error){
+        console.error('AI 함수 호출 실패, 기본 전략으로 대체합니다.', error);
+        return heuristicStrategies(payload);
+      }
+    }
+
+    async function generateAiGuide(mode='generate'){
+      try{
+        validateLineups();
+        const payload = buildAiPayload();
+        renderAiCompareSummary(payload);
+        setAiGuideLoading(true);
+        aiGuideHint.textContent = '선택한 선수 구성과 팀 전력 데이터를 바탕으로 전략을 생성하고 있습니다.';
+        const result = await requestAiStrategies(payload);
+        const guide = {
+          generatedAt: new Date().toISOString(),
+          mode,
+          basedOnLineup: payload.lineup,
+          compareSummary: payload.stats,
+          strategies: result.strategies,
+          reviewed: !!aiGuideReviewed.checked,
+          source: result.source || (AI_ENDPOINT ? 'ai-endpoint' : 'fallback-rule')
+        };
+        setSavedAiGuide(guide);
+        await persistClass();
+        renderAiGuideStrategies(guide.strategies);
+        aiGuideStatusBadge.textContent = guide.source === 'fallback-rule' ? '기본 전략 생성' : 'AI 전략 생성 완료';
+        aiGuideHint.textContent = guide.source === 'fallback-rule'
+          ? 'AI 서버 함수가 연결되지 않았거나 호출에 실패하여 현재는 규칙 기반 전술 가이드를 표시합니다.'
+          : 'AI 전략이 생성되었습니다. 전략을 참고해 오더를 검토한 뒤 다음 단계로 진행하세요.';
+        regenerateAiGuideBtn.disabled = false;
+      }catch(error){
+        console.error(error);
+        aiGuideList.innerHTML = `<div class="summary-item"><div class="summary-sub">${escapeHtml(error.message || 'AI 전략 생성 중 오류가 발생했습니다.')}</div></div>`;
+        aiGuideStatusBadge.textContent = '전략 생성 실패';
+        aiGuideHint.textContent = '선수 선택을 먼저 완료하고 다시 시도해 주세요.';
+      }finally{
+        setAiGuideLoading(false);
+      }
+    }
+
+    function updateAiGuideReviewedFlag(){
+      const saved = getSavedAiGuide();
+      if(saved){
+        saved.reviewed = !!aiGuideReviewed.checked;
+      }
+    }
+
+    function renderAiGuideFromSaved(){
+      const payload = buildAiPayload();
+      renderAiCompareSummary(payload);
+      const saved = getSavedAiGuide();
+      if(!saved){
+        aiGuideStatusBadge.textContent = '전략 미생성';
+        aiGuideList.innerHTML = `<div class="summary-item"><div class="summary-sub">아직 생성된 전략이 없습니다.</div></div>`;
+        aiGuideHint.textContent = '선수 선택 후 AI 전략 생성을 누르면 현재 조합에 맞는 전술 가이드를 확인할 수 있습니다.';
+        aiGuideReviewed.checked = false;
+        regenerateAiGuideBtn.disabled = true;
+        return;
+      }
+      renderAiGuideStrategies(saved.strategies || []);
+      aiGuideReviewed.checked = !!saved.reviewed;
+      aiGuideStatusBadge.textContent = saved.source === 'fallback-rule' ? '기본 전략 생성' : 'AI 전략 생성 완료';
+      aiGuideHint.textContent = saved.source === 'fallback-rule'
+        ? '현재 저장된 전략은 규칙 기반 전술 가이드입니다. 서버 함수를 연결하면 AI 생성 전략으로 대체할 수 있습니다.'
+        : '저장된 AI 전략을 불러왔습니다. 필요하면 다시 생성할 수 있습니다.';
+      regenerateAiGuideBtn.disabled = false;
+    }
+
+
     function validateRoles(){
       const submission = getSubmission();
       const errors = [];
@@ -340,7 +636,7 @@
       pill.className = 'status-pill ' + (stage==='done' ? 'status-done' : stage==='locked' ? 'status-lock' : stage==='roles' ? 'status-edit' : stage==='lineup' ? 'status-edit' : 'status-draft');
       pill.textContent = stage==='done' ? '제출완료' : stage==='locked' ? '수정잠금' : stage==='roles' ? '심판 선택 완료' : stage==='lineup' ? '선수 선택 완료' : '미제출';
       text.textContent = stage==='done' ? '최종 제출이 완료되었습니다.' : stage==='locked' ? '경기 시작으로 수정할 수 없습니다.' : stage==='roles' ? '제출하기 버튼으로 최종 제출하세요.' : stage==='lineup' ? '역할 선택 단계로 진행해 주세요.' : '선수 선택 전';
-      document.querySelectorAll('select, button').forEach(el => { if(['saveLineupDraftBtn','lineupCompleteBtn','backToLineupBtn','saveRolesDraftBtn','rolesCompleteBtn','finalSubmitBtn'].includes(el.id) || el.tagName==='SELECT'){ if(locked) el.disabled = true; } });
+      document.querySelectorAll('select, button').forEach(el => { if(['saveLineupDraftBtn','lineupCompleteBtn','backToLineupBtn','saveRolesDraftBtn','rolesCompleteBtn','finalSubmitBtn','generateAiGuideBtn','regenerateAiGuideBtn'].includes(el.id) || el.tagName==='SELECT'){ if(locked) el.disabled = true; } });
       document.getElementById('finalSubmitBtn').classList.toggle('hidden', !(submission.rolesCompletedAt && !submission.finalSubmittedAt && !locked));
     }
 
@@ -363,7 +659,7 @@
       if(!activeMatch){ summaryList.innerHTML='<div class="summary-item"><div class="summary-sub">해당 라운드 경기판이 없습니다.</div></div>'; return; }
       const submission = getSubmission();
       if(submission.lineups){ Object.entries(submission.lineups).forEach(([type, ids]) => { if(lineupSelects[`${type}1`]) lineupSelects[`${type}1`].value = ids?.[0] || ''; if(lineupSelects[`${type}2`]) lineupSelects[`${type}2`].value = ids?.[1] || ''; }); }
-      refreshLineupOptions(); renderRoleSections(); updateSummary(); updateStatus();
+      refreshLineupOptions(); renderRoleSections(); updateSummary(); renderAiGuideFromSaved(); updateStatus();
       if(submission.lineupCompletedAt && !submission.finalSubmittedAt && currentStep==='lineup') setStep('roles');
     }
 
@@ -373,6 +669,9 @@
     Object.values(lineupSelects).forEach(sel => sel.addEventListener('change', () => { if(isRefreshingSelects) return; refreshLineupOptions(); updateSummary(); }));
     document.getElementById('saveLineupDraftBtn').addEventListener('click', async () => { try { validateLineups(); const submission = getSubmission(); submission.status='draft'; await persistSubmission('draft', submission, false); updateStatus(); } catch(error){ alert(error.message || '임시저장 중 오류가 발생했습니다.'); } });
     document.getElementById('lineupCompleteBtn').addEventListener('click', async () => { try { validateLineups(); const submission = getSubmission(); submission.lineupCompletedAt = new Date().toISOString(); await persistSubmission('lineup_ready', submission, false); setStep('roles'); updateStatus(); } catch(error){ alert(error.message || '선수 선택 완료 처리 중 오류가 발생했습니다.'); } });
+    generateAiGuideBtn.addEventListener('click', () => generateAiGuide('generate'));
+    regenerateAiGuideBtn.addEventListener('click', () => generateAiGuide('regenerate'));
+    aiGuideReviewed.addEventListener('change', async () => { updateAiGuideReviewedFlag(); try { await persistClass(); } catch(error) { console.error(error); } });
     document.getElementById('backToLineupBtn').addEventListener('click', () => setStep('lineup'));
     document.getElementById('saveRolesDraftBtn').addEventListener('click', async () => { try { const { submission } = validateRoles(); await persistSubmission('draft', submission, false); rolesSuccessBox.textContent = '역할 임시저장 완료'; rolesSuccessBox.classList.remove('hidden'); setTimeout(()=>rolesSuccessBox.classList.add('hidden'), 1500); updateStatus(); } catch(error){ rolesErrorBox.textContent = error.message || '역할 임시저장 중 오류가 발생했습니다.'; rolesErrorBox.classList.remove('hidden'); } });
     document.getElementById('rolesCompleteBtn').addEventListener('click', async () => { const result = validateRoles(); if(!result.ok){ rolesErrorBox.innerHTML = result.errors.join('<br>'); rolesErrorBox.classList.remove('hidden'); rolesSuccessBox.classList.add('hidden'); return; } rolesErrorBox.classList.add('hidden'); rolesSuccessBox.textContent = '심판 선택 완료. 제출하기 버튼이 활성화되었습니다.'; rolesSuccessBox.classList.remove('hidden'); result.submission.rolesCompletedAt = new Date().toISOString(); await persistSubmission('roles_ready', result.submission, false); updateStatus(); });
