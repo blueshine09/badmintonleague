@@ -141,13 +141,9 @@
 .admin-sync-toggle .btn{min-height:44px;padding:9px 14px;border-radius:var(--btn-radius-sm);font-size:var(--btn-font-sm);}
 .admin-sync-panel{display:none;}
 .admin-sync-panel.show{display:block;}
-.admin-sync-label{display:inline-flex;align-items:center;justify-content:center;gap:8px;line-height:1;}
-.admin-sync-label .chev{display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;line-height:1;transform:translateY(1px);transition:transform .18s ease, opacity .18s ease;opacity:.9;}
-#advancedMenuBtn.active .admin-sync-label .chev{transform:translateY(1px) rotate(180deg);}
-#advancedMenuBtn.active{border-color:rgba(120,199,255,.34);background:linear-gradient(180deg,#17345e,#102543);box-shadow:0 10px 22px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.05);}
-.topbar,.titlebox{position:relative;z-index:220;overflow:visible;}
-.advanced-menu-wrap{position:relative;z-index:260;}
-.advanced-menu-panel{z-index:320;}
+.admin-sync-label{display:inline-flex;align-items:center;gap:8px;}
+.admin-sync-label .chev{display:inline-block;transition:transform .18s ease;}
+.admin-sync-panel.show + .admin-sync-toggle .chev{transform:rotate(180deg);}
 
 .lineup-sync-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;}
 .lineup-link-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;}
@@ -331,9 +327,9 @@
       display: grid; grid-template-columns: minmax(280px,360px) minmax(0,1.2fr) minmax(0,.95fr); gap: 16px;
     }
     
-    .help-icon-btn{width:28px;height:28px;min-width:28px;padding:0;border-radius:999px;border:1px solid rgba(90,177,255,.22);background:linear-gradient(180deg,#143158,#0d223f);color:#dff0ff;font-weight:900;font-size:.86rem;line-height:1;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.04);flex:0 0 auto}
+    .help-icon-btn{width:28px;height:28px;min-width:28px;padding:0;border-radius:999px;border:1px solid rgba(90,177,255,.22);background:linear-gradient(180deg,#143158,#0d223f);color:#dff0ff;font-weight:900;font-size:.86rem;line-height:1;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
     .help-icon-btn:hover{filter:brightness(1.08);border-color:rgba(120,199,255,.34)}
-    .help-inline-box{display:none;margin-top:8px;margin-bottom:16px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);color:var(--muted);font-size:.86rem;line-height:1.7;box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+    .help-inline-box{display:none;margin-top:10px;padding:12px 14px;border-radius:14px;background:rgba(8,24,49,.72);border:1px solid rgba(92,131,190,.35);color:#cfe0ff;font-size:.8rem;line-height:1.6}
     .help-inline-box.show{display:block}
     .modal-backdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(2,8,18,.72);backdrop-filter:blur(6px);z-index:10030}
     .modal-backdrop.show{display:flex}
@@ -846,41 +842,6 @@
     .wizard-step.active { background: linear-gradient(135deg, #193563, #234d87); color:#fff; border-color:#4f7dc5; }
     .wizard-page { display:none; }
     .wizard-page.active { display:block; }
-
-    /* targeted vertical spacing fixes */
-    .setup-wizard-wrap{display:grid;gap:20px;}
-    .setup-wizard-wrap > .tiny.muted,
-    .panel-body > .tiny.muted,
-    .card-body > .tiny.muted{
-      display:block;
-      margin:0 0 16px;
-      line-height:1.65;
-    }
-    .setup-wizard-wrap > .tiny.muted + .wizard-steps,
-    .panel-body > .tiny.muted + .wizard-steps,
-    .card-body > .tiny.muted + .wizard-steps{
-      margin-top:2px;
-    }
-    .wizard-steps{margin-top:14px;gap:12px;margin-bottom:18px;}
-    .wizard-head{margin-bottom:18px;}
-    .wizard-page .guide-box,
-    .wizard-page .attendance-grid,
-    .wizard-page .captain-toolbar,
-    .wizard-page .captain-grid,
-    .wizard-page .team-grid,
-    .wizard-page .draft-pool-wrap,
-    .wizard-page .draft-board{
-      margin-top:14px;
-    }
-    .panel-header > div > .tiny.muted,
-    .card-head > div > .tiny.muted,
-    .panel-header > div > .sub,
-    .card-head > div > .sub{
-      display:block;
-      margin-top:10px;
-      line-height:1.6;
-    }
-
     .wizard-head { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; margin-bottom:14px; flex-wrap:wrap; }
     .wizard-title { font-size:1.05rem; font-weight:800; margin-bottom:4px; }
     .wizard-actions { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
@@ -3120,6 +3081,180 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
 </style>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<style id="global-spacing-refresh">
+/* Global spacing refresh */
+.titlebox{
+  padding:22px 24px !important;
+  gap:12px !important;
+}
+.topbar{margin-bottom:20px !important;}
+.tabs,.view-tabs{padding:12px !important;gap:10px !important;margin-bottom:18px !important;}
+.panel,.card,.titlebox{border-radius:24px !important;}
+.panel-header,
+.card-head{
+  padding:18px 20px !important;
+  gap:14px !important;
+}
+.panel-body,
+.card-body{
+  padding:18px 20px 20px !important;
+}
+.panel-header + .panel-body,
+.card-head + .card-body{
+  padding-top:18px !important;
+}
+.section-stack,
+.setup-guide,
+.qr-manage-shell,
+.growth-report-wrap{
+  gap:18px !important;
+}
+.control-row,
+.roster-tools,
+.action-row,
+.growth-toolbar,
+.page-title-row{
+  gap:10px !important;
+}
+.sub,.tiny,.hint,.footer-note,.summary-sub,.counter-sub,.role-help,.section-subtitle{
+  line-height:1.7 !important;
+}
+.sub,.section-subtitle{
+  margin-top:8px !important;
+}
+.status-box,
+.section-box,
+.summary-item,
+.role-box,
+.league-note,
+.guide-box,
+.sync-note,
+.qr-summary-card,
+.growth-section,
+.analysis-box,
+.growth-play-type,
+.growth-teacher-comment,
+.empty-state{
+  padding:16px !important;
+  border-radius:18px !important;
+}
+.meta-grid,
+.counter-grid,
+.summary-grid,
+.check-grid,
+.team-grid,
+.match-grid,
+.insight-grid,
+.feedback-list,
+.qr-summary,
+.growth-grid,
+.growth-analysis-grid,
+.broadcast-singles-rank-grid{
+  gap:14px !important;
+}
+.match-summary-pill,
+.avg-pill,
+.tag,
+.broadcast-badge,
+.broadcast-meta,
+.broadcast-mode-pill{
+  margin-top:10px !important;
+}
+.btn,.tab,.view-tab,.type-tab,.qr-mode-tab,.qr-round-btn{
+  min-height:46px !important;
+}
+.help-icon-btn{
+  width:32px !important;
+  height:32px !important;
+  min-width:32px !important;
+  min-height:32px !important;
+  padding:0 !important;
+  border-radius:999px !important;
+  border:1px solid rgba(255,255,255,.12) !important;
+  background:linear-gradient(180deg,#17345e,#102746) !important;
+  color:#eef5ff !important;
+  font-size:.92rem !important;
+  font-weight:900 !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 8px 16px rgba(0,0,0,.16) !important;
+  cursor:pointer !important;
+  flex:0 0 auto !important;
+  margin-left:8px !important;
+}
+.help-icon-btn:hover{
+  filter:brightness(1.08) !important;
+  transform:translateY(-1px);
+}
+.help-inline-box{
+  display:none;
+  margin-top:12px !important;
+  padding:14px 16px !important;
+  border-radius:16px !important;
+  background:rgba(255,255,255,.05) !important;
+  border:1px solid rgba(255,255,255,.08) !important;
+  color:#cfe0ff !important;
+  line-height:1.7 !important;
+  font-size:.84rem !important;
+}
+.help-inline-box.show{
+  display:block !important;
+}
+.page-title-row > div:first-child,
+.growth-head > div:first-child{
+  display:grid !important;
+  gap:6px !important;
+}
+.growth-kpis{margin-bottom:16px !important;}
+.growth-report-preview-card{
+  padding:20px !important;
+  border-radius:20px !important;
+}
+.growth-head{
+  margin-bottom:16px !important;
+  gap:18px !important;
+}
+.growth-table th,
+.growth-table td{
+  padding:10px 12px !important;
+}
+.modal-backdrop{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(4,10,20,.62);
+  backdrop-filter:blur(6px);
+  z-index:1000;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+.modal-backdrop.show{
+  display:flex !important;
+}
+.modal-card-basic{
+  width:min(720px,100%);
+  max-height:min(88vh,920px);
+  overflow:auto;
+  border-radius:24px;
+  background:linear-gradient(180deg, rgba(10,20,38,.98), rgba(9,18,34,.98));
+  border:1px solid rgba(77,163,255,.18);
+  box-shadow:0 18px 40px rgba(0,0,0,.34);
+  padding:22px;
+}
+.form-stack{
+  display:grid;
+  gap:14px;
+}
+@media (max-width:900px){
+  .panel-header,.card-head{padding:16px 16px !important;}
+  .panel-body,.card-body{padding:16px 16px 18px !important;}
+  .titlebox{padding:18px 18px !important;}
+}
+</style>
+
 </head>
 <body>
 
@@ -3728,10 +3863,7 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
         <section class="panel">
           <div class="panel-header" style="border-bottom:none;padding-bottom:0;">
             <div>
-              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-                <div class="panel-title" id="qrPanelTitle">오더 제출 QR 관리</div>
-                <button class="help-icon-btn" type="button" onclick="toggleInlineHelp('qrHelpBox')">!</button>
-              </div>
+              <div class="panel-title" id="qrPanelTitle">오더 제출 QR 관리</div>
               <div class="tiny muted" id="qrPanelDesc">조별로 오더를 작성할 수 있도록, 라운드별 조 전용 링크를 표시합니다.</div>
             </div>
             <div class="actions" style="margin-left:auto;">
@@ -3743,7 +3875,6 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
             </div>
           </div>
           <div class="panel-body">
-            <div id="qrHelpBox" class="help-inline-box" style="margin-bottom:12px;">현재 선택한 QR 종류에 따라 오더 제출, 심판용, 데이터 기록용 링크와 상태를 확인할 수 있습니다.</div>
             <div class="qr-round-picker" id="qrRoundPicker" style="margin-bottom:16px;">
               <button class="qr-round-btn active" data-round="1" onclick="setQrRound(1)">1라운드</button>
               <button class="qr-round-btn" data-round="2" onclick="setQrRound(2)">2라운드</button>
@@ -3826,12 +3957,10 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
         <div class="panel">
           <div class="panel-header">
             <div>
-              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-                <div class="panel-title">학생 성장 리포트</div>
-                <button class="help-icon-btn" type="button" onclick="toggleInlineHelp('growthHelpBox')">!</button>
-              </div>
+              <div class="panel-title">학생 성장 리포트</div>
             </div>
             <div class="actions">
+              <button class="help-icon-btn" type="button" onclick="toggleInlineHelp('growthHelpBox')">!</button>
               <button class="btn small" type="button" onclick="openStudentLoginManageModal()">학생 로그인 관리</button>
               <button class="btn small" type="button" onclick="renderGrowthReportPage()">새로고침</button>
               <button class="btn small primary" type="button" onclick="printGrowthReport()">출력</button>
@@ -3891,11 +4020,8 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
         <div class="panel">
           <div class="panel-header">
             <div>
-              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-                <div class="panel-title">단식 리그</div>
-                <button class="help-icon-btn" type="button" onclick="toggleInlineHelp('singlesLeagueHelpBox')">!</button>
-              </div>
-              <div id="singlesLeagueHelpBox" class="help-inline-box">남녀는 같은 성별끼리 경기하되, 전체 경기 순서는 남녀 구분 없이 랜덤으로 섞습니다. 동시에 진행할 경기 수를 정할 수 있고, 같은 시간대 경기 안에는 중복 학생이 배치되지 않도록 자동 편성합니다.</div>
+              <div class="panel-title">단식 능력 리그</div>
+              <div class="tiny muted">남녀는 같은 성별끼리 경기하되, 전체 경기 순서는 남녀 구분 없이 랜덤으로 섞습니다. 동시에 진행할 경기 수를 정할 수 있고, 같은 시간대 경기 안에는 중복 학생이 배치되지 않도록 자동 편성합니다.</div>
             </div>
           </div>
           <div class="panel-body">
@@ -3909,11 +4035,7 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
             <div class="singles-participant-grid">
               <div class="singles-summary-list">
                 <div class="singles-summary-card">
-                  <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;">
-                    <div style="font-weight:800;">단식 참가자 선택</div>
-                    <button class="help-icon-btn" type="button" onclick="toggleInlineHelp('singlesParticipantHelpBox')">!</button>
-                  </div>
-                  <div id="singlesParticipantHelpBox" class="help-inline-box">단식 참가 체크가 된 학생만 포함됩니다. 남학생은 남학생끼리, 여학생은 여학생끼리 경기합니다. 전체 경기 순서는 남녀 구분 없이 랜덤으로 섞되, <b>늦게 배치</b>로 표시한 학생의 경기는 가능한 한 뒤쪽 시간대로 배치합니다. 같은 시간대에는 같은 학생이 중복 배치되지 않도록 자동 편성됩니다. 경기 중 변동이 생기면 각 경기 카드의 <b>뒤로 미루기</b> 버튼으로 다시 뒤쪽으로 보낼 수 있습니다.</div>
+                  <div style="font-weight:800;margin-bottom:10px">단식 참가자 선택</div>
                   <div class="control-row" style="margin-bottom:10px">
                     <button class="btn small" onclick="setSinglesParticipantAll(true)">전체 참가</button>
                     <button class="btn small" onclick="setSinglesParticipantAll(false)">전체 제외</button>
@@ -3964,6 +4086,7 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
                 </div>
               </div>
             </div>
+            <div class="footer-note">단식 참가 체크가 된 학생만 포함됩니다. 남학생은 남학생끼리, 여학생은 여학생끼리 경기합니다. 전체 경기 순서는 남녀 구분 없이 랜덤으로 섞되, <b>늦게 배치</b>로 표시한 학생의 경기는 가능한 한 뒤쪽 시간대로 배치합니다. 같은 시간대에는 같은 학생이 중복 배치되지 않도록 자동 편성됩니다. 경기 중 변동이 생기면 각 경기 카드의 <b>뒤로 미루기</b> 버튼으로 다시 뒤쪽으로 보낼 수 있습니다.</div>
           </div>
         </div>
 
@@ -8881,7 +9004,181 @@ function renderDataInsightsPage() {
       const win = window.open('', '_blank', 'width=980,height=1200');
       if (!win) { alert('팝업이 차단되었습니다.'); return; }
       win.document.write(`<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>성장 리포트</title><style>
-        body{font-family:Pretendard,Arial,sans-serif;color:#111827;margin:0;background:#f3f4f6;} .page{width:210mm;min-height:297mm;margin:0 auto;background:#fff;padding:14mm;box-sizing:border-box;} .head{border-bottom:2px solid #111827;padding-bottom:10px;margin-bottom:14px;} h1{margin:0 0 6px;font-size:24px;} .sub{color:#4b5563;font-size:13px;} .meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px 16px;font-size:13px;margin-bottom:16px;} .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;} .kpi{border:1px solid #d1d5db;border-radius:10px;padding:10px;background:#f9fafb;text-align:center;} .label{font-size:12px;color:#6b7280;} .value{font-size:22px;font-weight:700;margin-top:4px;} .section{border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;margin-bottom:16px;} .section h3{margin:0;padding:10px 12px;background:#f3f4f6;font-size:15px;} .section .body{padding:12px;font-size:13px;line-height:1.6;} table{width:100%;border-collapse:collapse;font-size:13px;} th,td{border:1px solid #e5e7eb;padding:8px 10px;} th{text-align:left;background:#f9fafb;width:36%;} .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;} .box{border:1px solid #d1d5db;border-radius:8px;padding:10px;background:#fcfcfd;} .box h4{margin:0 0 6px;font-size:13px;} @media print{@page{size:A4;margin:14mm;} body{background:#fff;} .page{margin:0;width:auto;min-height:auto;padding:0;}}</style></head><body><div class="page"><div class="head"><h1>배드민턴 수업 학생 성장 리포트</h1><div class="sub">누적 관찰 데이터를 바탕으로 생성된 종합형 리포트</div></div><div class="meta"><div><strong>반</strong> ${currentClass}반</div><div><strong>이름</strong> ${escapeHtml(report.player.name)}</div><div><strong>종목</strong> ${escapeHtml(growthEventFilter === 'all' ? '전체' : GAME_LABEL[growthEventFilter])}</div></div><div class="kpis"><div class="kpi"><div class="label">관찰 기록</div><div class="value">${report.summary.totalRecords}</div></div><div class="kpi"><div class="label">서브 성공률</div><div class="value">${report.summary.serveRate}%</div></div><div class="kpi"><div class="label">공격 성공률</div><div class="value">${report.summary.attackRate}%</div></div><div class="kpi"><div class="label">수비 성공률</div><div class="value">${report.summary.defenseRate}%</div></div></div><div class="section"><h3>누적 수행 요약</h3><div class="body"><table><tr><th>서브</th><td>성공 ${report.summary.totalServeSuccess}회 / 실패 ${report.summary.totalServeFail}회</td></tr><tr><th>공격</th><td>성공 ${report.summary.totalAttackSuccess}회 / 실패 ${report.summary.totalAttackFail}회</td></tr><tr><th>수비</th><td>성공 ${report.summary.totalDefenseSuccess}회 / 실패 ${report.summary.totalDefenseFail}회</td></tr><tr><th>서브 실패 최빈값</th><td>${escapeHtml(report.summary.topServeFail)}</td></tr><tr><th>공격 실패 최빈값</th><td>${escapeHtml(report.summary.topAttackFail)}</td></tr><tr><th>수비 실패 최빈값</th><td>${escapeHtml(report.summary.topDefenseFail)}</td></tr></table></div></div><div class="section"><h3>종합 분석</h3><div class="body"><div class="grid"><div class="box"><h4>대표 수행 유형</h4><div><strong>${escapeHtml(report.playType.label)}</strong></div><div style="margin-top:6px;">${escapeHtml(report.playType.desc)}</div></div><div class="box"><h4>강점</h4><div>${escapeHtml(report.strengthText)}</div></div><div class="box"><h4>보완점</h4><div>${escapeHtml(report.improveText)}</div></div><div class="box"><h4>다음 목표</h4><div>${escapeHtml(report.goalText)}</div></div></div></div></div><div class="section"><h3>교사 종합 코멘트</h3><div class="body">${escapeHtml(report.teacherComment)}</div></div></div><script>window.onload=()=>window.print();<\/script></body></html>`);
+        body{font-family:Pretendard,Arial,sans-serif;color:#111827;margin:0;background:#f3f4f6;} .page{width:210mm;min-height:297mm;margin:0 auto;background:#fff;padding:14mm;box-sizing:border-box;} .head{border-bottom:2px solid #111827;padding-bottom:10px;margin-bottom:14px;} h1{margin:0 0 6px;font-size:24px;} .sub{color:#4b5563;font-size:13px;} .meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px 16px;font-size:13px;margin-bottom:16px;} .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;} .kpi{border:1px solid #d1d5db;border-radius:10px;padding:10px;background:#f9fafb;text-align:center;} .label{font-size:12px;color:#6b7280;} .value{font-size:22px;font-weight:700;margin-top:4px;} .section{border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;margin-bottom:16px;} .section h3{margin:0;padding:10px 12px;background:#f3f4f6;font-size:15px;} .section .body{padding:12px;font-size:13px;line-height:1.6;} table{width:100%;border-collapse:collapse;font-size:13px;} th,td{border:1px solid #e5e7eb;padding:8px 10px;} th{text-align:left;background:#f9fafb;width:36%;} .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;} .box{border:1px solid #d1d5db;border-radius:8px;padding:10px;background:#fcfcfd;} .box h4{margin:0 0 6px;font-size:13px;} @media print{@page{size:A4;margin:14mm;} body{background:#fff;} .page{margin:0;width:auto;min-height:auto;padding:0;}}</style>
+<style id="global-spacing-refresh">
+/* Global spacing refresh */
+.titlebox{
+  padding:22px 24px !important;
+  gap:12px !important;
+}
+.topbar{margin-bottom:20px !important;}
+.tabs,.view-tabs{padding:12px !important;gap:10px !important;margin-bottom:18px !important;}
+.panel,.card,.titlebox{border-radius:24px !important;}
+.panel-header,
+.card-head{
+  padding:18px 20px !important;
+  gap:14px !important;
+}
+.panel-body,
+.card-body{
+  padding:18px 20px 20px !important;
+}
+.panel-header + .panel-body,
+.card-head + .card-body{
+  padding-top:18px !important;
+}
+.section-stack,
+.setup-guide,
+.qr-manage-shell,
+.growth-report-wrap{
+  gap:18px !important;
+}
+.control-row,
+.roster-tools,
+.action-row,
+.growth-toolbar,
+.page-title-row{
+  gap:10px !important;
+}
+.sub,.tiny,.hint,.footer-note,.summary-sub,.counter-sub,.role-help,.section-subtitle{
+  line-height:1.7 !important;
+}
+.sub,.section-subtitle{
+  margin-top:8px !important;
+}
+.status-box,
+.section-box,
+.summary-item,
+.role-box,
+.league-note,
+.guide-box,
+.sync-note,
+.qr-summary-card,
+.growth-section,
+.analysis-box,
+.growth-play-type,
+.growth-teacher-comment,
+.empty-state{
+  padding:16px !important;
+  border-radius:18px !important;
+}
+.meta-grid,
+.counter-grid,
+.summary-grid,
+.check-grid,
+.team-grid,
+.match-grid,
+.insight-grid,
+.feedback-list,
+.qr-summary,
+.growth-grid,
+.growth-analysis-grid,
+.broadcast-singles-rank-grid{
+  gap:14px !important;
+}
+.match-summary-pill,
+.avg-pill,
+.tag,
+.broadcast-badge,
+.broadcast-meta,
+.broadcast-mode-pill{
+  margin-top:10px !important;
+}
+.btn,.tab,.view-tab,.type-tab,.qr-mode-tab,.qr-round-btn{
+  min-height:46px !important;
+}
+.help-icon-btn{
+  width:32px !important;
+  height:32px !important;
+  min-width:32px !important;
+  min-height:32px !important;
+  padding:0 !important;
+  border-radius:999px !important;
+  border:1px solid rgba(255,255,255,.12) !important;
+  background:linear-gradient(180deg,#17345e,#102746) !important;
+  color:#eef5ff !important;
+  font-size:.92rem !important;
+  font-weight:900 !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 8px 16px rgba(0,0,0,.16) !important;
+  cursor:pointer !important;
+  flex:0 0 auto !important;
+  margin-left:8px !important;
+}
+.help-icon-btn:hover{
+  filter:brightness(1.08) !important;
+  transform:translateY(-1px);
+}
+.help-inline-box{
+  display:none;
+  margin-top:12px !important;
+  padding:14px 16px !important;
+  border-radius:16px !important;
+  background:rgba(255,255,255,.05) !important;
+  border:1px solid rgba(255,255,255,.08) !important;
+  color:#cfe0ff !important;
+  line-height:1.7 !important;
+  font-size:.84rem !important;
+}
+.help-inline-box.show{
+  display:block !important;
+}
+.page-title-row > div:first-child,
+.growth-head > div:first-child{
+  display:grid !important;
+  gap:6px !important;
+}
+.growth-kpis{margin-bottom:16px !important;}
+.growth-report-preview-card{
+  padding:20px !important;
+  border-radius:20px !important;
+}
+.growth-head{
+  margin-bottom:16px !important;
+  gap:18px !important;
+}
+.growth-table th,
+.growth-table td{
+  padding:10px 12px !important;
+}
+.modal-backdrop{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(4,10,20,.62);
+  backdrop-filter:blur(6px);
+  z-index:1000;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+.modal-backdrop.show{
+  display:flex !important;
+}
+.modal-card-basic{
+  width:min(720px,100%);
+  max-height:min(88vh,920px);
+  overflow:auto;
+  border-radius:24px;
+  background:linear-gradient(180deg, rgba(10,20,38,.98), rgba(9,18,34,.98));
+  border:1px solid rgba(77,163,255,.18);
+  box-shadow:0 18px 40px rgba(0,0,0,.34);
+  padding:22px;
+}
+.form-stack{
+  display:grid;
+  gap:14px;
+}
+@media (max-width:900px){
+  .panel-header,.card-head{padding:16px 16px !important;}
+  .panel-body,.card-body{padding:16px 16px 18px !important;}
+  .titlebox{padding:18px 18px !important;}
+}
+</style>
+
+</head><body><div class="page"><div class="head"><h1>배드민턴 수업 학생 성장 리포트</h1><div class="sub">누적 관찰 데이터를 바탕으로 생성된 종합형 리포트</div></div><div class="meta"><div><strong>반</strong> ${currentClass}반</div><div><strong>이름</strong> ${escapeHtml(report.player.name)}</div><div><strong>종목</strong> ${escapeHtml(growthEventFilter === 'all' ? '전체' : GAME_LABEL[growthEventFilter])}</div></div><div class="kpis"><div class="kpi"><div class="label">관찰 기록</div><div class="value">${report.summary.totalRecords}</div></div><div class="kpi"><div class="label">서브 성공률</div><div class="value">${report.summary.serveRate}%</div></div><div class="kpi"><div class="label">공격 성공률</div><div class="value">${report.summary.attackRate}%</div></div><div class="kpi"><div class="label">수비 성공률</div><div class="value">${report.summary.defenseRate}%</div></div></div><div class="section"><h3>누적 수행 요약</h3><div class="body"><table><tr><th>서브</th><td>성공 ${report.summary.totalServeSuccess}회 / 실패 ${report.summary.totalServeFail}회</td></tr><tr><th>공격</th><td>성공 ${report.summary.totalAttackSuccess}회 / 실패 ${report.summary.totalAttackFail}회</td></tr><tr><th>수비</th><td>성공 ${report.summary.totalDefenseSuccess}회 / 실패 ${report.summary.totalDefenseFail}회</td></tr><tr><th>서브 실패 최빈값</th><td>${escapeHtml(report.summary.topServeFail)}</td></tr><tr><th>공격 실패 최빈값</th><td>${escapeHtml(report.summary.topAttackFail)}</td></tr><tr><th>수비 실패 최빈값</th><td>${escapeHtml(report.summary.topDefenseFail)}</td></tr></table></div></div><div class="section"><h3>종합 분석</h3><div class="body"><div class="grid"><div class="box"><h4>대표 수행 유형</h4><div><strong>${escapeHtml(report.playType.label)}</strong></div><div style="margin-top:6px;">${escapeHtml(report.playType.desc)}</div></div><div class="box"><h4>강점</h4><div>${escapeHtml(report.strengthText)}</div></div><div class="box"><h4>보완점</h4><div>${escapeHtml(report.improveText)}</div></div><div class="box"><h4>다음 목표</h4><div>${escapeHtml(report.goalText)}</div></div></div></div></div><div class="section"><h3>교사 종합 코멘트</h3><div class="body">${escapeHtml(report.teacherComment)}</div></div></div><script>window.onload=()=>window.print();<\/script></body></html>`);
       win.document.close();
     }
     window.printGrowthReport = printGrowthReport;
