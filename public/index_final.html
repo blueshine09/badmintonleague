@@ -12,7 +12,6 @@
     .status-red{background:rgba(255,107,107,.15);color:#ff8f8f;}
     .status-yellow{background:rgba(255,209,102,.16);color:#ffe08a;}
     .status-green{background:rgba(83,215,105,.16);color:#9ff2ae;}
-    .status-blue{background:rgba(90,177,255,.16);color:#bcdcff;}
     .status-blue{background:rgba(90,177,255,.16);color:#beddff;}
     .score-input-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 14px 14px;}
     .game-box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:12px;cursor:pointer;transition:.15s ease;}
@@ -306,7 +305,11 @@
     .tab.active { background: linear-gradient(135deg, #2d73ff, #45b3ff); color: #fff; border-color: transparent; box-shadow: 0 8px 18px rgba(45,115,255,.22); }
 
     .grid {
-      display: grid; grid-template-columns: 360px 1.2fr .95fr; gap: 16px;
+      display: grid; grid-template-columns: minmax(280px,360px) minmax(0,1.2fr) minmax(0,.95fr); gap: 16px;
+    }
+    @media (max-width: 1220px){
+      .grid{grid-template-columns:1fr;}
+      .sync-bar{grid-template-columns:1fr;}
     }
     .panel {
       background: rgba(15,28,51,.92);
@@ -2755,6 +2758,254 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
     .doubles-empty{padding:18px;border-radius:16px;background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.14);color:var(--muted);line-height:1.6;text-align:center;}
     @media (max-width: 1080px){.doubles-layout{grid-template-columns:1fr;}.doubles-score-actions{grid-template-columns:1fr;}}
 
+  
+
+    /* ==== 2026 theme refresh: stadium + AI coaching ==== */
+    :root {
+      --bg: #06111f;
+      --panel: rgba(9, 23, 43, .92);
+      --panel-2: rgba(12, 31, 58, .96);
+      --line: rgba(110, 173, 255, .20);
+      --text: #eef5ff;
+      --muted: #a8bddc;
+      --accent: #59b3ff;
+      --accent-2: #78c7ff;
+      --warn: #ffd166;
+      --danger: #ff6b6b;
+      --red: #ff6f7d;
+      --blue: #59b3ff;
+      --green: #34d399;
+      --shadow: 0 20px 48px rgba(0,0,0,.32);
+    }
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(89,179,255,.14), transparent 24%),
+        radial-gradient(circle at top right, rgba(120,199,255,.10), transparent 18%),
+        linear-gradient(180deg, #04101d 0%, #081a31 48%, #06111f 100%);
+      color: var(--text);
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(to bottom, rgba(255,255,255,.035), transparent 18%),
+        repeating-linear-gradient(
+          90deg,
+          rgba(255,255,255,.018) 0,
+          rgba(255,255,255,.018) 1px,
+          transparent 1px,
+          transparent 120px
+        );
+      opacity: .35;
+      mix-blend-mode: screen;
+      z-index: 0;
+    }
+    .app { position: relative; z-index: 1; }
+    .titlebox,
+    .panel,
+    .match-card,
+    .student-card,
+    .ref-head,
+    .team-panel,
+    .start-panel,
+    .score-panel,
+    .broadcast-card,
+    .broadcast-rank-card,
+    .broadcast-singles-bracket,
+    .broadcast-side-card,
+    .sync-url-box,
+    .sync-action-box,
+    .lineup-link-card,
+    .lineup-status-box {
+      background: linear-gradient(180deg, rgba(11,27,49,.94), rgba(7,20,39,.94));
+      border: 1px solid rgba(110,173,255,.18);
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,.05);
+      backdrop-filter: blur(10px);
+    }
+    .titlebox {
+      border-radius: 26px;
+      background:
+        radial-gradient(circle at top left, rgba(89,179,255,.16), transparent 28%),
+        linear-gradient(180deg, rgba(13,31,56,.96), rgba(8,21,41,.96));
+    }
+    .panel-header,
+    .card-head,
+    .broadcast-rank-card-head,
+    .broadcast-singles-bracket-head {
+      background: linear-gradient(180deg, rgba(89,179,255,.09), rgba(255,255,255,0));
+      border-bottom-color: rgba(110,173,255,.16);
+    }
+    .btn,
+    .tab,
+    .view-tab,
+    .broadcast-toggle-btn,
+    .event-btn,
+    .picker-btn,
+    .type-tab,
+    .overlay-btn,
+    .mini-btn.minus {
+      background: linear-gradient(180deg, rgba(18,39,68,.96), rgba(11,24,44,.96));
+      border: 1px solid rgba(110,173,255,.16);
+      color: #eaf3ff;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+    }
+    .btn:hover,
+    .tab:hover,
+    .view-tab:hover,
+    .event-btn:hover,
+    .picker-btn:hover,
+    .broadcast-toggle-btn:hover,
+    .type-tab:hover,
+    .overlay-btn:hover,
+    .mini-btn.minus:hover {
+      filter: none;
+      border-color: rgba(120,199,255,.34);
+      transform: translateY(-1px);
+    }
+    .btn.primary,
+    .btn.green,
+    .btn.yellow,
+    .btn.red,
+    .tab.active,
+    .view-tab.active,
+    .broadcast-toggle-btn.active,
+    .type-tab.active,
+    .mini-btn.plus,
+    .overlay-btn.warn,
+    .overlay-btn.danger {
+      border: none;
+      color: #fff;
+    }
+    .btn.primary,
+    .btn.green,
+    .btn.yellow,
+    .tab.active,
+    .view-tab.active,
+    .broadcast-toggle-btn.active,
+    .type-tab.active,
+    .mini-btn.plus {
+      background: linear-gradient(135deg, #2387ff, #5bc2ff);
+      box-shadow: 0 10px 24px rgba(35,135,255,.26);
+    }
+    .btn.red,
+    .overlay-btn.danger {
+      background: linear-gradient(135deg, #d94a63, #ff6f7d);
+      box-shadow: 0 10px 24px rgba(217,74,99,.24);
+    }
+    .btn.yellow,
+    .overlay-btn.warn {
+      color: #17202e;
+      background: linear-gradient(135deg, #f0b84e, #ffd166);
+      box-shadow: 0 10px 24px rgba(255,209,102,.22);
+    }
+    .avg-pill,
+    .status-pill,
+    .broadcast-badge,
+    .broadcast-mode-pill,
+    .broadcast-rank-card-meta,
+    .broadcast-singles-bracket-meta,
+    .broadcast-singles-state,
+    .broadcast-meta,
+    .match-summary-pill,
+    .sync-state-pill,
+    .tag,
+    .status-dot,
+    .match-tactic-chip {
+      border: 1px solid rgba(110,173,255,.18);
+      background: rgba(89,179,255,.14);
+      color: #dff0ff;
+    }
+    .score.red { color: #ff8a96; }
+    .score.blue { color: #8fd1ff; }
+    .score-num,
+    .broadcast-score-num,
+    .broadcast-score-colon {
+      text-shadow: 0 0 24px rgba(89,179,255,.12);
+    }
+    .team-card,
+    .leader-card,
+    .insight-card,
+    .feedback-item,
+    .history-item,
+    .event-log,
+    .match-stats,
+    .team-box,
+    .lineup-box,
+    .score-team,
+    .broadcast-lineup,
+    .broadcast-singles-match-item,
+    .broadcast-rank-item,
+    .lineup-status-item,
+    .log-item,
+    .game-box,
+    .student-round-card {
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.025));
+      border: 1px solid rgba(110,173,255,.12);
+    }
+    .team-box.red,
+    .score-team:first-child {
+      box-shadow: inset 0 0 0 1px rgba(255,111,125,.24);
+    }
+    .team-box.blue,
+    .score-team:last-child {
+      box-shadow: inset 0 0 0 1px rgba(91,194,255,.24);
+    }
+    .tabs,
+    .view-tabs,
+    .sync-bar {
+      background: linear-gradient(180deg, rgba(12,28,51,.88), rgba(7,20,39,.88));
+      border: 1px solid rgba(110,173,255,.16);
+      box-shadow: var(--shadow);
+    }
+    .roster-wrap,
+    .lineup-qr-img,
+    .score-pair input,
+    .lineup-select,
+    .sync-bar input,
+    .sync-bar textarea,
+    .control-row input,
+    .control-row select,
+    .team-name-input,
+    td input[type="text"],
+    td input[type="number"],
+    .lineup-link-card input,
+    .student-form-grid select {
+      background: rgba(5,18,35,.86);
+      border-color: rgba(110,173,255,.16);
+      color: var(--text);
+    }
+    th {
+      background: linear-gradient(180deg, rgba(21,41,72,.98), rgba(15,32,58,.98));
+      color: #d8ebff;
+    }
+    .broadcast-hero {
+      background:
+        radial-gradient(circle at top left, rgba(89,179,255,.18), transparent 32%),
+        linear-gradient(180deg, rgba(13,31,56,.96), rgba(8,21,41,.96));
+      border-color: rgba(110,173,255,.18);
+    }
+    .footer-note,
+    .sync-note,
+    .league-note {
+      background: rgba(255,255,255,.035);
+      border-color: rgba(110,173,255,.12);
+    }
+    .panel-title,
+    .broadcast-rank-card-title,
+    .broadcast-singles-bracket-title,
+    .team-name,
+    .team-name-big,
+    .score-heading,
+    .card-title,
+    h1, h2, h3, h4 {
+      letter-spacing: -.02em;
+    }
+    @media (max-width: 1180px) {
+      .grid { grid-template-columns: minmax(0, 1fr); }
+    }
+
   </style>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -4005,7 +4256,7 @@ let broadcastInfoView = 'current';
 
       realtimeCloudSyncInFlight = true;
       try {
-        await apiRequest('saveClass', { classNo: classNoSafe, data: appData.classes[classNoSafe] || emptyClassData() }, 'POST');
+        await apiRequest('saveClass', { classNo: classNoSafe, data: buildPersistableClassData(classNoSafe) }, 'POST');
         lastRealtimeSyncedSignatureByClass[classNoSafe] = signature;
       } catch (error) {
         console.error(error);
@@ -4042,6 +4293,14 @@ let broadcastInfoView = 'current';
 
     function currentData() {
       return appData.classes[currentClass];
+    }
+
+    function getClassDbPath(classNo = currentClass) {
+      return `appState/classes/${Number(classNo) || currentClass}`;
+    }
+
+    function buildPersistableClassData(classNo = currentClass) {
+      return normalizeClassDataForLoad(appData.classes[classNo] || emptyClassData());
     }
 
     function createTabs() {
@@ -5726,11 +5985,11 @@ async function getFirebaseHelpers() {
   if (!config) throw new Error('Firebase 설정 JSON을 먼저 저장해 주세요.');
   if (!window.__firebaseReady) {
     window.__firebaseReady = (async () => {
-      const [{ initializeApp, getApps }, dbModule] = await Promise.all([
+      const [{ initializeApp, getApps, deleteApp }, dbModule] = await Promise.all([
         import('https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js'),
         import('https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js')
       ]);
-      window.__firebaseModules = { initializeApp, getApps, ...dbModule };
+      window.__firebaseModules = { initializeApp, getApps, deleteApp, ...dbModule };
       return true;
     })();
   }
@@ -5869,7 +6128,7 @@ async function startFirebaseClassWatch(classNo = currentClass, options = {}) {
   if (!hasConfig) return;
   try {
     const { db, ref, onValue } = await getFirebaseHelpers();
-    const watchRef = ref(db, `appState/classes/${classNo}`);
+    const watchRef = ref(db, getClassDbPath(classNo));
     let first = true;
     firebaseClassWatchUnsubscribe = onValue(watchRef, (snap) => {
       const incoming = normalizeClassDataForLoad(snap.exists() ? snap.val() : emptyClassData());
@@ -6039,7 +6298,7 @@ async function cloudLoadCurrentClass() {
 async function cloudSaveCurrentClass() {
   try {
     setSyncStatus(`${currentClass}반 데이터를 저장하는 중입니다...`);
-    const data = await apiRequest('saveClass', { classNo: currentClass, data: currentData() }, 'POST');
+    const data = await apiRequest('saveClass', { classNo: currentClass, data: buildPersistableClassData(currentClass) }, 'POST');
     lastRealtimeSyncedSignatureByClass[currentClass] = getClassRealtimeSignature(currentClass);
     await startFirebaseClassWatch(currentClass, { silent: true });
     setSyncStatus(`${currentClass}반 저장 완료 · ${data.updatedAt || 'Firebase 반영'}`);

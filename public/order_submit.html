@@ -40,6 +40,109 @@
     .mini-check{display:flex;gap:8px;align-items:flex-start;color:var(--muted);font-size:.82rem}
     .mini-check input{width:auto;min-width:16px;margin-top:2px}
     @media (max-width:700px){.duo-grid,.tri-grid,.role-grid,.ai-grid{grid-template-columns:1fr}.status-box{display:grid;justify-content:stretch}.action-row .btn{flex:1}}
+  
+
+    /* ==== 2026 theme refresh: stadium + AI coaching ==== */
+    :root{
+      --bg:#06111f;
+      --bg2:#081a31;
+      --panel:rgba(9,23,43,.94);
+      --line:rgba(110,173,255,.20);
+      --text:#eef5ff;
+      --muted:#a8bddc;
+      --accent:#59b3ff;
+      --warn:#ffd166;
+      --green:#34d399;
+      --danger:#ff6f7d;
+      --shadow:0 20px 48px rgba(0,0,0,.32);
+      --radius:24px;
+      --radius-sm:18px
+    }
+    body{
+      background:
+        radial-gradient(circle at top left, rgba(89,179,255,.14), transparent 24%),
+        radial-gradient(circle at top right, rgba(120,199,255,.10), transparent 18%),
+        linear-gradient(180deg,#04101d 0%,#081a31 48%,#06111f 100%);
+      min-height:100vh;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background:
+        linear-gradient(to bottom, rgba(255,255,255,.035), transparent 18%),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.018) 0, rgba(255,255,255,.018) 1px, transparent 1px, transparent 120px);
+      opacity:.35;
+      mix-blend-mode:screen;
+    }
+    .shell{position:relative;z-index:1;max-width:980px}
+    .card,
+    .section-box,
+    .status-box,
+    .summary-item,
+    .role-box,
+    .ai-strategy-item,
+    .error-box,
+    .success-box{
+      background:linear-gradient(180deg, rgba(11,27,49,.94), rgba(7,20,39,.94));
+      border:1px solid rgba(110,173,255,.18);
+      box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.05);
+      backdrop-filter:blur(10px)
+    }
+    .card-head{
+      background:linear-gradient(180deg, rgba(89,179,255,.09), rgba(255,255,255,0));
+      border-bottom-color:rgba(110,173,255,.16)
+    }
+    select,input{
+      background:rgba(5,18,35,.86);
+      border-color:rgba(110,173,255,.16)
+    }
+    .btn{
+      background:linear-gradient(180deg, rgba(18,39,68,.96), rgba(11,24,44,.96));
+      border:1px solid rgba(110,173,255,.16);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.04)
+    }
+    .btn:hover{filter:none;border-color:rgba(120,199,255,.34);transform:translateY(-1px)}
+    .btn.primary,.btn.blue,.btn.green,.btn.yellow,.status-done{
+      border:none;color:#fff
+    }
+    .btn.primary,.btn.blue,.btn.green{
+      background:linear-gradient(135deg,#2387ff,#5bc2ff);
+      box-shadow:0 10px 24px rgba(35,135,255,.26)
+    }
+    .btn.yellow{
+      color:#17202e;
+      background:linear-gradient(135deg,#f0b84e,#ffd166);
+      box-shadow:0 10px 24px rgba(255,209,102,.22)
+    }
+    .btn.gray{
+      background:linear-gradient(180deg, rgba(34,47,68,.96), rgba(18,28,43,.96));
+      border:1px solid rgba(110,173,255,.12)
+    }
+    .pill,
+    .match-badge,
+    .ai-badge,
+    .status-pill,
+    .step-badge{
+      background:rgba(89,179,255,.14);
+      border:1px solid rgba(110,173,255,.18);
+      color:#dff0ff
+    }
+    .pill.warn,.status-draft{background:rgba(255,209,102,.15);border-color:rgba(255,209,102,.24);color:#ffe08a}
+    .status-edit{background:rgba(89,179,255,.16);border-color:rgba(110,173,255,.18);color:#dff0ff}
+    .status-lock{background:rgba(165,180,204,.12);border-color:rgba(165,180,204,.16);color:#d8e2f2}
+    .ai-guide-card{
+      background:
+        radial-gradient(circle at top left, rgba(89,179,255,.14), transparent 28%),
+        linear-gradient(180deg, rgba(11,27,49,.94), rgba(7,20,39,.94));
+      border-color:rgba(110,173,255,.18)
+    }
+    .summary-item,
+    .role-box,
+    .ai-strategy-item{background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.025))}
+    .card-title,h1,h2,.section-title,.ai-strategy-title{letter-spacing:-.02em}
+
   </style>
 </head>
 <body>
@@ -195,12 +298,30 @@
   <script src="./firebase-config.js"></script>
   <script type="module">
     import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
-    import { getDatabase, ref, get, set, onValue } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js';
+    import { getDatabase, ref, get, update, onValue } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js';
+    import { getFunctions, httpsCallable } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-functions.js';
 
-    const firebaseConfig = window.DEFAULT_FIREBASE_CONFIG;
-    if (!firebaseConfig) throw new Error('firebase-config.js를 찾지 못했습니다.');
-    const firebaseApp = getApps().find(app => app.name === 'badminton-app') || initializeApp(firebaseConfig, 'badminton-app');
-    const db = getDatabase(firebaseApp);
+    const firebaseConfig = window.DEFAULT_FIREBASE_CONFIG || null;
+    const FUNCTIONS_REGION = window.FIREBASE_FUNCTIONS_REGION || 'us-central1';
+    const firebaseState = { ready: false, error: '' };
+    let firebaseApp = null;
+    let db = null;
+    let fns = null;
+    let generateTacticGuideFn = null;
+    let generateMatchTacticsFn = null;
+
+    try {
+      if (!firebaseConfig) throw new Error('firebase-config.js를 찾지 못했습니다.');
+      firebaseApp = getApps().find(app => app.name === 'badminton-app') || initializeApp(firebaseConfig, 'badminton-app');
+      db = getDatabase(firebaseApp);
+      fns = getFunctions(firebaseApp, FUNCTIONS_REGION);
+      generateTacticGuideFn = httpsCallable(fns, 'generateTacticGuide');
+      generateMatchTacticsFn = httpsCallable(fns, 'generateMatchTactics');
+      firebaseState.ready = true;
+    } catch (error) {
+      firebaseState.error = error?.message || 'Firebase 초기화에 실패했습니다.';
+      console.error('[order-submit] firebase init error', error);
+    }
 
     const CLASS_COUNT = 7;
     const qs = new URLSearchParams(location.search);
@@ -238,7 +359,7 @@
     const matchTacticsOverview = document.getElementById('matchTacticsOverview');
     const matchTacticsList = document.getElementById('matchTacticsList');
     const AI_ENDPOINT = window.AI_TACTIC_ENDPOINT || '';
-    const MATCH_TACTIC_ENDPOINT = window.AI_MATCH_TACTIC_ENDPOINT || '';
+    const MATCH_TACTIC_ENDPOINT = window.AI_MATCH_TACTIC_ENDPOINT || ''; // optional override for debugging
 
     let appData = emptyClassData();
     let activeTeam = null;
@@ -246,6 +367,55 @@
     let watchUnsubscribe = null;
     let isRefreshingSelects = false;
     let currentStep = 'lineup';
+
+    function ensureFirebaseReady(){
+      if(firebaseState.ready && db) return true;
+      const message = firebaseState.error || 'Firebase 설정을 확인해 주세요.';
+      if(summaryList){
+        summaryList.innerHTML = `<div class="summary-item"><div class="summary-sub">${escapeHtml(message)}</div></div>`;
+      }
+      return false;
+    }
+
+    function disableInteractiveControls(){
+      document.querySelectorAll('button, select, input').forEach(el => {
+        if(['saveLineupDraftBtn','lineupCompleteBtn','generateAiGuideBtn','regenerateAiGuideBtn','generateMatchTacticsBtn','regenerateMatchTacticsBtn','backToLineupBtn','saveRolesDraftBtn','rolesCompleteBtn','finalSubmitBtn'].includes(el.id) || el.tagName === 'SELECT'){
+          el.disabled = true;
+        }
+      });
+    }
+
+    function renderFatalState(message){
+      disableInteractiveControls();
+      if(rolesErrorBox){
+        rolesErrorBox.textContent = message;
+        rolesErrorBox.classList.remove('hidden');
+      }
+      if(aiGuideHint) aiGuideHint.textContent = message;
+      if(matchTacticsStatusText) matchTacticsStatusText.textContent = message;
+      if(matchTacticsStatusPill){
+        matchTacticsStatusPill.className = 'status-pill status-lock';
+        matchTacticsStatusPill.textContent = '오류';
+      }
+      if(summaryList){
+        summaryList.innerHTML = `<div class="summary-item"><div class="summary-sub">${escapeHtml(message)}</div></div>`;
+      }
+    }
+
+    function buildPersistableClassData(){
+      return {
+        roster: Array.isArray(appData.roster) ? appData.roster : [],
+        teams: Array.isArray(appData.teams) ? appData.teams : [],
+        liveMatches: Array.isArray(appData.liveMatches) ? appData.liveMatches : [],
+        completedMatches: Array.isArray(appData.completedMatches) ? appData.completedMatches : [],
+        lineupSubmissions: appData.lineupSubmissions && typeof appData.lineupSubmissions === 'object' ? appData.lineupSubmissions : {},
+        teamStats: appData.teamStats && typeof appData.teamStats === 'object' ? appData.teamStats : {},
+        playerStats: appData.playerStats && typeof appData.playerStats === 'object' ? appData.playerStats : {},
+        pairStats: appData.pairStats && typeof appData.pairStats === 'object' ? appData.pairStats : {},
+        aiTacticGuides: appData.aiTacticGuides && typeof appData.aiTacticGuides === 'object' ? appData.aiTacticGuides : {},
+        aiMatchTactics: appData.aiMatchTactics && typeof appData.aiMatchTactics === 'object' ? appData.aiMatchTactics : {}
+      };
+    }
 
     function escapeHtml(v){return String(v == null ? '' : v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
     function emptyClassData(){ return { roster: [], teams: [], liveMatches: [], completedMatches: [], lineupSubmissions: {}, teamStats:{}, playerStats:{}, pairStats:{}, aiTacticGuides:{}, aiMatchTactics:{} }; }
@@ -591,15 +761,23 @@
     }
 
     async function requestAiStrategies(payload){
-      if(!AI_ENDPOINT) return heuristicStrategies(payload);
-      const response = await fetch(AI_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      if(!response.ok) throw new Error('AI 추천 호출에 실패했습니다.');
-      const data = await response.json();
-      return normalizeAiGuideResponse(data, payload);
+      if(AI_ENDPOINT){
+        const response = await fetch(AI_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if(!response.ok) throw new Error('AI 추천 호출에 실패했습니다.');
+        const data = await response.json();
+        return normalizeAiGuideResponse(data, payload);
+      }
+      try{
+        const result = await generateTacticGuideFn(payload);
+        return normalizeAiGuideResponse(result.data, payload);
+      }catch(error){
+        console.error('generateTacticGuide callable error', error);
+        return heuristicStrategies(payload);
+      }
     }
 
     async function generateAiGuide(mode='generate'){
@@ -625,7 +803,7 @@
         renderAiGuideStrategies(guide);
         aiGuideStatusBadge.textContent = getGuideBadgeText(guide);
         aiGuideHint.textContent = guide.source === 'fallback-rule'
-          ? 'AI 서버 함수가 연결되지 않았거나 호출에 실패하여 현재는 기본 추천을 표시합니다.'
+          ? 'AI 함수 호출에 실패하여 현재는 기본 추천을 표시합니다.'
           : 'AI 오더 추천이 생성되었습니다. 추천 조합과 대안 조합을 비교해 오더를 결정하세요.';
         regenerateAiGuideBtn.disabled = false;
       }catch(error){
@@ -652,7 +830,7 @@
       renderAiGuideStrategies(saved);
       aiGuideStatusBadge.textContent = getGuideBadgeText(saved);
       aiGuideHint.textContent = saved.source === 'fallback-rule'
-        ? '현재 저장된 추천은 기본 추천입니다. 서버 함수를 연결하면 AI 추천으로 대체할 수 있습니다.'
+        ? '현재 저장된 추천은 기본 추천입니다. 함수 호출이 정상 연결되면 AI 추천으로 대체됩니다.'
         : '저장된 AI 오더 추천을 불러왔습니다. 필요하면 다시 생성할 수 있습니다.';
       regenerateAiGuideBtn.disabled = false;
     }
@@ -759,22 +937,38 @@
     }
 
     async function requestMatchTactics(payload){
-      if(!MATCH_TACTIC_ENDPOINT) return heuristicMatchTactics(payload);
-      const response = await fetch(MATCH_TACTIC_ENDPOINT, {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify(payload)
-      });
-      if(!response.ok) throw new Error('상대 맞춤 전술 호출에 실패했습니다.');
-      const data = await response.json();
-      if(data && data.summary && data.women) return data;
-      if(data && typeof data.text === 'string'){
-        try{
-          const parsed = JSON.parse(data.text);
-          if(parsed && parsed.summary && parsed.women) return parsed;
-        }catch(_){}
+      if(MATCH_TACTIC_ENDPOINT){
+        const response = await fetch(MATCH_TACTIC_ENDPOINT, {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify(payload)
+        });
+        if(!response.ok) throw new Error('상대 맞춤 전술 호출에 실패했습니다.');
+        const data = await response.json();
+        if(data && data.summary && data.women) return data;
+        if(data && typeof data.text === 'string'){
+          try{
+            const parsed = JSON.parse(data.text);
+            if(parsed && parsed.summary && parsed.women) return parsed;
+          }catch(_){}
+        }
+        return heuristicMatchTactics(payload);
       }
-      return heuristicMatchTactics(payload);
+      try{
+        const result = await generateMatchTacticsFn(payload);
+        const data = result.data;
+        if(data && data.summary && data.women) return data;
+        if(data && typeof data.text === 'string'){
+          try{
+            const parsed = JSON.parse(data.text);
+            if(parsed && parsed.summary && parsed.women) return parsed;
+          }catch(_){}
+        }
+        return heuristicMatchTactics(payload);
+      }catch(error){
+        console.error('generateMatchTactics callable error', error);
+        return heuristicMatchTactics(payload);
+      }
     }
 
     async function generateMatchTactics(mode='generate'){
@@ -815,7 +1009,10 @@
       return { ok: errors.length === 0, errors, submission };
     }
 
-    async function persistClass(){ await set(ref(db, `appState/classes/${classNo}`), appData); }
+    async function persistClass(){
+      if(!ensureFirebaseReady()) throw new Error(firebaseState.error || 'Firebase 설정을 확인해 주세요.');
+      await update(ref(db, `appState/classes/${classNo}`), buildPersistableClassData());
+    }
     async function persistSubmission(status='draft', submission=getSubmission(), final=false){
       if(!activeTeam || !activeMatch) throw new Error('팀 또는 경기 정보를 찾지 못했습니다.');
       const lineups = getCurrentSelections();
@@ -874,8 +1071,24 @@
       if(submission.lineupCompletedAt && !submission.finalSubmittedAt && currentStep==='lineup') setStep('roles');
     }
 
-    async function loadClass(){ const snap = await get(ref(db, `appState/classes/${classNo}`)); appData = normalizeClassDataForLoad(snap.exists() ? snap.val() : emptyClassData()); hydrateContext(); renderAll(); }
-    function startWatch(){ if(typeof watchUnsubscribe === 'function') watchUnsubscribe(); watchUnsubscribe = onValue(ref(db, `appState/classes/${classNo}`), snap => { const incoming = normalizeClassDataForLoad(snap.exists() ? snap.val() : emptyClassData()); if(JSON.stringify(incoming) === JSON.stringify(appData)) return; appData = incoming; hydrateContext(); renderAll(); }); }
+    async function loadClass(){
+      if(!ensureFirebaseReady()) throw new Error(firebaseState.error || 'Firebase 설정을 확인해 주세요.');
+      const snap = await get(ref(db, `appState/classes/${classNo}`));
+      appData = normalizeClassDataForLoad(snap.exists() ? snap.val() : emptyClassData());
+      hydrateContext();
+      renderAll();
+    }
+    function startWatch(){
+      if(!ensureFirebaseReady()) return;
+      if(typeof watchUnsubscribe === 'function') watchUnsubscribe();
+      watchUnsubscribe = onValue(ref(db, `appState/classes/${classNo}`), snap => {
+        const incoming = normalizeClassDataForLoad(snap.exists() ? snap.val() : emptyClassData());
+        if(JSON.stringify(incoming) === JSON.stringify(appData)) return;
+        appData = incoming;
+        hydrateContext();
+        renderAll();
+      });
+    }
 
     Object.values(lineupSelects).forEach(sel => sel.addEventListener('change', () => { if(isRefreshingSelects) return; refreshLineupOptions(); updateSummary(); }));
     document.getElementById('saveLineupDraftBtn').addEventListener('click', async () => { try { validateLineups(); const submission = getSubmission(); submission.status='draft'; await persistSubmission('draft', submission, false); updateStatus(); } catch(error){ alert(error.message || '임시저장 중 오류가 발생했습니다.'); } });
@@ -889,7 +1102,10 @@
     document.getElementById('rolesCompleteBtn').addEventListener('click', async () => { const result = validateRoles(); if(!result.ok){ rolesErrorBox.innerHTML = result.errors.join('<br>'); rolesErrorBox.classList.remove('hidden'); rolesSuccessBox.classList.add('hidden'); return; } rolesErrorBox.classList.add('hidden'); rolesSuccessBox.textContent = '심판 선택 완료. 제출하기 버튼이 활성화되었습니다.'; rolesSuccessBox.classList.remove('hidden'); result.submission.rolesCompletedAt = new Date().toISOString(); await persistSubmission('roles_ready', result.submission, false); updateStatus(); });
     document.getElementById('finalSubmitBtn').addEventListener('click', async () => { const result = validateRoles(); if(!result.ok){ rolesErrorBox.innerHTML = result.errors.join('<br>'); rolesErrorBox.classList.remove('hidden'); return; } await persistSubmission('submitted', result.submission, true); rolesErrorBox.classList.add('hidden'); rolesSuccessBox.textContent = '최종 제출이 완료되었습니다.'; rolesSuccessBox.classList.remove('hidden'); updateStatus(); });
 
-    loadClass().then(startWatch).catch(error => { console.error(error); summaryList.innerHTML = `<div class="summary-item"><div class="summary-sub">${escapeHtml(error.message || 'Firebase 로드 오류')}</div></div>`; });
+    loadClass().then(startWatch).catch(error => {
+      console.error(error);
+      renderFatalState(error.message || firebaseState.error || 'Firebase 로드 오류');
+    });
   </script>
 </body>
 </html>

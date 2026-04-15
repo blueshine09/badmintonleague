@@ -63,6 +63,165 @@
     .footer-note{font-size:.78rem;color:var(--muted);line-height:1.6}
     @media (max-width:700px){.meta-grid,.counter-grid,.summary-grid,.check-grid,.action-row{grid-template-columns:1fr}}
   </style>
+
+<style id="tournament-theme-override">
+:root{
+  --bg:#050b18 !important;
+  --bg2:#091428 !important;
+  --panel:rgba(10,20,38,.94) !important;
+  --panel2:rgba(16,30,54,.96) !important;
+  --line:rgba(77,163,255,.22) !important;
+  --text:#eef4ff !important;
+  --muted:#aac0e0 !important;
+  --accent:#4da3ff !important;
+  --warn:#ffd166 !important;
+  --danger:#ff6b6b !important;
+  --green:#45b3ff !important;
+  --shadow:0 18px 40px rgba(0,0,0,.32) !important;
+  --radius:22px !important;
+  --radius-sm:16px !important;
+}
+html,body{
+  background:
+    radial-gradient(circle at top, rgba(77,163,255,.14), transparent 34%),
+    linear-gradient(180deg,#050b18 0%,#091428 50%,#0b1730 100%) !important;
+  color:var(--text) !important;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(transparent 0, transparent calc(100% - 72px), rgba(255,255,255,.02) calc(100% - 72px), rgba(255,255,255,.02) 100%),
+    radial-gradient(circle at 12% 8%, rgba(255,209,102,.12), transparent 18%),
+    radial-gradient(circle at 88% 10%, rgba(77,163,255,.10), transparent 22%);
+  z-index:0;
+}
+.app,.shell{position:relative; z-index:1;}
+.titlebox,.card-head,.panel-header{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,0)),
+    linear-gradient(135deg, rgba(77,163,255,.08), rgba(255,209,102,.03)) !important;
+}
+.panel,.titlebox,.card{
+  background:linear-gradient(180deg, rgba(10,20,38,.96), rgba(9,18,34,.96)) !important;
+  border:1px solid rgba(77,163,255,.18) !important;
+  box-shadow:0 18px 40px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.04) !important;
+  backdrop-filter:blur(10px);
+}
+.eyebrow,.subline strong,.section-title,.panel-title,.card-title,.counter-title,.lineup-kind,.score-vs,.vs-mark{
+  letter-spacing:.02em;
+}
+.eyebrow{
+  color:#8fc5ff !important;
+  text-transform:uppercase;
+}
+.status-pill,.pill,.auto-referee,.live-badge,.match-badge{
+  border:1px solid rgba(255,255,255,.08) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+}
+.status-blue,.pill,.auto-referee{
+  background:rgba(77,163,255,.14) !important;
+  color:#dcedff !important;
+}
+.status-green,.status-done{
+  background:rgba(69,179,255,.16) !important;
+  color:#d8ecff !important;
+}
+.status-yellow,.status-draft,.pill.warn{
+  background:rgba(255,209,102,.14) !important;
+  color:#ffe7a8 !important;
+}
+.status-red,.status-lock{
+  background:rgba(255,107,107,.14) !important;
+  color:#ffc4c4 !important;
+}
+.status-gray{
+  background:rgba(170,192,224,.14) !important;
+  color:#dce8f8 !important;
+}
+.team-card,.lineup-card,.score-team,.counter-card,.summary-card,.check-card,.meta-item,.section-box,.status-box,.choice-item,.help-box,.player-picker-card{
+  background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02)) !important;
+  border:1px solid rgba(255,255,255,.07) !important;
+}
+.btn,.type-tab,.help-btn,.icon-btn,.overlay-btn{
+  background:linear-gradient(180deg,#11233f,#0c1b31) !important;
+  color:var(--text) !important;
+  border:1px solid rgba(255,255,255,.08) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+}
+.btn:hover,.type-tab:hover,.help-btn:hover,.icon-btn:hover,.overlay-btn:hover{
+  filter:brightness(1.08);
+}
+.btn.primary,.btn.blue,.btn.green,
+.type-tab.active{
+  background:linear-gradient(135deg,#2d73ff,#45b3ff) !important;
+  color:#fff !important;
+  border-color:transparent !important;
+  box-shadow:0 10px 22px rgba(45,115,255,.24) !important;
+}
+.btn.yellow,.overlay-btn.warn{
+  background:linear-gradient(135deg,#c4901d,#ffd166) !important;
+  color:#17202e !important;
+  border-color:transparent !important;
+  box-shadow:0 10px 22px rgba(255,209,102,.22) !important;
+}
+.btn.red,.overlay-btn.danger{
+  background:linear-gradient(135deg,#d45757,#ff7a7a) !important;
+  color:#fff !important;
+  border-color:transparent !important;
+  box-shadow:0 10px 22px rgba(212,87,87,.20) !important;
+}
+.btn.gray{
+  background:linear-gradient(135deg,#55657c,#7f91ab) !important;
+  color:#eef4ff !important;
+  border-color:transparent !important;
+}
+.score-num{
+  color:#f4f8ff !important;
+  text-shadow:0 0 18px rgba(77,163,255,.16);
+}
+.score-team-name,.team-name,.lineup-team-title,.meta-value,.summary-value{
+  color:#f3f7ff !important;
+}
+.score-center,.center-stage{
+  position:relative;
+}
+.score-center::before,.center-stage::before{
+  content:"";
+  position:absolute;
+  inset:12% 22%;
+  border-radius:999px;
+  background:radial-gradient(circle, rgba(77,163,255,.12), transparent 70%);
+  pointer-events:none;
+}
+.score-waiting{
+  background:rgba(255,255,255,.03) !important;
+  border:1px dashed rgba(77,163,255,.28) !important;
+}
+textarea,select,input{
+  background:#0d1b31 !important;
+  border:1px solid rgba(77,163,255,.18) !important;
+  color:#f4f8ff !important;
+}
+textarea:focus,select:focus,input:focus{
+  border-color:#4da3ff !important;
+  box-shadow:0 0 0 3px rgba(77,163,255,.16) !important;
+}
+.footer-note,.hint,.counter-sub,.summary-sub,.sub,.team-meta,.tiny,.status-label,.meta-label{
+  color:#aac0e0 !important;
+}
+.fullscreen-score{
+  background:
+    radial-gradient(circle at top, rgba(77,163,255,.14), transparent 28%),
+    linear-gradient(180deg,#050b18 0%,#08111f 100%) !important;
+}
+.player-picker-modal{
+  background:rgba(2,8,18,.78) !important;
+}
+</style>
+
 </head>
 <body>
   <div class="shell">
