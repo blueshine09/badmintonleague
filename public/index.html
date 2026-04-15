@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <style>
     .status-dot{display:inline-block;padding:4px 8px;border-radius:999px;font-weight:800;font-size:.75rem;}
     .status-red{background:rgba(255,107,107,.15);color:#ff8f8f;}
@@ -140,9 +141,13 @@
 .admin-sync-toggle .btn{min-height:44px;padding:9px 14px;border-radius:var(--btn-radius-sm);font-size:var(--btn-font-sm);}
 .admin-sync-panel{display:none;}
 .admin-sync-panel.show{display:block;}
-.admin-sync-label{display:inline-flex;align-items:center;gap:8px;}
-.admin-sync-label .chev{display:inline-block;transition:transform .18s ease;}
-.admin-sync-panel.show + .admin-sync-toggle .chev{transform:rotate(180deg);}
+.admin-sync-label{display:inline-flex;align-items:center;justify-content:center;gap:8px;line-height:1;}
+.admin-sync-label .chev{display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;line-height:1;transform:translateY(1px);transition:transform .18s ease, opacity .18s ease;opacity:.9;}
+#advancedMenuBtn.active .admin-sync-label .chev{transform:translateY(1px) rotate(180deg);}
+#advancedMenuBtn.active{border-color:rgba(120,199,255,.34);background:linear-gradient(180deg,#17345e,#102543);box-shadow:0 10px 22px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.05);}
+.topbar,.titlebox{position:relative;z-index:220;overflow:visible;}
+.advanced-menu-wrap{position:relative;z-index:260;}
+.advanced-menu-panel{z-index:320;}
 
 .lineup-sync-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;}
 .lineup-link-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;}
@@ -325,6 +330,23 @@
     .grid {
       display: grid; grid-template-columns: minmax(280px,360px) minmax(0,1.2fr) minmax(0,.95fr); gap: 16px;
     }
+    
+    .help-icon-btn{width:28px;height:28px;min-width:28px;padding:0;border-radius:999px;border:1px solid rgba(90,177,255,.22);background:linear-gradient(180deg,#143158,#0d223f);color:#dff0ff;font-weight:900;font-size:.86rem;line-height:1;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.04);flex:0 0 auto}
+    .help-icon-btn:hover{filter:brightness(1.08);border-color:rgba(120,199,255,.34)}
+    .help-inline-box{display:none;margin-top:8px;margin-bottom:16px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);color:var(--muted);font-size:.86rem;line-height:1.7;box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+    .help-inline-box.show{display:block}
+    .modal-backdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(2,8,18,.72);backdrop-filter:blur(6px);z-index:10030}
+    .modal-backdrop.show{display:flex}
+    .modal-card-basic{width:min(100%,560px);max-height:min(88vh,760px);overflow:auto;background:linear-gradient(180deg, rgba(10,20,38,.98), rgba(9,18,34,.98));border:1px solid rgba(77,163,255,.18);border-radius:22px;box-shadow:0 18px 40px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.04);padding:18px;display:grid;gap:14px}
+    .modal-card-basic .modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+    .modal-card-basic .modal-title{font-size:1.02rem;font-weight:900;letter-spacing:-.02em}
+    .modal-card-basic .modal-sub{margin-top:4px;color:var(--muted);font-size:.82rem;line-height:1.55}
+    .form-stack{display:grid;gap:12px}
+    .form-stack label{display:grid;gap:6px;font-size:.82rem;color:var(--muted)}
+    .form-stack input,.form-stack select{width:100%;background:#0d1b31;color:#f4f8ff;border:1px solid rgba(77,163,255,.18);border-radius:12px;padding:12px 12px;font:inherit}
+    .form-stack input:focus,.form-stack select:focus{outline:none;border-color:#4da3ff;box-shadow:0 0 0 3px rgba(77,163,255,.16)}
+    .modal-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+
     @media (max-width: 1220px){
       .grid{grid-template-columns:1fr;}
       .sync-bar{grid-template-columns:1fr;}
@@ -782,6 +804,34 @@
       body.broadcast-only .broadcast-mode-pill{padding:7px 10px;}
     }
 
+
+    .growth-report-wrap{display:grid;gap:14px;}
+    .growth-toolbar{display:flex;gap:8px;flex-wrap:wrap;}
+    .growth-toolbar select{background:#0e1c33;color:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:180px;}
+    .growth-report-preview-card{border:1px solid rgba(255,255,255,.08);border-radius:18px;background:rgba(255,255,255,.03);padding:18px;display:grid;gap:14px;}
+    .growth-report-head{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:flex-start;}
+    .growth-report-head h3{margin:0 0 6px;font-size:1.2rem;}
+    .growth-report-head p{margin:0;color:var(--muted);line-height:1.55;}
+    .growth-meta{display:grid;gap:4px;font-size:.85rem;color:#d9e8ff;}
+    .growth-kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;}
+    .growth-kpi{padding:12px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);}
+    .growth-kpi .label{font-size:.78rem;color:var(--muted);}
+    .growth-kpi .value{font-size:1.18rem;font-weight:900;margin-top:6px;}
+    .growth-two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .growth-block{padding:14px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);}
+    .growth-block h4{margin:0 0 10px;font-size:.98rem;}
+    .growth-table{width:100%;border-collapse:collapse;}
+    .growth-table th,.growth-table td{padding:8px 10px;border:1px solid rgba(255,255,255,.06);font-size:.84rem;}
+    .growth-table th{text-align:left;background:rgba(255,255,255,.04);width:36%;}
+    .growth-analysis-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    .growth-analysis-card{padding:12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);}
+    .growth-analysis-card h5{margin:0 0 8px;font-size:.86rem;color:#d8e8ff;}
+    .growth-analysis-card p{margin:0;line-height:1.6;color:#eef5ff;font-size:.9rem;}
+    .growth-type-box{padding:14px;border-radius:16px;background:rgba(90,177,255,.08);border:1px solid rgba(90,177,255,.18);}
+    .growth-type-box .label{font-size:.78rem;color:#cfe0ff;}
+    .growth-type-box .value{font-size:1.14rem;font-weight:900;margin-top:6px;}
+    .growth-type-box .desc{margin-top:8px;line-height:1.6;color:#e7f2ff;font-size:.88rem;}
+    @media (max-width:900px){.growth-kpi-grid,.growth-two-col,.growth-analysis-grid{grid-template-columns:1fr;}}
     .settings-grid{display:grid;grid-template-columns:420px 1fr;gap:16px;}
     .run-grid{display:grid;grid-template-columns:1.15fr .95fr;gap:16px;align-items:start;}
     .setup-guide{display:grid;gap:12px;}
@@ -796,6 +846,41 @@
     .wizard-step.active { background: linear-gradient(135deg, #193563, #234d87); color:#fff; border-color:#4f7dc5; }
     .wizard-page { display:none; }
     .wizard-page.active { display:block; }
+
+    /* targeted vertical spacing fixes */
+    .setup-wizard-wrap{display:grid;gap:20px;}
+    .setup-wizard-wrap > .tiny.muted,
+    .panel-body > .tiny.muted,
+    .card-body > .tiny.muted{
+      display:block;
+      margin:0 0 16px;
+      line-height:1.65;
+    }
+    .setup-wizard-wrap > .tiny.muted + .wizard-steps,
+    .panel-body > .tiny.muted + .wizard-steps,
+    .card-body > .tiny.muted + .wizard-steps{
+      margin-top:2px;
+    }
+    .wizard-steps{margin-top:14px;gap:12px;margin-bottom:18px;}
+    .wizard-head{margin-bottom:18px;}
+    .wizard-page .guide-box,
+    .wizard-page .attendance-grid,
+    .wizard-page .captain-toolbar,
+    .wizard-page .captain-grid,
+    .wizard-page .team-grid,
+    .wizard-page .draft-pool-wrap,
+    .wizard-page .draft-board{
+      margin-top:14px;
+    }
+    .panel-header > div > .tiny.muted,
+    .card-head > div > .tiny.muted,
+    .panel-header > div > .sub,
+    .card-head > div > .sub{
+      display:block;
+      margin-top:10px;
+      line-height:1.6;
+    }
+
     .wizard-head { display:flex; justify-content:space-between; gap:12px; align-items:flex-start; margin-bottom:14px; flex-wrap:wrap; }
     .wizard-title { font-size:1.05rem; font-weight:800; margin-bottom:4px; }
     .wizard-actions { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
@@ -3179,6 +3264,7 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
       <button class="view-tab" data-view="run" onclick="switchView('run')">경기 운영</button>
       <button class="view-tab" data-view="qr" onclick="switchView('qr')">QR코드</button>
       <button class="view-tab" data-view="data" onclick="switchView('data')">데이터 확인</button>
+      <button class="view-tab" data-view="growth" onclick="switchView('growth')">성장 리포트</button>
       <button class="view-tab" data-view="singles" onclick="switchView('singles')">단식</button>
       <button class="view-tab" data-view="doubles" onclick="switchView('doubles')">복식</button>
     </div>
@@ -3323,7 +3409,7 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
           <div class="panel-header" style="cursor:pointer" onclick="toggleRawRosterPanel()">
             <div>
               <div class="panel-title collapse-toggle" style="display:none;">학생 명단 · 능력치 원본 관리 <span class="chev">▾</span></div>
-              <div class="tiny muted">명단과 능력치는 여기에서 수정합니다. 팀 구성 단계에서는 익명으로만 표시됩니다.</div>
+              
             </div>
             <span class="avg-pill" id="playerCountPill">0명</span>
           </div>
@@ -3332,6 +3418,9 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
               <button class="btn small" onclick="addRows(5)">+5행</button>
               <button class="btn small" onclick="addRows(10)">+10행</button>
               <button class="btn small" onclick="fillSample()">예시 채우기</button>
+              <button class="btn small" onclick="downloadRosterTemplate()">양식 다운로드</button>
+              <button class="btn small" onclick="document.getElementById('rosterUploadInput').click()">업로드하기</button>
+              <input id="rosterUploadInput" type="file" accept=".csv,.xlsx,.xls" style="display:none" onchange="handleRosterFileUpload(event)">
               <button class="btn yellow small" onclick="saveRoster()">명단 저장</button>
             </div>
             <div class="roster-wrap">
@@ -3341,6 +3430,7 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
                     <th style="width:44px">No</th>
                     <th style="width:110px">이름</th>
                     <th style="width:74px">성별</th>
+                    <th style="width:98px">생년월일</th>
                     <th style="width:84px">수동조</th>
                     <th style="width:72px">서브</th>
                     <th style="width:78px">기본기</th>
@@ -3354,7 +3444,7 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
                 <tbody id="rosterBody"></tbody>
               </table>
             </div>
-            <div class="footer-note">이 표는 원본 관리용입니다. 팀 구성 단계에서는 학생 이름이 익명으로 바뀌어 표시됩니다.</div>
+            <div class="footer-note">이 표는 원본 관리용입니다. 생년월일을 함께 입력하면 학생 로그인 정보에도 자동 반영됩니다.</div>
           </div>
         </section>
       </div>
@@ -3638,7 +3728,10 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
         <section class="panel">
           <div class="panel-header" style="border-bottom:none;padding-bottom:0;">
             <div>
-              <div class="panel-title" id="qrPanelTitle">오더 제출 QR 관리</div>
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <div class="panel-title" id="qrPanelTitle">오더 제출 QR 관리</div>
+                <button class="help-icon-btn" type="button" onclick="toggleInlineHelp('qrHelpBox')">!</button>
+              </div>
               <div class="tiny muted" id="qrPanelDesc">조별로 오더를 작성할 수 있도록, 라운드별 조 전용 링크를 표시합니다.</div>
             </div>
             <div class="actions" style="margin-left:auto;">
@@ -3650,6 +3743,7 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
             </div>
           </div>
           <div class="panel-body">
+            <div id="qrHelpBox" class="help-inline-box" style="margin-bottom:12px;">현재 선택한 QR 종류에 따라 오더 제출, 심판용, 데이터 기록용 링크와 상태를 확인할 수 있습니다.</div>
             <div class="qr-round-picker" id="qrRoundPicker" style="margin-bottom:16px;">
               <button class="qr-round-btn active" data-round="1" onclick="setQrRound(1)">1라운드</button>
               <button class="qr-round-btn" data-round="2" onclick="setQrRound(2)">2라운드</button>
@@ -3726,13 +3820,82 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
       </div>
     </div>
 
+
+    <div class="page" id="growthPage">
+      <div class="section-stack">
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <div class="panel-title">학생 성장 리포트</div>
+                <button class="help-icon-btn" type="button" onclick="toggleInlineHelp('growthHelpBox')">!</button>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="btn small" type="button" onclick="openStudentLoginManageModal()">학생 로그인 관리</button>
+              <button class="btn small" type="button" onclick="renderGrowthReportPage()">새로고침</button>
+              <button class="btn small primary" type="button" onclick="printGrowthReport()">출력</button>
+            </div>
+          </div>
+          <div class="panel-body growth-report-wrap">
+            <div id="growthHelpBox" class="help-inline-box">학생을 선택하면 누적 관찰 데이터와 역할·경기 기록을 바탕으로 리포트를 미리볼 수 있습니다.</div>
+            <div class="growth-toolbar">
+              <select id="growthStudentSelect" onchange="setGrowthSelectedStudent(this.value)">
+                <option value="">학생 선택</option>
+              </select>
+              <select id="growthEventFilter" onchange="setGrowthEventFilter(this.value)">
+                <option value="all">전체</option>
+                <option value="women">여복</option>
+                <option value="mixed">혼복</option>
+                <option value="men">남복</option>
+              </select>
+            </div>
+            <div id="growthReportPreview" class="growth-report-preview-card">
+              <div class="empty-state">학생을 선택하면 성장 리포트가 표시됩니다.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="studentLoginManageModal" class="modal-backdrop">
+      <div class="modal-card-basic">
+        <div class="modal-header">
+          <div class="panel-title">학생 로그인 관리</div>
+          <button class="btn small" type="button" onclick="closeStudentLoginManageModal()">닫기</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-stack">
+            <label>학생 선택
+              <select id="studentLoginManageSelect" onchange="renderStudentLoginManageDetail()"></select>
+            </label>
+            <label>이름
+              <input id="studentLoginManageName" type="text" disabled>
+            </label>
+            <label>생년월일 8자리
+              <input id="studentLoginManageBirth" type="text" inputmode="numeric" maxlength="8" placeholder="20080115">
+            </label>
+          </div>
+          <div id="studentLoginManageHelp" class="help-inline-box show">학생 로그인은 이름과 생년월일 8자리로 확인합니다. 생년월일은 학생 명단 탭에서 함께 관리할 수 있습니다.</div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn small" type="button" onclick="resetStudentBirthField()">초기화</button>
+          <button class="btn small primary" type="button" onclick="saveStudentBirthField()">저장</button>
+        </div>
+      </div>
+    </div>
+
     <div class="page" id="singlesPage">
       <div class="section-stack">
         <div class="panel">
           <div class="panel-header">
             <div>
-              <div class="panel-title">단식 능력 리그</div>
-              <div class="tiny muted">남녀는 같은 성별끼리 경기하되, 전체 경기 순서는 남녀 구분 없이 랜덤으로 섞습니다. 동시에 진행할 경기 수를 정할 수 있고, 같은 시간대 경기 안에는 중복 학생이 배치되지 않도록 자동 편성합니다.</div>
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <div class="panel-title">단식 리그</div>
+                <button class="help-icon-btn" type="button" onclick="toggleInlineHelp('singlesLeagueHelpBox')">!</button>
+              </div>
+              <div id="singlesLeagueHelpBox" class="help-inline-box">남녀는 같은 성별끼리 경기하되, 전체 경기 순서는 남녀 구분 없이 랜덤으로 섞습니다. 동시에 진행할 경기 수를 정할 수 있고, 같은 시간대 경기 안에는 중복 학생이 배치되지 않도록 자동 편성합니다.</div>
             </div>
           </div>
           <div class="panel-body">
@@ -3746,7 +3909,11 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
             <div class="singles-participant-grid">
               <div class="singles-summary-list">
                 <div class="singles-summary-card">
-                  <div style="font-weight:800;margin-bottom:10px">단식 참가자 선택</div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;">
+                    <div style="font-weight:800;">단식 참가자 선택</div>
+                    <button class="help-icon-btn" type="button" onclick="toggleInlineHelp('singlesParticipantHelpBox')">!</button>
+                  </div>
+                  <div id="singlesParticipantHelpBox" class="help-inline-box">단식 참가 체크가 된 학생만 포함됩니다. 남학생은 남학생끼리, 여학생은 여학생끼리 경기합니다. 전체 경기 순서는 남녀 구분 없이 랜덤으로 섞되, <b>늦게 배치</b>로 표시한 학생의 경기는 가능한 한 뒤쪽 시간대로 배치합니다. 같은 시간대에는 같은 학생이 중복 배치되지 않도록 자동 편성됩니다. 경기 중 변동이 생기면 각 경기 카드의 <b>뒤로 미루기</b> 버튼으로 다시 뒤쪽으로 보낼 수 있습니다.</div>
                   <div class="control-row" style="margin-bottom:10px">
                     <button class="btn small" onclick="setSinglesParticipantAll(true)">전체 참가</button>
                     <button class="btn small" onclick="setSinglesParticipantAll(false)">전체 제외</button>
@@ -3797,7 +3964,6 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
                 </div>
               </div>
             </div>
-            <div class="footer-note">단식 참가 체크가 된 학생만 포함됩니다. 남학생은 남학생끼리, 여학생은 여학생끼리 경기합니다. 전체 경기 순서는 남녀 구분 없이 랜덤으로 섞되, <b>늦게 배치</b>로 표시한 학생의 경기는 가능한 한 뒤쪽 시간대로 배치합니다. 같은 시간대에는 같은 학생이 중복 배치되지 않도록 자동 편성됩니다. 경기 중 변동이 생기면 각 경기 카드의 <b>뒤로 미루기</b> 버튼으로 다시 뒤쪽으로 보낼 수 있습니다.</div>
           </div>
         </div>
 
@@ -3882,6 +4048,8 @@ let broadcastInfoView = 'current';
     let eventChart = null;
     let compareChart = null;
     let currentView = 'setup';
+    let growthSelectedStudentId = '';
+    let growthEventFilter = 'all';
     let singlesViewInitialized = false;
     let setupStep = 1;
     let draftTargetTeam = '';
@@ -4364,7 +4532,7 @@ let broadcastInfoView = 'current';
 function switchView(view) {
       currentView = IS_BROADCAST_MODE
         ? 'broadcast'
-        : (['roster','setup','run','qr','data','singles','doubles','broadcast'].includes(view) ? view : 'setup');
+        : (['roster','setup','run','qr','data','growth','singles','doubles','broadcast'].includes(view) ? view : 'setup');
       document.querySelectorAll('.view-tab').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.view === currentView);
       });
@@ -4373,6 +4541,7 @@ function switchView(view) {
       const qrPage = document.getElementById('qrPage');
       const singlesPage = document.getElementById('singlesPage');
       const dataPage = document.getElementById('dataPage');
+      const growthPage = document.getElementById('growthPage');
       const doublesPage = document.getElementById('doublesPage');
       const broadcastPage = document.getElementById('broadcastPage');
       const setupWizardPanel = document.getElementById('setupWizardPanel');
@@ -4381,6 +4550,7 @@ function switchView(view) {
       if (runPage) runPage.classList.toggle('active', currentView === 'run');
       if (qrPage) qrPage.classList.toggle('active', currentView === 'qr');
       if (dataPage) dataPage.classList.toggle('active', currentView === 'data');
+      if (growthPage) growthPage.classList.toggle('active', currentView === 'growth');
       if (singlesPage) singlesPage.classList.toggle('active', currentView === 'singles');
       if (doublesPage) doublesPage.classList.toggle('active', currentView === 'doubles');
       if (broadcastPage) broadcastPage.classList.toggle('active', currentView === 'broadcast');
@@ -4389,6 +4559,7 @@ function switchView(view) {
         rawRosterPanel.style.display = currentView === 'roster' ? '' : 'none';
         rawRosterPanel.classList.toggle('collapsed', false);
       }
+      if (currentView === 'growth') renderGrowthReportPage();
       if (currentView === 'doubles') renderDoublesPage();
       if (currentView === 'broadcast') renderBroadcastPage();
     }
@@ -4426,6 +4597,7 @@ function switchView(view) {
         name,
         gender,
         manualGroup,
+        birth: '',
         participation: 0,
         serve: numericServe,
         basic: numericBasic,
@@ -4526,6 +4698,7 @@ function switchView(view) {
               <option value="F" ${p.gender === 'F' ? 'selected' : ''}>여</option>
             </select>
           </td>
+          <td><input type="text" inputmode="numeric" maxlength="8" placeholder="20080115" value="${escapeHtml(p.birth || '')}" onchange="updatePlayerField('${p.id}','birth',this.value)"></td>
           <td>
             <select class="lineup-select" onchange="updatePlayerField('${p.id}','manualGroup',this.value)">
               <option value="" ${!p.manualGroup ? 'selected' : ''}>자동</option>
@@ -8535,7 +8708,7 @@ function renderDataInsightsPage() {
           <td>${escapeHtml((stat.recentOpponents || []).map(getPlayerNameById).join(' · ') || '-')}</td>
           <td>${oppDup}</td>
         </tr>`;
-      }).join('') : '<tr><td colspan="14" class="tiny muted">학생 명단이 없습니다.</td></tr>';
+      }).join('') : '<tr><td colspan="15" class="tiny muted">학생 명단이 없습니다.</td></tr>';
     }
     function renderDoublesPage() {
       const page = document.getElementById('doublesPage');
@@ -8547,6 +8720,171 @@ function renderDataInsightsPage() {
       renderDoublesRanking();
       renderDoublesOperation();
     }
+
+
+    function setGrowthSelectedStudent(studentId) {
+      growthSelectedStudentId = String(studentId || '');
+      renderGrowthReportPage();
+    }
+    window.setGrowthSelectedStudent = setGrowthSelectedStudent;
+
+    function setGrowthEventFilter(filter) {
+      growthEventFilter = ['all','women','mixed','men'].includes(filter) ? filter : 'all';
+      renderGrowthReportPage();
+    }
+    window.setGrowthEventFilter = setGrowthEventFilter;
+
+    function getGrowthObservationEntries(studentId, eventFilter = 'all') {
+      const observations = currentData().dataObservations || {};
+      const rows = [];
+      Object.entries(observations).forEach(([teamId, rounds]) => {
+        Object.entries(rounds || {}).forEach(([roundNo, games]) => {
+          Object.entries(games || {}).forEach(([gameType, slots]) => {
+            if (eventFilter !== 'all' && gameType !== eventFilter) return;
+            Object.entries(slots || {}).forEach(([slotNo, record]) => {
+              if (!record) return;
+              if (String(record.playerId || '') !== String(studentId || '')) return;
+              rows.push({ teamId, roundNo:Number(roundNo)||0, gameType, slotNo:Number(slotNo)||0, ...record });
+            });
+          });
+        });
+      });
+      return rows.sort((a,b)=> (a.roundNo-b.roundNo) || (a.slotNo-b.slotNo));
+    }
+
+    function getTopReasonMap(entries, keys) {
+      const arr = keys.map(([key,label]) => ({ key, label, value: entries.reduce((sum,row)=> sum + (Number(row?.[key])||0), 0) }));
+      arr.sort((a,b)=> b.value-a.value);
+      return arr[0] && arr[0].value > 0 ? `${arr[0].label} ${arr[0].value}회` : '기록 없음';
+    }
+
+    function classifyGrowthPlayType(summary) {
+      if (summary.totalRecords === 0) return { label:'기록 없음', desc:'아직 누적 관찰 데이터가 충분하지 않아 수행 유형을 분류하지 않았습니다.' };
+      if (summary.attackRate >= 70 && summary.attackSuccess >= summary.defenseSuccess) return { label:'공격 시도형', desc:'공격 성공 비율이 비교적 높고 마무리 시도가 적극적으로 나타났습니다.' };
+      if (summary.defenseRate >= 70 && summary.defenseSuccess >= summary.attackSuccess) return { label:'안정형', desc:'수비와 랠리 유지가 비교적 안정적으로 나타났습니다.' };
+      if (summary.serveRate < 45) return { label:'기본기 보완형', desc:'서브 구간에서의 실수가 상대적으로 많아 기본기 안정화가 우선됩니다.' };
+      return { label:'적응형', desc:'여러 경기 상황에 참여하며 전반적으로 균형 있게 수행하는 모습이 나타났습니다.' };
+    }
+
+    function buildGrowthReportData(studentId, eventFilter = 'all') {
+      const player = getPlayerById(studentId);
+      if (!player) return null;
+      const entries = getGrowthObservationEntries(studentId, eventFilter);
+      const sum = (key) => entries.reduce((total,row)=> total + (Number(row?.[key]) || 0), 0);
+      const totalServeSuccess = sum('serveSuccess');
+      const totalServeFail = sum('serveFail');
+      const totalAttackSuccess = sum('attackSuccess');
+      const totalAttackFail = sum('attackFail');
+      const totalDefenseSuccess = sum('defenseSuccess');
+      const totalDefenseFail = sum('defenseFail');
+      const rate = (s,f) => { const t = s+f; return t ? Math.round((s/t)*100) : 0; };
+      const summary = {
+        totalRecords: entries.length,
+        serveRate: rate(totalServeSuccess, totalServeFail),
+        attackRate: rate(totalAttackSuccess, totalAttackFail),
+        defenseRate: rate(totalDefenseSuccess, totalDefenseFail),
+        totalServeSuccess, totalServeFail, totalAttackSuccess, totalAttackFail, totalDefenseSuccess, totalDefenseFail,
+        topServeFail: getTopReasonMap(entries, [['serveFailNet','네트'],['serveFailOut','아웃'],['serveFailTiming','타이밍']]),
+        topAttackFail: getTopReasonMap(entries, [['attackFailNet','네트'],['attackFailOut','아웃'],['attackFailForced','무리한 공격']]),
+        topDefenseFail: getTopReasonMap(entries, [['defenseFailLatePosition','위치 늦음'],['defenseFailLateReaction','반응 늦음'],['defenseFailConnection','연결 실패']])
+      };
+      const playType = classifyGrowthPlayType(summary);
+      const strengths = [];
+      if (summary.attackRate >= 60) strengths.push('공격 성공 비율이 비교적 안정적으로 나타났습니다.');
+      if (summary.defenseRate >= 60) strengths.push('수비와 랠리 유지가 비교적 안정적으로 나타났습니다.');
+      if (summary.serveRate >= 60) strengths.push('서브 구간에서의 기본기 수행이 안정적이었습니다.');
+      if (!strengths.length) strengths.push('누적 관찰 기록상 특정 강점보다 전반적인 경험 축적이 우선 확인됩니다.');
+      const improvements = [];
+      if (summary.serveRate < 60) improvements.push(`서브 실패 원인은 ${summary.topServeFail}로 나타났습니다.`);
+      if (summary.attackRate < 60) improvements.push(`공격 실패 원인은 ${summary.topAttackFail}로 나타났습니다.`);
+      if (summary.defenseRate < 60) improvements.push(`수비 실패 원인은 ${summary.topDefenseFail}로 나타났습니다.`);
+      if (!improvements.length) improvements.push('전반적인 수행은 안정적이나 세부 상황별 일관성 점검이 필요합니다.');
+      const goal = summary.serveRate < 60 ? '다음 활동에서는 서브 안정성과 첫 동작의 정확도를 우선 점검할 필요가 있습니다.'
+        : summary.attackRate < 60 ? '다음 활동에서는 공격 마무리의 정확성과 무리한 시도 조절을 점검할 필요가 있습니다.'
+        : summary.defenseRate < 60 ? '다음 활동에서는 위치 회복과 반응 속도를 중심으로 수비 연결을 보완할 필요가 있습니다.'
+        : '현재의 안정적인 흐름을 유지하며 상황별 선택의 일관성을 높일 필요가 있습니다.';
+      return {
+        player, entries, summary, playType,
+        summaryText: `${eventFilter === 'all' ? '전체' : GAME_LABEL[eventFilter]} 관찰 기록 ${entries.length}건을 기준으로 종합 리포트를 생성했습니다.`,
+        strengthText: strengths[0],
+        improveText: improvements[0],
+        goalText: goal,
+        teacherComment: `${player.name} 학생은 누적 관찰 기록을 기준으로 ${playType.label} 경향을 보였습니다. 공격·수비·서브의 성공과 실패 기록을 종합하면 ${strengths[0].replace('.', '')} ${improvements[0].replace('.', '')}`
+      };
+    }
+
+    function renderGrowthReportPage() {
+      const studentSelect = document.getElementById('growthStudentSelect');
+      const eventSelect = document.getElementById('growthEventFilter');
+      const preview = document.getElementById('growthReportPreview');
+      if (!studentSelect || !eventSelect || !preview) return;
+      const roster = currentData().roster || [];
+      studentSelect.innerHTML = `<option value="">학생 선택</option>` + roster.map(p => `<option value="${p.id}" ${String(p.id)===String(growthSelectedStudentId)?'selected':''}>${escapeHtml(p.name || '이름 없음')}</option>`).join('');
+      eventSelect.value = growthEventFilter;
+      studentSelect.value = growthSelectedStudentId || '';
+      const report = growthSelectedStudentId ? buildGrowthReportData(growthSelectedStudentId, growthEventFilter) : null;
+      if (!report) {
+        preview.innerHTML = '<div class="empty-state">학생을 선택하면 성장 리포트가 표시됩니다.</div>';
+        return;
+      }
+      preview.innerHTML = `
+        <div class="growth-report-head">
+          <div>
+            <h3>${escapeHtml(report.player.name)} 학생 성장 리포트</h3>
+            <p>${escapeHtml(report.summaryText)}</p>
+          </div>
+          <div class="growth-meta">
+            <div><strong>반</strong> ${currentClass}반</div>
+            <div><strong>종목</strong> ${escapeHtml(growthEventFilter === 'all' ? '전체' : GAME_LABEL[growthEventFilter])}</div>
+            <div><strong>생성일</strong> ${new Date().toLocaleDateString('ko-KR')}</div>
+          </div>
+        </div>
+        <div class="growth-kpi-grid">
+          <div class="growth-kpi"><div class="label">관찰 기록</div><div class="value">${report.summary.totalRecords}건</div></div>
+          <div class="growth-kpi"><div class="label">서브 성공률</div><div class="value">${report.summary.serveRate}%</div></div>
+          <div class="growth-kpi"><div class="label">공격 성공률</div><div class="value">${report.summary.attackRate}%</div></div>
+          <div class="growth-kpi"><div class="label">수비 성공률</div><div class="value">${report.summary.defenseRate}%</div></div>
+        </div>
+        <div class="growth-two-col">
+          <div class="growth-block">
+            <h4>누적 수행 요약</h4>
+            <table class="growth-table">
+              <tr><th>서브</th><td>성공 ${report.summary.totalServeSuccess}회 / 실패 ${report.summary.totalServeFail}회</td></tr>
+              <tr><th>공격</th><td>성공 ${report.summary.totalAttackSuccess}회 / 실패 ${report.summary.totalAttackFail}회</td></tr>
+              <tr><th>수비</th><td>성공 ${report.summary.totalDefenseSuccess}회 / 실패 ${report.summary.totalDefenseFail}회</td></tr>
+              <tr><th>서브 실패 최빈값</th><td>${escapeHtml(report.summary.topServeFail)}</td></tr>
+              <tr><th>공격 실패 최빈값</th><td>${escapeHtml(report.summary.topAttackFail)}</td></tr>
+              <tr><th>수비 실패 최빈값</th><td>${escapeHtml(report.summary.topDefenseFail)}</td></tr>
+            </table>
+          </div>
+          <div class="growth-block">
+            <h4>대표 수행 유형</h4>
+            <div class="growth-type-box">
+              <div class="label">대표 수행 유형</div>
+              <div class="value">${escapeHtml(report.playType.label)}</div>
+              <div class="desc">${escapeHtml(report.playType.desc)}</div>
+            </div>
+          </div>
+        </div>
+        <div class="growth-analysis-grid">
+          <div class="growth-analysis-card"><h5>강점</h5><p>${escapeHtml(report.strengthText)}</p></div>
+          <div class="growth-analysis-card"><h5>보완점</h5><p>${escapeHtml(report.improveText)}</p></div>
+          <div class="growth-analysis-card"><h5>다음 목표</h5><p>${escapeHtml(report.goalText)}</p></div>
+          <div class="growth-analysis-card"><h5>교사 종합 코멘트</h5><p>${escapeHtml(report.teacherComment)}</p></div>
+        </div>`;
+    }
+    window.renderGrowthReportPage = renderGrowthReportPage;
+
+    function printGrowthReport() {
+      const report = growthSelectedStudentId ? buildGrowthReportData(growthSelectedStudentId, growthEventFilter) : null;
+      if (!report) { alert('출력할 학생 리포트가 없습니다.'); return; }
+      const win = window.open('', '_blank', 'width=980,height=1200');
+      if (!win) { alert('팝업이 차단되었습니다.'); return; }
+      win.document.write(`<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>성장 리포트</title><style>
+        body{font-family:Pretendard,Arial,sans-serif;color:#111827;margin:0;background:#f3f4f6;} .page{width:210mm;min-height:297mm;margin:0 auto;background:#fff;padding:14mm;box-sizing:border-box;} .head{border-bottom:2px solid #111827;padding-bottom:10px;margin-bottom:14px;} h1{margin:0 0 6px;font-size:24px;} .sub{color:#4b5563;font-size:13px;} .meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px 16px;font-size:13px;margin-bottom:16px;} .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;} .kpi{border:1px solid #d1d5db;border-radius:10px;padding:10px;background:#f9fafb;text-align:center;} .label{font-size:12px;color:#6b7280;} .value{font-size:22px;font-weight:700;margin-top:4px;} .section{border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;margin-bottom:16px;} .section h3{margin:0;padding:10px 12px;background:#f3f4f6;font-size:15px;} .section .body{padding:12px;font-size:13px;line-height:1.6;} table{width:100%;border-collapse:collapse;font-size:13px;} th,td{border:1px solid #e5e7eb;padding:8px 10px;} th{text-align:left;background:#f9fafb;width:36%;} .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;} .box{border:1px solid #d1d5db;border-radius:8px;padding:10px;background:#fcfcfd;} .box h4{margin:0 0 6px;font-size:13px;} @media print{@page{size:A4;margin:14mm;} body{background:#fff;} .page{margin:0;width:auto;min-height:auto;padding:0;}}</style></head><body><div class="page"><div class="head"><h1>배드민턴 수업 학생 성장 리포트</h1><div class="sub">누적 관찰 데이터를 바탕으로 생성된 종합형 리포트</div></div><div class="meta"><div><strong>반</strong> ${currentClass}반</div><div><strong>이름</strong> ${escapeHtml(report.player.name)}</div><div><strong>종목</strong> ${escapeHtml(growthEventFilter === 'all' ? '전체' : GAME_LABEL[growthEventFilter])}</div></div><div class="kpis"><div class="kpi"><div class="label">관찰 기록</div><div class="value">${report.summary.totalRecords}</div></div><div class="kpi"><div class="label">서브 성공률</div><div class="value">${report.summary.serveRate}%</div></div><div class="kpi"><div class="label">공격 성공률</div><div class="value">${report.summary.attackRate}%</div></div><div class="kpi"><div class="label">수비 성공률</div><div class="value">${report.summary.defenseRate}%</div></div></div><div class="section"><h3>누적 수행 요약</h3><div class="body"><table><tr><th>서브</th><td>성공 ${report.summary.totalServeSuccess}회 / 실패 ${report.summary.totalServeFail}회</td></tr><tr><th>공격</th><td>성공 ${report.summary.totalAttackSuccess}회 / 실패 ${report.summary.totalAttackFail}회</td></tr><tr><th>수비</th><td>성공 ${report.summary.totalDefenseSuccess}회 / 실패 ${report.summary.totalDefenseFail}회</td></tr><tr><th>서브 실패 최빈값</th><td>${escapeHtml(report.summary.topServeFail)}</td></tr><tr><th>공격 실패 최빈값</th><td>${escapeHtml(report.summary.topAttackFail)}</td></tr><tr><th>수비 실패 최빈값</th><td>${escapeHtml(report.summary.topDefenseFail)}</td></tr></table></div></div><div class="section"><h3>종합 분석</h3><div class="body"><div class="grid"><div class="box"><h4>대표 수행 유형</h4><div><strong>${escapeHtml(report.playType.label)}</strong></div><div style="margin-top:6px;">${escapeHtml(report.playType.desc)}</div></div><div class="box"><h4>강점</h4><div>${escapeHtml(report.strengthText)}</div></div><div class="box"><h4>보완점</h4><div>${escapeHtml(report.improveText)}</div></div><div class="box"><h4>다음 목표</h4><div>${escapeHtml(report.goalText)}</div></div></div></div></div><div class="section"><h3>교사 종합 코멘트</h3><div class="body">${escapeHtml(report.teacherComment)}</div></div></div><script>window.onload=()=>window.print();<\/script></body></html>`);
+      win.document.close();
+    }
+    window.printGrowthReport = printGrowthReport;
 
 function renderAll() {
       recomputeAllStats();
@@ -8564,6 +8902,7 @@ function renderAll() {
       renderLineupStatusSummary();
       renderQrManagement();
       renderDataInsightsPage();
+      renderGrowthReportPage();
       renderSinglesLeague();
       renderBroadcastPage();
       if (IS_BROADCAST_MODE) applyBroadcastOnlyLayout();
@@ -8603,6 +8942,8 @@ function renderAll() {
         || normalized.includes('name')
         || normalized.includes('성별')
         || normalized.includes('gender')
+        || normalized.includes('생년월일')
+        || normalized.includes('birth')
         || normalized.includes('수동조')
         || normalized.includes('manualgroup')
         || normalized.includes('서브')
@@ -8619,17 +8960,151 @@ function renderAll() {
         player.name = clean[0];
         return true;
       }
-      const offset = clean.length >= 6 ? 1 : 0;
+      const offset = clean.length >= 7 ? 1 : 0;
       player.name = clean[offset] || player.name || '';
       player.gender = normalizeRosterGender(clean[offset + 1]);
-      player.manualGroup = normalizeRosterManualGroup(clean[offset + 2]);
-      player.serve = normalizeRosterScore(clean[offset + 3], player.serve ?? 50);
-      const basic = normalizeRosterScore(clean[offset + 4], player.basic ?? 50);
+      const maybeBirth = String(clean[offset + 2] || '').replace(/\D/g, '');
+      if (maybeBirth.length >= 6) player.birth = maybeBirth.slice(0, 8);
+      player.manualGroup = normalizeRosterManualGroup(clean[offset + 3]);
+      player.serve = normalizeRosterScore(clean[offset + 4], player.serve ?? 50);
+      const basic = normalizeRosterScore(clean[offset + 5], player.basic ?? 50);
       player.basic = basic;
       player.clear = basic;
       player.drop = basic;
       player.footwork = basic;
       return true;
+    }
+
+
+    function toggleInlineHelp(id) {
+      const box = document.getElementById(id);
+      if (box) box.classList.toggle('show');
+    }
+    window.toggleInlineHelp = toggleInlineHelp;
+
+    function openStudentLoginManageModal() {
+      const modal = document.getElementById('studentLoginManageModal');
+      const select = document.getElementById('studentLoginManageSelect');
+      const roster = currentData().roster || [];
+      if (select) {
+        select.innerHTML = '<option value="">학생 선택</option>' + roster.filter(p=>String(p.name||'').trim()).map(p => `<option value="${p.id}">${escapeHtml(p.name)}</option>`).join('');
+        select.value = growthSelectedStudentId || '';
+      }
+      renderStudentLoginManageDetail();
+      modal?.classList.add('show');
+    }
+    window.openStudentLoginManageModal = openStudentLoginManageModal;
+
+    function closeStudentLoginManageModal() {
+      document.getElementById('studentLoginManageModal')?.classList.remove('show');
+    }
+    window.closeStudentLoginManageModal = closeStudentLoginManageModal;
+
+    document.addEventListener('click', (event) => {
+      const modal = document.getElementById('studentLoginManageModal');
+      if (modal && event.target === modal) closeStudentLoginManageModal();
+    });
+
+    function renderStudentLoginManageDetail() {
+      const select = document.getElementById('studentLoginManageSelect');
+      const player = getPlayerById(select?.value || '');
+      document.getElementById('studentLoginManageName').value = player?.name || '';
+      document.getElementById('studentLoginManageBirth').value = player?.birth || '';
+    }
+    window.renderStudentLoginManageDetail = renderStudentLoginManageDetail;
+
+    function saveStudentBirthField() {
+      const select = document.getElementById('studentLoginManageSelect');
+      const birthInput = document.getElementById('studentLoginManageBirth');
+      const player = getPlayerById(select?.value || '');
+      if (!player) { alert('학생을 먼저 선택해 주세요.'); return; }
+      player.birth = String(birthInput?.value || '').replace(/\D/g, '').slice(0,8);
+      saveData();
+      renderRoster();
+      renderStudentLoginManageDetail();
+      alert('생년월일이 저장되었습니다.');
+    }
+    window.saveStudentBirthField = saveStudentBirthField;
+
+    function resetStudentBirthField() {
+      const select = document.getElementById('studentLoginManageSelect');
+      const player = getPlayerById(select?.value || '');
+      if (!player) { alert('학생을 먼저 선택해 주세요.'); return; }
+      player.birth = '';
+      saveData();
+      renderRoster();
+      renderStudentLoginManageDetail();
+    }
+    window.resetStudentBirthField = resetStudentBirthField;
+
+    function downloadRosterTemplate() {
+      const rows = [
+        ['번호','이름','성별','생년월일','수동조','서브','기본기'],
+        ['1','김민수','남','20080115','A','50','50'],
+        ['2','이서준','남','20080722','B','55','52']
+      ];
+      const csv = rows.map(r=>r.join(',')).join('\n');
+      const blob = new Blob(['\ufeff'+csv], {type:'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = `학생명단_업로드양식_${currentClass}반.csv`; a.click();
+      URL.revokeObjectURL(url);
+    }
+    window.downloadRosterTemplate = downloadRosterTemplate;
+
+    function handleRosterFileUpload(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      const ext = (file.name.split('.').pop() || '').toLowerCase();
+      const applyRows = (rows) => {
+        const roster = currentData().roster;
+        const dataRows = rows.filter(r => Array.isArray(r) && r.some(v => String(v||'').trim()));
+        const finalRows = dataRows.length && isRosterHeaderRow(dataRows[0]) ? dataRows.slice(1) : dataRows;
+        while (roster.length < finalRows.length) roster.push(makePlayer(''));
+        finalRows.forEach((cols, i) => applyRosterPasteLine(roster[i], cols.map(v=>String(v ?? ''))));
+        saveData(); renderRoster(); alert('학생 명단이 업로드되었습니다.');
+      };
+      if (ext === 'csv') {
+        file.text().then(text => applyRows(text.split(/\r?\n/).map(line => line.split(','))));
+      } else if (window.XLSX) {
+        file.arrayBuffer().then(buf => {
+          const wb = XLSX.read(buf, {type:'array'});
+          const ws = wb.Sheets[wb.SheetNames[0]];
+          const rows = XLSX.utils.sheet_to_json(ws, {header:1, raw:false});
+          applyRows(rows);
+        });
+      } else {
+        alert('엑셀 업로드 라이브러리를 불러오지 못했습니다.');
+      }
+      event.target.value = '';
+    }
+    window.handleRosterFileUpload = handleRosterFileUpload;
+
+    function initializePanelHelpButtons() {
+      const targets = document.querySelectorAll('.panel-header > div:first-child, .card-head > div:first-child');
+      targets.forEach((container, idx) => {
+        const helpTextEl = container.querySelector('.tiny.muted, .muted.tiny, .sub');
+        if (!helpTextEl) return;
+        const text = helpTextEl.textContent.trim();
+        if (!text) return;
+        if (container.querySelector('.help-icon-btn')) return;
+        helpTextEl.remove();
+        const parentHeader = container.parentElement;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'help-icon-btn';
+        btn.textContent = '!';
+        const boxId = `panelHelp_${idx}`;
+        btn.onclick = () => toggleInlineHelp(boxId);
+        const box = document.createElement('div');
+        box.id = boxId;
+        box.className = 'help-inline-box';
+        box.textContent = text;
+        const actions = parentHeader.querySelector('.actions');
+        if (actions) actions.prepend(btn); else parentHeader.appendChild(btn);
+        const panelBody = parentHeader.nextElementSibling;
+        if (panelBody && !panelBody.querySelector('#'+boxId)) panelBody.prepend(box);
+      });
     }
 
     document.addEventListener('paste', function(e) {
@@ -8657,6 +9132,7 @@ function renderAll() {
       alert('학생 명단이 일괄 붙여넣기 되었습니다.');
     });
 
+    initializePanelHelpButtons();
     loadData();
     loadApiUrlSetting();
     if (IS_STUDENT_LINEUP_MODE) {

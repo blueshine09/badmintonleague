@@ -276,6 +276,22 @@ textarea:focus,select:focus,input:focus{
               <button class="btn" type="button" onclick="changeCounter('serveFail',-1)">실패 -1</button>
             </div>
             <div class="counter-sub" id="serveCounterText">성공 0회 / 실패 0회</div>
+            <div class="section-box" style="padding:10px;gap:8px;">
+              <div class="section-title" style="font-size:.82rem;">서브 실패 원인</div>
+              <div class="action-row">
+                <button class="btn" type="button" onclick="changeCounter('serveFailNet',1)">네트 +1</button>
+                <button class="btn" type="button" onclick="changeCounter('serveFailOut',1)">아웃 +1</button>
+              </div>
+              <div class="action-row">
+                <button class="btn" type="button" onclick="changeCounter('serveFailTiming',1)">타이밍 +1</button>
+                <button class="btn" type="button" onclick="changeCounter('serveFailNet',-1)">네트 -1</button>
+              </div>
+              <div class="action-row">
+                <button class="btn" type="button" onclick="changeCounter('serveFailOut',-1)">아웃 -1</button>
+                <button class="btn" type="button" onclick="changeCounter('serveFailTiming',-1)">타이밍 -1</button>
+              </div>
+              <div class="counter-sub" id="serveFailDetailText">네트 0회 / 아웃 0회 / 타이밍 0회</div>
+            </div>
           </div>
           <div class="counter-card">
             <div class="counter-title">공격 <button type="button" class="help-btn" onclick="toggleHelp('attackHelp')">!</button></div>
@@ -289,6 +305,22 @@ textarea:focus,select:focus,input:focus{
               <button class="btn" type="button" onclick="changeCounter('attackFail',-1)">실패 -1</button>
             </div>
             <div class="counter-sub" id="attackCounterText">성공 0회 / 실패 0회</div>
+            <div class="section-box" style="padding:10px;gap:8px;">
+              <div class="section-title" style="font-size:.82rem;">공격 실패 원인</div>
+              <div class="action-row">
+                <button class="btn" type="button" onclick="changeCounter('attackFailNet',1)">네트 +1</button>
+                <button class="btn" type="button" onclick="changeCounter('attackFailOut',1)">아웃 +1</button>
+              </div>
+              <div class="action-row">
+                <button class="btn" type="button" onclick="changeCounter('attackFailForced',1)">무리한 공격 +1</button>
+                <button class="btn" type="button" onclick="changeCounter('attackFailNet',-1)">네트 -1</button>
+              </div>
+              <div class="action-row">
+                <button class="btn" type="button" onclick="changeCounter('attackFailOut',-1)">아웃 -1</button>
+                <button class="btn" type="button" onclick="changeCounter('attackFailForced',-1)">무리한 공격 -1</button>
+              </div>
+              <div class="counter-sub" id="attackFailDetailText">네트 0회 / 아웃 0회 / 무리한 공격 0회</div>
+            </div>
           </div>
           <div class="counter-card">
             <div class="counter-title">수비 <button type="button" class="help-btn" onclick="toggleHelp('defenseHelp')">!</button></div>
@@ -302,6 +334,22 @@ textarea:focus,select:focus,input:focus{
               <button class="btn" type="button" onclick="changeCounter('defenseFail',-1)">실패 -1</button>
             </div>
             <div class="counter-sub" id="defenseCounterText">성공 0회 / 실패 0회</div>
+            <div class="section-box" style="padding:10px;gap:8px;">
+              <div class="section-title" style="font-size:.82rem;">수비 실패 원인</div>
+              <div class="action-row">
+                <button class="btn" type="button" onclick="changeCounter('defenseFailLatePosition',1)">위치 늦음 +1</button>
+                <button class="btn" type="button" onclick="changeCounter('defenseFailLateReaction',1)">반응 늦음 +1</button>
+              </div>
+              <div class="action-row">
+                <button class="btn" type="button" onclick="changeCounter('defenseFailConnection',1)">연결 실패 +1</button>
+                <button class="btn" type="button" onclick="changeCounter('defenseFailLatePosition',-1)">위치 늦음 -1</button>
+              </div>
+              <div class="action-row">
+                <button class="btn" type="button" onclick="changeCounter('defenseFailLateReaction',-1)">반응 늦음 -1</button>
+                <button class="btn" type="button" onclick="changeCounter('defenseFailConnection',-1)">연결 실패 -1</button>
+              </div>
+              <div class="counter-sub" id="defenseFailDetailText">위치 늦음 0회 / 반응 늦음 0회 / 연결 실패 0회</div>
+            </div>
           </div>
         </div>
       </div>
@@ -354,7 +402,6 @@ textarea:focus,select:focus,input:focus{
     </section>
   </div>
 
-  <script src="./firebase-config.js"></script>
   <script type="module">
     import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
     import { getDatabase, ref, get, set, onValue } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js';
@@ -362,8 +409,21 @@ textarea:focus,select:focus,input:focus{
     const STRENGTH_OPTIONS = ['서브가 안정적이었음','공격 연결이 좋았음','수비가 안정적이었음','위치 이동이 빨랐음','집중력이 좋았음'];
     const WEAKNESS_OPTIONS = ['서브 실수가 있었음','공격 정확도가 아쉬움','수비 대응이 늦었음','준비 자세가 늦었음','위치 선정이 아쉬움'];
     const GAME_LABEL = { women: '여복', mixed: '혼복', men: '남복' };
-    const firebaseConfig = window.DEFAULT_FIREBASE_CONFIG;
-    if (!firebaseConfig) throw new Error('firebase-config.js를 찾지 못했습니다.');
+    const API_URL_KEY = 'badminton-firebase-config-v1';
+
+    function getFirebaseConfigFromIndexMode() {
+      const local = localStorage.getItem(API_URL_KEY) || '';
+      if (local) {
+        try { return JSON.parse(local); } catch (error) { console.warn('Firebase 설정 JSON 파싱 실패', error); }
+      }
+      if (window.DEFAULT_FIREBASE_CONFIG && typeof window.DEFAULT_FIREBASE_CONFIG === 'object') {
+        return window.DEFAULT_FIREBASE_CONFIG;
+      }
+      return null;
+    }
+
+    const firebaseConfig = getFirebaseConfigFromIndexMode();
+    if (!firebaseConfig) throw new Error('index 파일의 Firebase 설정(JSON)을 먼저 저장하거나 DEFAULT_FIREBASE_CONFIG를 제공해 주세요.');
     const firebaseApp = getApps().find(app => app.name === 'badminton-app') || initializeApp(firebaseConfig, 'badminton-app');
     const db = getDatabase(firebaseApp);
 
@@ -386,6 +446,9 @@ textarea:focus,select:focus,input:focus{
     const serveCounterText = document.getElementById('serveCounterText');
     const attackCounterText = document.getElementById('attackCounterText');
     const defenseCounterText = document.getElementById('defenseCounterText');
+    const serveFailDetailText = document.getElementById('serveFailDetailText');
+    const attackFailDetailText = document.getElementById('attackFailDetailText');
+    const defenseFailDetailText = document.getElementById('defenseFailDetailText');
     const serveSummary = document.getElementById('serveSummary');
     const attackSummary = document.getElementById('attackSummary');
     const defenseSummary = document.getElementById('defenseSummary');
@@ -406,13 +469,28 @@ textarea:focus,select:focus,input:focus{
     let formState = defaultRecord();
 
     function emptyClassData() {
-      return { roster: [], teams: [], liveMatches: [], completedMatches: [], dataObservations: {} };
+      return {
+        roster: [],
+        teams: [],
+        liveMatches: [],
+        completedMatches: [],
+        leagueArchives: [],
+        leagueCounter: 0,
+        lineupSubmissions: {},
+        dataObservations: {},
+        singlesLeague: { menMatches: [], womenMatches: [], courtCount: 2 }
+      };
     }
     function defaultRecord() {
       return {
         serveSuccess: 0, serveFail: 0,
         attackSuccess: 0, attackFail: 0,
         defenseSuccess: 0, defenseFail: 0,
+
+        serveFailNet: 0, serveFailOut: 0, serveFailTiming: 0,
+        attackFailNet: 0, attackFailOut: 0, attackFailForced: 0,
+        defenseFailLatePosition: 0, defenseFailLateReaction: 0, defenseFailConnection: 0,
+
         strengths: [], weaknesses: [],
         extraStrength: '', extraWeakness: '', memo: '',
         submittedAt: ''
@@ -433,32 +511,107 @@ textarea:focus,select:focus,input:focus{
       return '';
     }
     function normalizePlayer(raw = {}) {
-      const id = String(raw.id ?? raw.playerId ?? raw.name ?? '').trim();
-      return { ...raw, id, name: String(raw.name ?? raw.playerName ?? id).trim(), gender: normalizeGender(raw.gender ?? raw.sex), manualGroup: String(raw.manualGroup ?? raw.group ?? '').trim().toUpperCase() };
+      const basic = Number(raw.basic) || Math.round(((Number(raw.clear) || 50) + (Number(raw.drop) || 50) + (Number(raw.footwork) || 50)) / 3) || 50;
+      return {
+        ...raw,
+        id: String(raw.id ?? raw.playerId ?? raw.name ?? '').trim(),
+        name: String(raw.name ?? raw.playerName ?? '').trim(),
+        gender: normalizeGender(raw.gender ?? raw.sex),
+        manualGroup: String(raw.manualGroup ?? raw.group ?? '').trim().toUpperCase(),
+        participation: Number(raw.participation) || 0,
+        serve: Number(raw.serve) || 50,
+        basic,
+        clear: basic,
+        drop: basic,
+        footwork: basic,
+        singleSkill: Number(raw.singleSkill) || 50,
+        stats: {
+          win: Number(raw?.stats?.win) || 0,
+          lose: Number(raw?.stats?.lose) || 0,
+          points: Number(raw?.stats?.points) || 0,
+          scoreFor: Number(raw?.stats?.scoreFor) || 0,
+          scoreAgainst: Number(raw?.stats?.scoreAgainst) || 0,
+          servePoint: Number(raw?.stats?.servePoint) || 0,
+          attackSuccess: Number(raw?.stats?.attackSuccess) || 0,
+          attackError: Number(raw?.stats?.attackError) || 0,
+          serveError: Number(raw?.stats?.serveError) || 0,
+          rallyWin: Number(raw?.stats?.rallyWin) || 0
+        }
+      };
     }
     function normalizeTeam(raw = {}) {
       const letter = String(raw.letter ?? raw.name ?? '').replace('조','').trim().toUpperCase();
-      const players = Array.isArray(raw.players) && raw.players.length ? raw.players : (Array.isArray(raw.playerIds) ? raw.playerIds : []);
-      return { ...raw, id: String(raw.id ?? letter).trim(), name: String(raw.name ?? `${letter}조`), letter, players, playerIds: players };
+      const playerIds = Array.isArray(raw.playerIds) ? raw.playerIds : (Array.isArray(raw.players) ? raw.players : []);
+      return {
+        ...raw,
+        id: String(raw.id ?? letter).trim(),
+        letter,
+        name: String(raw.name ?? `${letter}조`).trim(),
+        playerIds,
+        players: playerIds,
+        stats: {
+          matchWin: Number(raw?.stats?.matchWin) || 0,
+          matchLose: Number(raw?.stats?.matchLose) || 0,
+          points: Number(raw?.stats?.points) || 0,
+          scoreFor: Number(raw?.stats?.scoreFor) || 0,
+          scoreAgainst: Number(raw?.stats?.scoreAgainst) || 0
+        }
+      };
     }
     function normalizeGame(block = {}) {
       return {
         ...block,
+        a: Number(block.a) || 0,
+        b: Number(block.b) || 0,
         lineupA: Array.isArray(block.lineupA) ? block.lineupA : ['', ''],
-        lineupB: Array.isArray(block.lineupB) ? block.lineupB : ['', '']
+        lineupB: Array.isArray(block.lineupB) ? block.lineupB : ['', ''],
+        finished: !!block.finished
       };
     }
     function normalizeMatch(raw = {}) {
       return {
         ...raw,
+        id: raw.id || `${String(raw.teamAId || '')}-${String(raw.teamBId || '')}-${Number(raw.roundNo ?? raw.round ?? 0)}`,
         roundNo: Number(raw.roundNo ?? raw.round ?? 0),
         teamAId: String(raw.teamAId ?? '').trim(),
         teamBId: String(raw.teamBId ?? '').trim(),
+        courtNo: Number(raw.courtNo) || 1,
+        scoreA: Number(raw.scoreA) || 0,
+        scoreB: Number(raw.scoreB) || 0,
+        trendA: Array.isArray(raw.trendA) && raw.trendA.length ? raw.trendA : [0],
+        trendB: Array.isArray(raw.trendB) && raw.trendB.length ? raw.trendB : [0],
+        activeGame: raw.activeGame || 'women',
+        started: !!raw.started,
+        startedAt: raw.startedAt || '',
+        events: Array.isArray(raw.events) ? raw.events : [],
+        finished: !!raw.finished,
+        completedAt: raw.completedAt || '',
         games: {
           women: normalizeGame(raw.games?.women || {}),
           mixed: normalizeGame(raw.games?.mixed || {}),
           men: normalizeGame(raw.games?.men || {})
         }
+      };
+    }
+    function normalizeSinglesLeague(raw = {}) {
+      const normalizeLeagueMatch = (m = {}) => ({
+        id: m.id || `${m.gender || ''}-${Number(m.roundNo) || 0}-${m.playerA || ''}-${m.playerB || ''}`,
+        gender: m.gender || '',
+        roundNo: Number(m.roundNo) || 1,
+        playerA: m.playerA || '',
+        playerB: m.playerB || '',
+        scoreA: Number(m.scoreA) || 0,
+        scoreB: Number(m.scoreB) || 0,
+        finished: !!m.finished,
+        slotNo: Number(m.slotNo) || 0,
+        courtNo: Number(m.courtNo) || 0,
+        started: !!m.started,
+        completedAt: m.completedAt || ''
+      });
+      return {
+        menMatches: Array.isArray(raw.menMatches) ? raw.menMatches.map(normalizeLeagueMatch) : [],
+        womenMatches: Array.isArray(raw.womenMatches) ? raw.womenMatches.map(normalizeLeagueMatch) : [],
+        courtCount: Math.max(1, Math.min(6, Number(raw.courtCount) || 2))
       };
     }
     function normalizeClassData(raw = {}) {
@@ -467,7 +620,11 @@ textarea:focus,select:focus,input:focus{
         teams: Array.isArray(raw.teams) ? raw.teams.map(normalizeTeam) : [],
         liveMatches: Array.isArray(raw.liveMatches) ? raw.liveMatches.map(normalizeMatch) : [],
         completedMatches: Array.isArray(raw.completedMatches) ? raw.completedMatches.map(normalizeMatch) : [],
-        dataObservations: raw.dataObservations && typeof raw.dataObservations === 'object' ? raw.dataObservations : {}
+        leagueArchives: Array.isArray(raw.leagueArchives) ? raw.leagueArchives : [],
+        leagueCounter: Number(raw.leagueCounter) || 0,
+        lineupSubmissions: raw.lineupSubmissions && typeof raw.lineupSubmissions === 'object' ? raw.lineupSubmissions : {},
+        dataObservations: raw.dataObservations && typeof raw.dataObservations === 'object' ? raw.dataObservations : {},
+        singlesLeague: normalizeSinglesLeague(raw.singlesLeague || {})
       };
     }
     function getTeamByLetter(letter) {
@@ -547,19 +704,48 @@ textarea:focus,select:focus,input:focus{
       if (rate >= 45) return `${label}가 보통 수준`;
       return `${label} 보완이 필요함`;
     }
+    function getTopFailReason(entries, emptyLabel = '주요 실패 원인 없음') {
+      const sorted = entries
+        .map(([label, value]) => [label, Number(value || 0)])
+        .sort((a, b) => b[1] - a[1]);
+      if (!sorted.length || sorted[0][1] <= 0) return emptyLabel;
+      return `${sorted[0][0]}가 가장 많이 나타남`;
+    }
     function refreshSummary() {
       serveCounterText.textContent = `성공 ${Number(formState.serveSuccess || 0)}회 / 실패 ${Number(formState.serveFail || 0)}회`;
       attackCounterText.textContent = `성공 ${Number(formState.attackSuccess || 0)}회 / 실패 ${Number(formState.attackFail || 0)}회`;
       defenseCounterText.textContent = `성공 ${Number(formState.defenseSuccess || 0)}회 / 실패 ${Number(formState.defenseFail || 0)}회`;
+
+      serveFailDetailText.textContent = `네트 ${Number(formState.serveFailNet || 0)}회 / 아웃 ${Number(formState.serveFailOut || 0)}회 / 타이밍 ${Number(formState.serveFailTiming || 0)}회`;
+      attackFailDetailText.textContent = `네트 ${Number(formState.attackFailNet || 0)}회 / 아웃 ${Number(formState.attackFailOut || 0)}회 / 무리한 공격 ${Number(formState.attackFailForced || 0)}회`;
+      defenseFailDetailText.textContent = `위치 늦음 ${Number(formState.defenseFailLatePosition || 0)}회 / 반응 늦음 ${Number(formState.defenseFailLateReaction || 0)}회 / 연결 실패 ${Number(formState.defenseFailConnection || 0)}회`;
+
       const serveRate = calcRate(formState.serveSuccess, formState.serveFail);
       const attackRate = calcRate(formState.attackSuccess, formState.attackFail);
       const defenseRate = calcRate(formState.defenseSuccess, formState.defenseFail);
       serveSummary.textContent = `${Number(formState.serveSuccess || 0)} / ${Number(formState.serveFail || 0)} / ${serveRate}%`;
       attackSummary.textContent = `${Number(formState.attackSuccess || 0)} / ${Number(formState.attackFail || 0)} / ${attackRate}%`;
       defenseSummary.textContent = `${Number(formState.defenseSuccess || 0)} / ${Number(formState.defenseFail || 0)} / ${defenseRate}%`;
-      serveComment.textContent = rateComment('서브', formState.serveSuccess, formState.serveFail);
-      attackComment.textContent = rateComment('공격', formState.attackSuccess, formState.attackFail);
-      defenseComment.textContent = rateComment('수비', formState.defenseSuccess, formState.defenseFail);
+
+      const topServeFail = getTopFailReason([
+        ['네트', formState.serveFailNet],
+        ['아웃', formState.serveFailOut],
+        ['타이밍', formState.serveFailTiming]
+      ]);
+      const topAttackFail = getTopFailReason([
+        ['네트', formState.attackFailNet],
+        ['아웃', formState.attackFailOut],
+        ['무리한 공격', formState.attackFailForced]
+      ]);
+      const topDefenseFail = getTopFailReason([
+        ['위치 늦음', formState.defenseFailLatePosition],
+        ['반응 늦음', formState.defenseFailLateReaction],
+        ['연결 실패', formState.defenseFailConnection]
+      ]);
+
+      serveComment.textContent = `${rateComment('서브', formState.serveSuccess, formState.serveFail)} · ${topServeFail}`;
+      attackComment.textContent = `${rateComment('공격', formState.attackSuccess, formState.attackFail)} · ${topAttackFail}`;
+      defenseComment.textContent = `${rateComment('수비', formState.defenseSuccess, formState.defenseFail)} · ${topDefenseFail}`;
     }
     function fillFormFromState() {
       const record = getRecord();
