@@ -25,17 +25,17 @@
     .hint{font-size:.78rem;color:var(--muted);line-height:1.55}.hint.warn{color:#ffe39c}.step-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.step-badge{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;padding:0 10px;border-radius:999px;background:rgba(90,177,255,.18);font-weight:800}
     .action-row{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:#102038;color:var(--text);cursor:pointer;border-radius:13px;min-height:44px;padding:10px 14px;font-weight:800;font-size:.9rem;display:inline-flex;align-items:center;justify-content:center;gap:6px}
     .btn.primary,.btn.blue{background:linear-gradient(135deg,#2d73ff,#45b3ff);border:none}.btn.green{background:linear-gradient(135deg,#1d9d68,#36c98a);border:none}.btn.yellow{background:linear-gradient(135deg,#c4901d,#ffd166);color:#17202e;border:none}.btn.gray{background:linear-gradient(135deg,#5f6b7c,#7f8b99);border:none;color:#eef4ff}.btn[disabled]{opacity:.6;cursor:not-allowed}
-    .summary-list{display:grid;gap:8px}.summary-item{padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06)}.summary-main{font-size:.9rem;font-weight:700}.summary-sub{font-size:.78rem;color:var(--muted);margin-top:4px;line-height:1.6}
+    .summary-list{display:grid;gap:14px}.summary-item{padding:14px 16px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);margin:0;min-width:0}.summary-main{font-size:.9rem;font-weight:700;line-height:1.35}.summary-sub{font-size:.78rem;color:var(--muted);margin-top:6px;line-height:1.68;word-break:break-word;overflow-wrap:anywhere}
     .hidden{display:none!important}.role-box{border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:12px;background:rgba(8,24,49,.55);display:grid;gap:10px}.role-box .role-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.role-status{font-size:.78rem;color:#cfe5ff;font-weight:700}
     .role-help{font-size:.77rem;color:var(--muted);line-height:1.55}.error-box{border:1px solid rgba(255,122,122,.3);background:rgba(255,122,122,.08);color:#ffd6d6;border-radius:14px;padding:10px 12px;font-size:.8rem;line-height:1.55}.success-box{border:1px solid rgba(83,215,105,.28);background:rgba(83,215,105,.08);color:#cffff0;border-radius:14px;padding:10px 12px;font-size:.8rem;line-height:1.55}
     .ai-guide-card{border:1px solid rgba(90,177,255,.2);background:linear-gradient(180deg,rgba(90,177,255,.08),rgba(255,255,255,.03));}
     .ai-guide-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
     .ai-badge{display:inline-flex;align-items:center;gap:6px;padding:7px 11px;border-radius:999px;background:rgba(90,177,255,.14);border:1px solid rgba(90,177,255,.24);font-weight:800;font-size:.8rem;color:#d9ecff}
     .ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .ai-strategy-list{display:grid;gap:8px}
-    .ai-strategy-item{padding:12px;border-radius:14px;background:rgba(8,24,49,.55);border:1px solid rgba(255,255,255,.08)}
+    .ai-strategy-list{display:grid;gap:14px}
+    .ai-strategy-item{padding:14px;border-radius:16px;background:rgba(8,24,49,.55);border:1px solid rgba(255,255,255,.08);display:grid;gap:12px;min-width:0}
     .ai-strategy-title{font-size:.9rem;font-weight:800}
-    .ai-strategy-meta{margin-top:4px;font-size:.74rem;color:#b8d6ff;font-weight:700}
+    .ai-strategy-meta{margin-top:2px;font-size:.74rem;color:#b8d6ff;font-weight:700;line-height:1.58;word-break:break-word;overflow-wrap:anywhere}
     .ai-loading{opacity:.7;pointer-events:none}
     .mini-check{display:flex;gap:8px;align-items:flex-start;color:var(--muted);font-size:.82rem}
     .mini-check input{width:auto;min-width:16px;margin-top:2px}
@@ -207,7 +207,7 @@
           <div class="ai-guide-top">
             <div>
               <div class="section-title">AI 오더 추천</div>
-              <div class="section-subtitle">현재 선택한 선수 구성과 선수별 기록, 조합 통계를 바탕으로 오더 추천을 제공합니다.</div>
+              <div class="section-subtitle">선수 선택 전에 먼저 추천 조합을 확인하고, 그 결과를 참고해 오더를 선택할 수 있습니다.</div>
             </div>
             <div class="ai-badge" id="aiGuideStatusBadge">추천 미생성</div>
           </div>
@@ -215,7 +215,7 @@
           <div class="ai-grid" id="aiCompareSummary">
             <div class="summary-item">
               <div class="summary-main">우리 조 전력</div>
-              <div class="summary-sub">선수 선택 후 AI 추천 생성을 누르면 선수별·조합별 요약이 표시됩니다.</div>
+              <div class="summary-sub">AI 추천을 먼저 생성하면 추천 조합과 팀 전력 요약이 표시됩니다.</div>
             </div>
             <div class="summary-item">
               <div class="summary-main">상대 조 전력</div>
@@ -282,7 +282,7 @@
         <div id="roleSections"></div>
         <div class="action-row">
           <button class="btn gray" id="backToLineupBtn">이전</button>
-          <button class="btn blue" id="autoFillRolesBtn">균등 자동 배정</button>
+          <button class="btn blue" id="autoFillRolesBtn">역할 자동 배정</button>
           <button class="btn blue" id="saveRolesDraftBtn">임시저장</button>
           <button class="btn yellow" id="rolesCompleteBtn">심판 선택 완료</button>
           <button class="btn green hidden" id="finalSubmitBtn">제출하기</button>
@@ -380,7 +380,7 @@
 
     function disableInteractiveControls(){
       document.querySelectorAll('button, select, input').forEach(el => {
-        if(['saveLineupDraftBtn','lineupCompleteBtn','generateAiGuideBtn','regenerateAiGuideBtn','generateMatchTacticsBtn','regenerateMatchTacticsBtn','backToLineupBtn','autoFillRolesBtn','saveRolesDraftBtn','rolesCompleteBtn','finalSubmitBtn'].includes(el.id) || el.tagName === 'SELECT'){
+        if(['saveLineupDraftBtn','lineupCompleteBtn','generateAiGuideBtn','regenerateAiGuideBtn','generateMatchTacticsBtn','regenerateMatchTacticsBtn','backToLineupBtn','saveRolesDraftBtn','rolesCompleteBtn','finalSubmitBtn'].includes(el.id) || el.tagName === 'SELECT'){
           el.disabled = true;
         }
       });
@@ -434,6 +434,8 @@
     function getPlayerById(id){ return appData.roster.find(player => player.id === id) || null; }
     function gameLabel(type){ return GAME_LABELS[type] || type; }
     function getPlayersForTeam(team){ if(!team) return []; const ids = Array.isArray(team.players)&&team.players.length ? team.players : (Array.isArray(team.playerIds)?team.playerIds:[]); const mapped = ids.map(getPlayerById).filter(Boolean); if(mapped.length) return mapped; const letter = getTeamLetter(team); return appData.roster.filter(player => String(player.manualGroup || '').toUpperCase() === letter); }
+    function getPlayerNameById(id){ return getPlayerById(id)?.name || String(id || '').trim(); }
+    function formatPlayerNames(list=[]){ return (Array.isArray(list) ? list : [list]).filter(Boolean).map(getPlayerNameById).join(' · '); }
     function getRolePool(team, type){ const players = getPlayersForTeam(team); if(type==='women') return players.filter(p=>p.gender==='F'); if(type==='men') return players.filter(p=>p.gender==='M'); return players; }
     function getCurrentSelections(){ return { women:[lineupSelects.women1.value||'',lineupSelects.women2.value||''], mixed:[lineupSelects.mixed1.value||'',lineupSelects.mixed2.value||''], men:[lineupSelects.men1.value||'',lineupSelects.men2.value||''] }; }
     function inferMixedCrossRules(team){ const players=getPlayersForTeam(team); const maleIds=players.filter(p=>p.gender==='M').map(p=>p.id); const femaleIds=players.filter(p=>p.gender==='F').map(p=>p.id); return {maleIds,femaleIds,allowMenReuse:maleIds.length<=2,allowWomenReuse:femaleIds.length<=2}; }
@@ -448,32 +450,124 @@
     function roleName(id){ return getPlayerById(id)?.name || '미선택'; }
     function getTeamSpecificRoles(game){ const side = getTeamSide(); return normalizeRoles(side==='A' ? game.rolesA : game.rolesB); }
     function getVisibleRoleType(umpireTeam){ if(!umpireTeam || !getTeamSide()) return 'none'; return getTeamSide() === umpireTeam ? 'umpire' : 'assistant'; }
+    function getMatchTeamLabel(side){
+      if(!activeMatch) return side === 'A' ? 'A조' : side === 'B' ? 'B조' : '-';
+      const team = getTeamById(side === 'A' ? activeMatch.teamAId : activeMatch.teamBId);
+      return team?.name || `${side}조`;
+    }
+    function getAutoUmpireSide(){
+      if(!activeMatch) return '';
+      if(activeMatch.refereeSide) return activeMatch.refereeSide;
+      if(activeMatch.refereeTeamId){
+        if(activeMatch.refereeTeamId === activeMatch.teamAId) return 'A';
+        if(activeMatch.refereeTeamId === activeMatch.teamBId) return 'B';
+      }
+      return '';
+    }
+    function ensureSubmissionAutoUmpire(submission){
+      const autoSide = getAutoUmpireSide();
+      if(!submission || !autoSide) return submission;
+      GAME_TYPES.forEach(type => {
+        if(!submission.games[type]) submission.games[type] = { umpireTeam:'', roles:normalizeRoles({}) };
+        submission.games[type].umpireTeam = autoSide;
+      });
+      return submission;
+    }
+    function getRoleHistoryCounts(){
+      const counts = {};
+      const teamId = activeTeam?.id;
+      if(!teamId) return counts;
+      const submissions = appData.lineupSubmissions?.[teamId] || {};
+      Object.entries(submissions).forEach(([roundKey, submission]) => {
+        if(String(roundKey) === String(round)) return;
+        GAME_TYPES.forEach(type => {
+          const roles = normalizeRoles(submission?.games?.[type]?.roles || {});
+          [roles.umpire, roles.assistant, roles.scorekeeper, roles.lineJudge, ...(roles.data || [])].filter(Boolean).forEach(id => {
+            counts[id] = (counts[id] || 0) + 1;
+          });
+        });
+      });
+      return counts;
+    }
+    function shuffleArray(items){
+      const arr = [...items];
+      for(let i = arr.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+    function getSortedEligibleRolePlayers(type){
+      const lineupIds = new Set((getCurrentSelections()[type] || []).filter(Boolean));
+      const history = getRoleHistoryCounts();
+      const candidates = getPlayersForTeam(activeTeam).filter(player => player?.id && !lineupIds.has(player.id));
+      const buckets = new Map();
+      candidates.forEach(player => {
+        const count = history[player.id] || 0;
+        if(!buckets.has(count)) buckets.set(count, []);
+        buckets.get(count).push(player);
+      });
+      return [...buckets.keys()].sort((a,b)=>a-b).flatMap(count => shuffleArray(buckets.get(count)));
+    }
+    function getDefaultAiLineups(){
+      const womenPool = getRolePool(activeTeam, 'women');
+      const menPool = getRolePool(activeTeam, 'men');
+      const cross = inferMixedCrossRules(activeTeam);
+      const pickIds = players => players.slice(0,2).map(player => player?.id || '').filter(Boolean);
+      const women = pickIds(womenPool);
+      const men = pickIds(menPool);
+      const mixedWomanPool = cross.allowWomenReuse ? womenPool : womenPool.filter(player => !women.includes(player.id));
+      const mixedManPool = cross.allowMenReuse ? menPool : menPool.filter(player => !men.includes(player.id));
+      return {
+        women,
+        mixed: [mixedWomanPool[0]?.id || womenPool[0]?.id || '', mixedManPool[0]?.id || menPool[0]?.id || ''],
+        men
+      };
+    }
 
-    function refreshLineupOptions(){
+    function refreshLineupOptions(seedSelections = null){
       if (!activeTeam) return;
       isRefreshingSelects = true;
-      const current = getCurrentSelections();
+      const current = seedSelections ? {
+        women:[seedSelections?.women?.[0] || '', seedSelections?.women?.[1] || ''],
+        mixed:[seedSelections?.mixed?.[0] || '', seedSelections?.mixed?.[1] || ''],
+        men:[seedSelections?.men?.[0] || '', seedSelections?.men?.[1] || '']
+      } : getCurrentSelections();
       const womenPool = getRolePool(activeTeam, 'women'); const menPool = getRolePool(activeTeam, 'men'); const cross = inferMixedCrossRules(activeTeam);
-      lineupSelects.women1.innerHTML = buildPlayerOptionHtml(womenPool, current.women[0], new Set(current.women.filter((id,idx)=>idx!==0&&id)));
-      lineupSelects.women2.innerHTML = buildPlayerOptionHtml(womenPool, current.women[1], new Set(current.women.filter((id,idx)=>idx!==1&&id)));
-      lineupSelects.men1.innerHTML = buildPlayerOptionHtml(menPool, current.men[0], new Set(current.men.filter((id,idx)=>idx!==0&&id)));
-      lineupSelects.men2.innerHTML = buildPlayerOptionHtml(menPool, current.men[1], new Set(current.men.filter((id,idx)=>idx!==1&&id)));
+      const womenExcluded1 = new Set(current.women.filter((id,idx)=>idx!==0&&id));
+      const womenExcluded2 = new Set(current.women.filter((id,idx)=>idx!==1&&id));
+      const menExcluded1 = new Set(current.men.filter((id,idx)=>idx!==0&&id));
+      const menExcluded2 = new Set(current.men.filter((id,idx)=>idx!==1&&id));
+      if(!cross.allowWomenReuse && current.mixed[0]){
+        if(current.mixed[0] !== current.women[0]) womenExcluded1.add(current.mixed[0]);
+        if(current.mixed[0] !== current.women[1]) womenExcluded2.add(current.mixed[0]);
+      }
+      if(!cross.allowMenReuse && current.mixed[1]){
+        if(current.mixed[1] !== current.men[0]) menExcluded1.add(current.mixed[1]);
+        if(current.mixed[1] !== current.men[1]) menExcluded2.add(current.mixed[1]);
+      }
+      lineupSelects.women1.innerHTML = buildPlayerOptionHtml(womenPool, current.women[0], womenExcluded1);
+      lineupSelects.women2.innerHTML = buildPlayerOptionHtml(womenPool, current.women[1], womenExcluded2);
+      lineupSelects.men1.innerHTML = buildPlayerOptionHtml(menPool, current.men[0], menExcluded1);
+      lineupSelects.men2.innerHTML = buildPlayerOptionHtml(menPool, current.men[1], menExcluded2);
       const mixedExcluded1 = new Set(); const mixedExcluded2 = new Set();
-      if(current.mixed[0]) mixedExcluded1.delete(current.mixed[0]);
-      if(current.mixed[1]) mixedExcluded2.delete(current.mixed[1]);
       current.mixed.filter(Boolean).forEach((id,idx)=>{ if(idx!==0) mixedExcluded1.add(id); if(idx!==1) mixedExcluded2.add(id); });
       if(!cross.allowWomenReuse) current.women.filter(Boolean).forEach(id=>{ if(id!==current.mixed[0]) mixedExcluded1.add(id); });
       if(!cross.allowMenReuse) current.men.filter(Boolean).forEach(id=>{ if(id!==current.mixed[1]) mixedExcluded2.add(id); });
       lineupSelects.mixed1.innerHTML = buildPlayerOptionHtml(womenPool, current.mixed[0], mixedExcluded1);
       lineupSelects.mixed2.innerHTML = buildPlayerOptionHtml(menPool, current.mixed[1], mixedExcluded2);
       Object.entries(current).forEach(([type, ids])=>{ lineupSelects[`${type}1`].value = ids[0] || ''; lineupSelects[`${type}2`].value = ids[1] || ''; });
-      hints.women.textContent = womenPool.length <= 2 ? `여학생 ${womenPool.length}명이라 같은 학생 재사용 가능 상황이 생길 수 있습니다.` : '여복은 여학생만 표시됩니다.';
-      hints.men.textContent = menPool.length <= 2 ? `남학생 ${menPool.length}명이라 같은 학생 재사용 가능 상황이 생길 수 있습니다.` : '남복은 남학생만 표시됩니다.';
+      hints.women.textContent = womenPool.length <= 2 ? `여학생 ${womenPool.length}명이라 같은 학생 재사용 가능 상황이 생길 수 있습니다.` : (!cross.allowWomenReuse ? '혼복에서 선택한 여학생은 여복 후보에서 자동 제외됩니다.' : '여복은 여학생만 표시됩니다.');
+      hints.men.textContent = menPool.length <= 2 ? `남학생 ${menPool.length}명이라 같은 학생 재사용 가능 상황이 생길 수 있습니다.` : (!cross.allowMenReuse ? '혼복에서 선택한 남학생은 남복 후보에서 자동 제외됩니다.' : '남복은 남학생만 표시됩니다.');
       hints.mixed.textContent = [!cross.allowMenReuse ? '남복에 이미 선택된 남학생은 혼복 후보에서 자동 제외됩니다.' : `남학생 ${cross.maleIds.length}명이라 남복-혼복 중복이 허용됩니다.`, !cross.allowWomenReuse ? '여복에 이미 선택된 여학생은 혼복 후보에서 자동 제외됩니다.' : `여학생 ${cross.femaleIds.length}명이라 여복-혼복 중복이 허용됩니다.`].join(' ');
       isRefreshingSelects = false;
     }
 
-    function hydrateContext(){ activeTeam = getTeamByLetter(group); activeMatch = (appData.liveMatches || []).find(match => Number(match.roundNo) === round && (match.teamAId === activeTeam?.id || match.teamBId === activeTeam?.id)) || null; }
+    function hydrateContext(){
+      activeTeam = getTeamByLetter(group);
+      const matchPools = [...(appData.liveMatches || []), ...(appData.completedMatches || [])];
+      activeMatch = matchPools.find(match => Number(match.roundNo) === round && (match.teamAId === activeTeam?.id || match.teamBId === activeTeam?.id)) || null;
+    }
 
     function validateLineups(){
       const current = getCurrentSelections();
@@ -492,7 +586,7 @@
     }
 
     function renderRoleSections(){
-      const submission = getSubmission();
+      const submission = ensureSubmissionAutoUmpire(getSubmission());
       const side = getTeamSide();
       roleSections.innerHTML = GAME_TYPES.map(type => {
         const game = getMatchGame(type);
@@ -503,7 +597,9 @@
         const { players } = getAvailableRolePlayers(type, roles);
         const lineups = getCurrentSelections()[type];
         const selectedNames = lineups.map(id => roleName(id)).join(' · ');
-        const roleStatus = !umpireTeam ? '주심 담당 조를 먼저 선택하세요.' : (visibleRoleType === 'umpire' ? `우리 조가 ${gameLabel(type)} 주심 담당 조입니다.` : `우리 조가 ${gameLabel(type)} 부심 담당 조입니다.`);
+        const autoUmpireSide = getAutoUmpireSide();
+        const autoUmpireLabel = autoUmpireSide ? `${getMatchTeamLabel(autoUmpireSide)} 자동 배정` : '';
+        const roleStatus = !umpireTeam ? '주심 담당 조 자동 배정 정보를 불러오는 중입니다.' : (visibleRoleType === 'umpire' ? `우리 조가 ${gameLabel(type)} 주심 담당 조입니다.` : `우리 조가 ${gameLabel(type)} 부심 담당 조입니다.`);
         const buildOptions = (selectedId, excluded=[]) => ['<option value="">선택</option>'].concat(players.filter(p => !excluded.includes(p.id) || p.id===selectedId).map(p => `<option value="${escapeHtml(p.id)}"${p.id===selectedId?' selected':''}>${escapeHtml(p.name)}</option>`)).join('');
         const usedForPrimary = [roles.scorekeeper, roles.lineJudge, ...(roles.data||[])].filter(Boolean);
         const usedForSupport = [roles.umpire, roles.assistant, roles.lineJudge, ...(roles.data||[])].filter(Boolean);
@@ -522,14 +618,14 @@
             <div class="role-help">${roleStatus}</div>
             <div class="duo-grid">
               <label class="input-label">주심 담당 조
-                <select data-role="umpireTeam" data-type="${type}" ${game.umpireTeam && game.umpireTeam !== side ? 'disabled' : ''}>
+                <select data-role="umpireTeam" data-type="${type}" disabled>
                   <option value="">선택</option>
-                  <option value="A" ${umpireTeam==='A'?'selected':''}>A조가 주심</option>
-                  <option value="B" ${umpireTeam==='B'?'selected':''}>B조가 주심</option>
+                  <option value="A" ${umpireTeam==='A'?'selected':''}>${escapeHtml(getMatchTeamLabel('A'))}가 주심</option>
+                  <option value="B" ${umpireTeam==='B'?'selected':''}>${escapeHtml(getMatchTeamLabel('B'))}가 주심</option>
                 </select>
               </label>
               <label class="input-label">우리 조 역할
-                <input value="${!umpireTeam ? '미정' : (visibleRoleType === 'umpire' ? '주심 담당 조' : '부심 담당 조')}" disabled>
+                <input value="${!umpireTeam ? '미정' : (visibleRoleType === 'umpire' ? `주심 담당 조 · ${autoUmpireLabel || getMatchTeamLabel(umpireTeam)}` : `부심 담당 조 · ${autoUmpireLabel || getMatchTeamLabel(umpireTeam)}`)}" disabled>
               </label>
             </div>
             <div class="role-grid">
@@ -544,7 +640,7 @@
 
       roleSections.querySelectorAll('select[data-role]').forEach(sel => {
         sel.addEventListener('change', async () => {
-          const submission = getSubmission();
+          const submission = ensureSubmissionAutoUmpire(getSubmission());
           const type = sel.dataset.type; const role = sel.dataset.role;
           if(role === 'umpireTeam'){ submission.games[type].umpireTeam = sel.value; }
           else if(role === 'data0' || role === 'data1'){ const idx = role === 'data0' ? 0 : 1; const data = normalizeRoles(submission.games[type].roles).data; data[idx] = sel.value; submission.games[type].roles.data = data; }
@@ -636,7 +732,7 @@
           opponent: getTeamLetter(getOpponentTeam()) || '',
           matchId: activeMatch?.id || ''
         },
-        lineup: getCurrentSelections(),
+        lineup: (() => { const current = getCurrentSelections(); const hasAll = GAME_TYPES.every(type => current[type][0] && current[type][1]); return hasAll ? current : getDefaultAiLineups(); })(),
         stats: getComparisonStats()
       };
     }
@@ -677,9 +773,9 @@
       order.forEach(([type,label]) => {
         const rec = recommendations[type] || {};
         const pred = predictions[type] || {};
-        const recPair = Array.isArray(rec.recommendedPair) ? rec.recommendedPair.filter(Boolean).join(' · ') : '';
-        const altPair = Array.isArray(rec.alternativePair) ? rec.alternativePair.filter(Boolean).join(' · ') : '';
-        const oppPair = Array.isArray(pred.expectedOppPair) ? pred.expectedOppPair.filter(Boolean).join(' · ') : '';
+        const recPair = Array.isArray(rec.recommendedPair) ? formatPlayerNames(rec.recommendedPair) : '';
+        const altPair = Array.isArray(rec.alternativePair) ? formatPlayerNames(rec.alternativePair) : '';
+        const oppPair = Array.isArray(pred.expectedOppPair) ? formatPlayerNames(pred.expectedOppPair) : '';
         blocks.push(`
           <div class="ai-strategy-item">
             <div class="ai-strategy-title">${label} 추천 조합</div>
@@ -742,9 +838,9 @@
           men: { expectedOppPair: ['상대 남복 1', '상대 남복 2'], reason: '상대 최근 제출 데이터가 부족하여 일반적인 남복 조합을 기준으로 예측합니다.' }
         },
         recommendations: {
-          women: recommend(lineup.women || [], [], '현재 선택한 여복 조합을 우선 유지하되, 수비 연결이 안정적인 학생이 첫 랠리를 길게 가져가면 좋습니다.', '여복 대안 조합 데이터가 아직 충분하지 않습니다.', '초반에는 무리한 공격보다 안정적인 클리어와 네트 연결에 집중합니다.'),
-          mixed: recommend(lineup.mixed || [], [], '현재 선택한 혼복 조합에서 여자 선수는 전위 연결, 남자 선수는 후위 커버를 맡는 방식이 가장 안정적입니다.', '혼복 대안 조합 데이터가 아직 충분하지 않습니다.', '첫 2개 랠리는 전위-후위 역할을 고정하고 짧은 리턴 뒤 빠른 연결을 시도합니다.'),
-          men: recommend(lineup.men || [], [], '현재 선택한 남복 조합을 기준으로 후위 공격과 전위 마무리 역할을 분리하는 운영이 적절합니다.', '남복 대안 조합 데이터가 아직 충분하지 않습니다.', '초반에는 깊은 클리어로 상대를 뒤로 밀고 짧은 리턴이 오면 전위에서 빠르게 마무리합니다.')
+          women: recommend(lineup.women || [], [], '추천 조합 기준으로 안정적인 수비 연결과 긴 랠리 운영을 먼저 가져가는 방식이 적절합니다.', '여복 대안 조합 데이터가 아직 충분하지 않습니다.', '초반에는 무리한 공격보다 안정적인 클리어와 네트 연결에 집중합니다.'),
+          mixed: recommend(lineup.mixed || [], [], '추천 조합 기준으로 여자 선수는 전위 연결, 남자 선수는 후위 커버를 맡는 운영이 가장 안정적입니다.', '혼복 대안 조합 데이터가 아직 충분하지 않습니다.', '첫 2개 랠리는 전위-후위 역할을 고정하고 짧은 리턴 뒤 빠른 연결을 시도합니다.'),
+          men: recommend(lineup.men || [], [], '추천 조합 기준으로 후위 공격과 전위 마무리 역할을 분리하는 운영이 적절합니다.', '남복 대안 조합 데이터가 아직 충분하지 않습니다.', '초반에는 깊은 클리어로 상대를 뒤로 밀고 짧은 리턴이 오면 전위에서 빠르게 마무리합니다.')
         },
         source: 'fallback-rule'
       };
@@ -783,7 +879,6 @@
 
     async function generateAiGuide(mode='generate'){
       try{
-        validateLineups();
         const payload = buildAiPayload();
         renderAiCompareSummary(payload);
         setAiGuideLoading(true);
@@ -824,7 +919,7 @@
       if(!saved){
         aiGuideStatusBadge.textContent = '추천 미생성';
         aiGuideList.innerHTML = `<div class="summary-item"><div class="summary-sub">아직 생성된 추천이 없습니다.</div></div>`;
-        aiGuideHint.textContent = '선수 선택 후 AI 오더 추천 생성을 누르면 추천 조합과 대안 조합을 확인할 수 있습니다.';
+        aiGuideHint.textContent = 'AI 오더 추천을 먼저 생성한 뒤, 추천 조합을 참고해 직접 오더를 선택할 수 있습니다.';
         regenerateAiGuideBtn.disabled = true;
         return;
       }
@@ -903,8 +998,8 @@
       const order = [['women','여복'],['mixed','혼복'],['men','남복']];
       matchTacticsList.innerHTML = order.map(([type,label])=>{
         const block = saved[type] || {};
-        const ourPair = Array.isArray(block.ourPair) ? block.ourPair.filter(Boolean).join(' · ') : '';
-        const oppPair = Array.isArray(block.oppPair) ? block.oppPair.filter(Boolean).join(' · ') : '';
+        const ourPair = Array.isArray(block.ourPair) ? formatPlayerNames(block.ourPair) : '';
+        const oppPair = Array.isArray(block.oppPair) ? formatPlayerNames(block.oppPair) : '';
         return `<div class="ai-strategy-item">
           <div class="ai-strategy-title">${label} 맞춤 전술</div>
           ${ourPair ? `<div class="summary-item"><div class="summary-main">우리 조합</div><div class="summary-sub">${escapeHtml(ourPair)}</div></div>`:''}
@@ -992,7 +1087,7 @@
     }
 
     function validateRoles(){
-      const submission = getSubmission();
+      const submission = ensureSubmissionAutoUmpire(getSubmission());
       const errors = [];
       GAME_TYPES.forEach(type => {
         const game = submission.games[type]; const roles = normalizeRoles(game.roles); const umpireTeam = game.umpireTeam || ''; const visibleRoleType = getVisibleRoleType(umpireTeam);
@@ -1016,9 +1111,10 @@
     }
     async function persistSubmission(status='draft', submission=getSubmission(), final=false){
       if(!activeTeam || !activeMatch) throw new Error('팀 또는 경기 정보를 찾지 못했습니다.');
-      const lineups = getCurrentSelections();
+      const lineups = submission?.lineups ? { women:[...(submission.lineups.women || getCurrentSelections().women)].slice(0,2), mixed:[...(submission.lineups.mixed || getCurrentSelections().mixed)].slice(0,2), men:[...(submission.lineups.men || getCurrentSelections().men)].slice(0,2) } : getCurrentSelections();
       applyLineupsToMatch(lineups);
       submission.lineups = lineups;
+      ensureSubmissionAutoUmpire(submission);
       submission.status = status;
       submission.updatedAt = new Date().toISOString();
       if(status === 'lineup_ready' && !submission.lineupCompletedAt) submission.lineupCompletedAt = new Date().toISOString();
@@ -1037,124 +1133,35 @@
 
     function setStep(step){ currentStep = step; lineupCard.classList.toggle('hidden', step !== 'lineup'); rolesCard.classList.toggle('hidden', step !== 'roles'); if(matchTacticsCard) matchTacticsCard.classList.toggle('hidden', false); }
     function updateStatus(){
-      const submission = getSubmission();
-      const locked = !!activeMatch?.started;
-      const stage = locked ? 'locked' : (submission.finalSubmittedAt ? 'done' : (submission.rolesCompletedAt ? 'roles' : (submission.lineupCompletedAt ? 'lineup' : 'draft')));
+      const submission = ensureSubmissionAutoUmpire(getSubmission());
+      const finished = !!activeMatch?.finished;
+      const locked = !!activeMatch?.started && !finished;
+      const stage = finished ? 'finished' : (submission.finalSubmittedAt ? 'done' : (locked ? 'locked' : (submission.rolesCompletedAt ? 'roles' : (submission.lineupCompletedAt ? 'lineup' : 'draft'))));
       const pill = document.getElementById('statusPill');
       const text = document.getElementById('statusText');
-      pill.className = 'status-pill ' + (stage==='done' ? 'status-done' : stage==='locked' ? 'status-lock' : stage==='roles' ? 'status-edit' : stage==='lineup' ? 'status-edit' : 'status-draft');
-      pill.textContent = stage==='done' ? '제출완료' : stage==='locked' ? '수정잠금' : stage==='roles' ? '심판 선택 완료' : stage==='lineup' ? '선수 선택 완료' : '미제출';
-      text.textContent = stage==='done' ? '최종 제출이 완료되었습니다.' : stage==='locked' ? '경기 시작으로 수정할 수 없습니다.' : stage==='roles' ? '제출하기 버튼으로 최종 제출하세요.' : stage==='lineup' ? '역할 선택 단계로 진행해 주세요.' : '선수 선택 전';
-      document.querySelectorAll('select, button').forEach(el => { if(['saveLineupDraftBtn','lineupCompleteBtn','backToLineupBtn','autoFillRolesBtn','saveRolesDraftBtn','rolesCompleteBtn','finalSubmitBtn','generateAiGuideBtn','regenerateAiGuideBtn'].includes(el.id) || el.tagName==='SELECT'){ if(locked) el.disabled = true; } });
-      document.getElementById('finalSubmitBtn').classList.toggle('hidden', !(submission.rolesCompletedAt && !submission.finalSubmittedAt && !locked));
-    }
-
-
-    function getHistoricalRoleCounts(teamId, excludeRound = String(round)){
-      const counts = {};
-      if(!teamId || !appData.lineupSubmissions || typeof appData.lineupSubmissions !== 'object') return counts;
-      const rounds = appData.lineupSubmissions[teamId] || {};
-      Object.entries(rounds).forEach(([roundKey, submission]) => {
-        if(String(roundKey) === String(excludeRound)) return;
-        GAME_TYPES.forEach(type => {
-          const roles = normalizeRoles(submission?.games?.[type]?.roles || {});
-          [roles.umpire, roles.assistant, roles.scorekeeper, roles.lineJudge, ...(roles.data || [])].filter(Boolean).forEach(id => {
-            counts[id] = (counts[id] || 0) + 1;
-          });
-        });
+      pill.className = 'status-pill ' + (stage==='done' || stage==='finished' ? 'status-done' : stage==='locked' ? 'status-lock' : stage==='roles' ? 'status-edit' : stage==='lineup' ? 'status-edit' : 'status-draft');
+      pill.textContent = stage==='finished' ? '경기종료' : stage==='done' ? '제출완료' : stage==='locked' ? '수정잠금' : stage==='roles' ? '심판 선택 완료' : stage==='lineup' ? '선수 선택 완료' : '미제출';
+      text.textContent = stage==='finished' ? '이미 종료된 경기입니다.' : stage==='done' ? '최종 제출이 완료되었습니다.' : stage==='locked' ? '경기 시작으로 수정할 수 없습니다.' : stage==='roles' ? '제출하기 버튼으로 최종 제출하세요.' : stage==='lineup' ? '역할 선택 단계로 진행해 주세요.' : 'AI 추천을 먼저 확인하거나 선수를 선택해 주세요.';
+      const lockAll = locked || finished;
+      document.querySelectorAll('select, button').forEach(el => {
+        if(['saveLineupDraftBtn','lineupCompleteBtn','backToLineupBtn','saveRolesDraftBtn','rolesCompleteBtn','finalSubmitBtn','generateAiGuideBtn','regenerateAiGuideBtn','autoFillRolesBtn'].includes(el.id) || el.tagName==='SELECT'){
+          if(lockAll) el.disabled = true;
+        }
       });
-      return counts;
-    }
-
-    function shuffleArray(list){
-      const arr = [...list];
-      for(let i = arr.length - 1; i > 0; i -= 1){
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-      return arr;
-    }
-
-    function pickFairCandidate(candidateIds, counts, usedSet){
-      const available = candidateIds.filter(id => id && !usedSet.has(id));
-      if(!available.length) return '';
-      const minCount = Math.min(...available.map(id => counts[id] || 0));
-      const leastUsed = available.filter(id => (counts[id] || 0) === minCount);
-      const [picked] = shuffleArray(leastUsed);
-      if(!picked) return '';
-      usedSet.add(picked);
-      return picked;
-    }
-
-    async function autoFillRolesFair(){
-      try{
-        rolesErrorBox.classList.add('hidden');
-        rolesSuccessBox.classList.add('hidden');
-        const submission = getSubmission();
-        const historicalCounts = getHistoricalRoleCounts(activeTeam?.id);
-        const currentSelections = getCurrentSelections();
-        const warnings = [];
-
-        GAME_TYPES.forEach(type => {
-          const game = getMatchGame(type);
-          const stored = submission.games[type] || { umpireTeam: game.umpireTeam || '', roles: normalizeRoles({}) };
-          const umpireTeam = stored.umpireTeam || game.umpireTeam || '';
-          submission.games[type] = { umpireTeam, roles: normalizeRoles(stored.roles || {}) };
-          const visibleRoleType = getVisibleRoleType(umpireTeam);
-          const candidates = getPlayersForTeam(activeTeam)
-            .filter(player => !currentSelections[type].includes(player.id))
-            .map(player => player.id)
-            .filter(Boolean);
-          const usedSet = new Set();
-          const nextRoles = normalizeRoles({ data:['',''] });
-
-          if(!umpireTeam){
-            warnings.push(`${gameLabel(type)} 주심 담당 조를 먼저 정하면 나머지 역할도 함께 자동 배정됩니다.`);
-          }
-
-          if(visibleRoleType === 'umpire'){
-            nextRoles.umpire = pickFairCandidate(candidates, historicalCounts, usedSet);
-          }else if(visibleRoleType === 'assistant'){
-            nextRoles.assistant = pickFairCandidate(candidates, historicalCounts, usedSet);
-          }
-
-          nextRoles.scorekeeper = pickFairCandidate(candidates, historicalCounts, usedSet);
-          nextRoles.lineJudge = pickFairCandidate(candidates, historicalCounts, usedSet);
-          nextRoles.data = [
-            pickFairCandidate(candidates, historicalCounts, usedSet),
-            pickFairCandidate(candidates, historicalCounts, usedSet)
-          ];
-
-          const unfilledCount = [
-            visibleRoleType === 'umpire' ? nextRoles.umpire : visibleRoleType === 'assistant' ? nextRoles.assistant : '',
-            nextRoles.scorekeeper,
-            nextRoles.lineJudge,
-            ...(nextRoles.data || [])
-          ].filter(v => !v).length;
-          if(unfilledCount > 0){
-            warnings.push(`${gameLabel(type)}은(는) 역할 수보다 가능한 학생 수가 적어 일부 칸을 비워 두었습니다.`);
-          }
-
-          submission.games[type].roles = nextRoles;
-        });
-
-        submission.updatedAt = new Date().toISOString();
-        await persistSubmission('draft', submission, false);
-        renderRoleSections();
-        updateSummary();
-        updateStatus();
-        rolesSuccessBox.textContent = warnings.length
-          ? `균등 자동 배정을 적용했습니다. ${warnings.join(' ')}`
-          : '균등 자동 배정을 적용했습니다. 필요한 경우 직접 수정한 뒤 저장하세요.';
-        rolesSuccessBox.classList.remove('hidden');
-      }catch(error){
-        rolesErrorBox.textContent = error.message || '자동 배정 중 오류가 발생했습니다.';
-        rolesErrorBox.classList.remove('hidden');
-      }
+      const lineupCompleteBtn = document.getElementById('lineupCompleteBtn');
+      const rolesCompleteBtn = document.getElementById('rolesCompleteBtn');
+      const finalSubmitBtn = document.getElementById('finalSubmitBtn');
+      lineupCompleteBtn.className = `btn ${submission.lineupCompletedAt ? 'green' : 'green'}`;
+      lineupCompleteBtn.textContent = submission.lineupCompletedAt ? '선수 선택 완료됨' : '선수 선택 완료';
+      rolesCompleteBtn.className = `btn ${submission.rolesCompletedAt ? 'green' : 'yellow'}`;
+      rolesCompleteBtn.textContent = submission.rolesCompletedAt ? '심판 선택 완료됨' : '심판 선택 완료';
+      finalSubmitBtn.className = `btn ${submission.finalSubmittedAt || finished ? 'gray' : 'green'}${submission.rolesCompletedAt && !submission.finalSubmittedAt && !lockAll ? '' : ' hidden'}`;
+      if(submission.finalSubmittedAt) finalSubmitBtn.textContent = '제출완료';
+      document.getElementById('finalSubmitBtn').classList.toggle('hidden', !(submission.rolesCompletedAt && !submission.finalSubmittedAt && !lockAll));
     }
 
     function updateSummary(){
-      const submission = getSubmission();
+      const submission = ensureSubmissionAutoUmpire(getSubmission());
       const lineupItems = GAME_TYPES.map(type => `<div class="summary-item"><div><div class="summary-main">${gameLabel(type)} 선수</div><div class="summary-sub">${getCurrentSelections()[type].map(roleName).filter(Boolean).join(' · ') || '미선택'}</div></div></div>`).join('');
       const roleItems = GAME_TYPES.map(type => {
         const game = submission.games[type]; const roles = normalizeRoles(game.roles); const visibleRoleType = getVisibleRoleType(game.umpireTeam);
@@ -1170,7 +1177,7 @@
       initHeader();
       if(!activeTeam){ summaryList.innerHTML='<div class="summary-item"><div class="summary-sub">팀 정보를 찾지 못했습니다.</div></div>'; return; }
       if(!activeMatch){ summaryList.innerHTML='<div class="summary-item"><div class="summary-sub">해당 라운드 경기판이 없습니다.</div></div>'; return; }
-      const submission = getSubmission();
+      const submission = ensureSubmissionAutoUmpire(getSubmission());
       if(submission.lineups){ Object.entries(submission.lineups).forEach(([type, ids]) => { if(lineupSelects[`${type}1`]) lineupSelects[`${type}1`].value = ids?.[0] || ''; if(lineupSelects[`${type}2`]) lineupSelects[`${type}2`].value = ids?.[1] || ''; }); }
       refreshLineupOptions(); renderRoleSections(); updateSummary(); renderAiGuideFromSaved(); renderMatchTacticsStatus(); updateStatus();
       if(submission.lineupCompletedAt && !submission.finalSubmittedAt && currentStep==='lineup') setStep('roles');
@@ -1196,14 +1203,43 @@
     }
 
     Object.values(lineupSelects).forEach(sel => sel.addEventListener('change', () => { if(isRefreshingSelects) return; refreshLineupOptions(); updateSummary(); }));
-    document.getElementById('saveLineupDraftBtn').addEventListener('click', async () => { try { validateLineups(); const submission = getSubmission(); submission.status='draft'; await persistSubmission('draft', submission, false); updateStatus(); } catch(error){ alert(error.message || '임시저장 중 오류가 발생했습니다.'); } });
-    document.getElementById('lineupCompleteBtn').addEventListener('click', async () => { try { validateLineups(); const submission = getSubmission(); submission.lineupCompletedAt = new Date().toISOString(); await persistSubmission('lineup_ready', submission, false); setStep('roles'); updateStatus(); } catch(error){ alert(error.message || '선수 선택 완료 처리 중 오류가 발생했습니다.'); } });
+    document.getElementById('saveLineupDraftBtn').addEventListener('click', async () => { try { validateLineups(); const submission = ensureSubmissionAutoUmpire(getSubmission()); submission.status='draft'; await persistSubmission('draft', submission, false); updateStatus(); } catch(error){ alert(error.message || '임시저장 중 오류가 발생했습니다.'); } });
+    document.getElementById('lineupCompleteBtn').addEventListener('click', async () => { try { validateLineups(); const submission = ensureSubmissionAutoUmpire(getSubmission()); submission.lineupCompletedAt = new Date().toISOString(); await persistSubmission('lineup_ready', submission, false); setStep('roles'); updateStatus(); } catch(error){ alert(error.message || '선수 선택 완료 처리 중 오류가 발생했습니다.'); } });
+    document.getElementById('autoFillRolesBtn').addEventListener('click', async () => {
+      try {
+        const submission = ensureSubmissionAutoUmpire(getSubmission());
+        GAME_TYPES.forEach(type => {
+          const ordered = getSortedEligibleRolePlayers(type);
+          const nextRoles = normalizeRoles(submission.games?.[type]?.roles || {});
+          const visibleRoleType = getVisibleRoleType(submission.games?.[type]?.umpireTeam || getAutoUmpireSide());
+          let index = 0;
+          const pick = () => ordered[index++]?.id || '';
+          nextRoles.umpire = visibleRoleType === 'umpire' ? pick() : '';
+          nextRoles.assistant = visibleRoleType === 'assistant' ? pick() : '';
+          nextRoles.scorekeeper = pick();
+          nextRoles.lineJudge = pick();
+          nextRoles.data = [pick(), pick()];
+          submission.games[type].roles = nextRoles;
+        });
+        await persistSubmission('draft', submission, false);
+        renderRoleSections();
+        updateSummary();
+        updateStatus();
+        rolesErrorBox.classList.add('hidden');
+        rolesSuccessBox.textContent = '균등 분배 기준으로 역할을 자동 배정했습니다. 필요하면 직접 수정하세요.';
+        rolesSuccessBox.classList.remove('hidden');
+        setTimeout(()=>rolesSuccessBox.classList.add('hidden'), 1800);
+      } catch(error) {
+        rolesSuccessBox.classList.add('hidden');
+        rolesErrorBox.textContent = error.message || '역할 자동 배정 중 오류가 발생했습니다.';
+        rolesErrorBox.classList.remove('hidden');
+      }
+    });
     generateAiGuideBtn.addEventListener('click', () => generateAiGuide('generate'));
     regenerateAiGuideBtn.addEventListener('click', () => generateAiGuide('regenerate'));
     generateMatchTacticsBtn.addEventListener('click', () => generateMatchTactics('generate'));
     regenerateMatchTacticsBtn.addEventListener('click', () => generateMatchTactics('regenerate'));
     document.getElementById('backToLineupBtn').addEventListener('click', () => setStep('lineup'));
-    document.getElementById('autoFillRolesBtn').addEventListener('click', autoFillRolesFair);
     document.getElementById('saveRolesDraftBtn').addEventListener('click', async () => { try { const { submission } = validateRoles(); await persistSubmission('draft', submission, false); rolesSuccessBox.textContent = '역할 임시저장 완료'; rolesSuccessBox.classList.remove('hidden'); setTimeout(()=>rolesSuccessBox.classList.add('hidden'), 1500); updateStatus(); } catch(error){ rolesErrorBox.textContent = error.message || '역할 임시저장 중 오류가 발생했습니다.'; rolesErrorBox.classList.remove('hidden'); } });
     document.getElementById('rolesCompleteBtn').addEventListener('click', async () => { const result = validateRoles(); if(!result.ok){ rolesErrorBox.innerHTML = result.errors.join('<br>'); rolesErrorBox.classList.remove('hidden'); rolesSuccessBox.classList.add('hidden'); return; } rolesErrorBox.classList.add('hidden'); rolesSuccessBox.textContent = '심판 선택 완료. 제출하기 버튼이 활성화되었습니다.'; rolesSuccessBox.classList.remove('hidden'); result.submission.rolesCompletedAt = new Date().toISOString(); await persistSubmission('roles_ready', result.submission, false); updateStatus(); });
     document.getElementById('finalSubmitBtn').addEventListener('click', async () => { const result = validateRoles(); if(!result.ok){ rolesErrorBox.innerHTML = result.errors.join('<br>'); rolesErrorBox.classList.remove('hidden'); return; } await persistSubmission('submitted', result.submission, true); rolesErrorBox.classList.add('hidden'); rolesSuccessBox.textContent = '최종 제출이 완료되었습니다.'; rolesSuccessBox.classList.remove('hidden'); updateStatus(); });
