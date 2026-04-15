@@ -104,24 +104,24 @@
           <div class="ai-guide-top">
             <div>
               <div class="section-title">AI 오더 추천</div>
-              <div class="section-subtitle">현재 선택한 선수 구성과 상대 조 데이터를 바탕으로 종목별 추천 조합과 대안 조합을 제안합니다.</div>
+              <div class="section-subtitle">현재 선택한 선수 구성과 선수별 기록, 조합 통계를 바탕으로 오더 추천을 제공합니다.</div>
             </div>
-            <div class="ai-badge" id="aiGuideStatusBadge">전략 미생성</div>
+            <div class="ai-badge" id="aiGuideStatusBadge">추천 미생성</div>
           </div>
 
           <div class="ai-grid" id="aiCompareSummary">
             <div class="summary-item">
               <div class="summary-main">우리 조 전력</div>
-              <div class="summary-sub">선수 선택 후 AI 전략 생성을 누르면 전력 요약이 표시됩니다.</div>
+              <div class="summary-sub">선수 선택 후 AI 추천 생성을 누르면 선수별·조합별 요약이 표시됩니다.</div>
             </div>
             <div class="summary-item">
               <div class="summary-main">상대 조 전력</div>
-              <div class="summary-sub">상대 조 경기 기록 또는 기본 추정값을 바탕으로 전략을 생성합니다.</div>
+              <div class="summary-sub">상대 조 최근 오더와 선수 기록을 바탕으로 예상 조합과 추천 이유를 만듭니다.</div>
             </div>
           </div>
 
           <div class="action-row">
-            <button type="button" class="btn blue" id="generateAiGuideBtn">AI 전략 생성</button>
+            <button type="button" class="btn blue" id="generateAiGuideBtn">AI 오더 추천 생성</button>
             <button type="button" class="btn gray" id="regenerateAiGuideBtn" disabled>다시 생성</button>
           </div>
 
@@ -131,10 +131,39 @@
             </div>
           </div>
 
-          <div class="hint" id="aiGuideHint">
-            AI 추천은 참고 자료이며, 최종 오더 결정은 학생이 수행합니다.
+          <div class="hint" id="aiGuideHint">AI 추천은 참고 자료이며, 최종 오더 결정은 학생이 수행합니다.</div>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="card hidden" id="matchTacticsCard">
+      <div class="card-head">
+        <div class="step-row"><span class="step-badge">2</span><h2 class="card-title">AI 상대 맞춤 전술</h2></div>
+        <div class="sub">우리 팀과 상대 팀의 오더가 모두 확정되면, 실제 출전 조합 기준 맞춤 전술을 생성합니다.</div>
+      </div>
+      <div class="card-body" style="display:grid;gap:12px">
+        <div class="status-box">
+          <div>
+            <div class="status-label">현재 전술 상태</div>
+            <div style="font-weight:800;margin-top:4px" id="matchTacticsStatusText">상대 오더 확정 전</div>
           </div>
-<div class="hint" id="aiGuideHint">현재 파일은 기본적으로 Firebase 데이터를 읽고, AI 서버 함수가 없을 경우 규칙 기반 전술 가이드를 대신 생성합니다.</div>
+          <div class="status-pill status-lock" id="matchTacticsStatusPill">대기</div>
+        </div>
+        <div class="action-row">
+          <button type="button" class="btn blue" id="generateMatchTacticsBtn" disabled>상대 맞춤 전술 생성</button>
+          <button type="button" class="btn gray" id="regenerateMatchTacticsBtn" disabled>다시 생성</button>
+        </div>
+        <div class="summary-list" id="matchTacticsOverview">
+          <div class="summary-item">
+            <div class="summary-main">전술 생성 조건</div>
+            <div class="summary-sub">우리 팀과 상대 팀의 여복·혼복·남복 오더가 모두 제출되면 생성할 수 있습니다.</div>
+          </div>
+        </div>
+        <div class="ai-strategy-list" id="matchTacticsList">
+          <div class="summary-item">
+            <div class="summary-sub">아직 생성된 맞춤 전술이 없습니다.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -167,16 +196,11 @@
   <script type="module">
     import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
     import { getDatabase, ref, get, set, onValue } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js';
-    import { getFunctions, httpsCallable } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-functions.js';
 
     const firebaseConfig = window.DEFAULT_FIREBASE_CONFIG;
     if (!firebaseConfig) throw new Error('firebase-config.js를 찾지 못했습니다.');
     const firebaseApp = getApps().find(app => app.name === 'badminton-app') || initializeApp(firebaseConfig, 'badminton-app');
     const db = getDatabase(firebaseApp);
-    const functions = getFunctions(firebaseApp);
-    const AI_ENDPOINT = typeof window.AI_TACTIC_ENDPOINT === 'string' ? window.AI_TACTIC_ENDPOINT.trim() : '';
-    const AI_FUNCTION_NAME = typeof window.AI_TACTIC_FUNCTION_NAME === 'string' && window.AI_TACTIC_FUNCTION_NAME.trim() ? window.AI_TACTIC_FUNCTION_NAME.trim() : 'generateTacticGuide';
-    const aiCallable = httpsCallable(functions, AI_FUNCTION_NAME);
 
     const CLASS_COUNT = 7;
     const qs = new URLSearchParams(location.search);
@@ -199,6 +223,22 @@
     const summaryList = document.getElementById('summaryList');
     const rolesErrorBox = document.getElementById('rolesErrorBox');
     const rolesSuccessBox = document.getElementById('rolesSuccessBox');
+    const aiCompareSummary = document.getElementById('aiCompareSummary');
+    const aiGuideSection = document.getElementById('aiGuideSection');
+    const aiGuideStatusBadge = document.getElementById('aiGuideStatusBadge');
+    const aiGuideList = document.getElementById('aiGuideList');
+    const aiGuideHint = document.getElementById('aiGuideHint');
+    const generateAiGuideBtn = document.getElementById('generateAiGuideBtn');
+    const regenerateAiGuideBtn = document.getElementById('regenerateAiGuideBtn');
+    const matchTacticsCard = document.getElementById('matchTacticsCard');
+    const matchTacticsStatusText = document.getElementById('matchTacticsStatusText');
+    const matchTacticsStatusPill = document.getElementById('matchTacticsStatusPill');
+    const generateMatchTacticsBtn = document.getElementById('generateMatchTacticsBtn');
+    const regenerateMatchTacticsBtn = document.getElementById('regenerateMatchTacticsBtn');
+    const matchTacticsOverview = document.getElementById('matchTacticsOverview');
+    const matchTacticsList = document.getElementById('matchTacticsList');
+    const AI_ENDPOINT = window.AI_TACTIC_ENDPOINT || '';
+    const MATCH_TACTIC_ENDPOINT = window.AI_MATCH_TACTIC_ENDPOINT || '';
 
     let appData = emptyClassData();
     let activeTeam = null;
@@ -208,14 +248,14 @@
     let currentStep = 'lineup';
 
     function escapeHtml(v){return String(v == null ? '' : v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
-    function emptyClassData(){ return { roster: [], teams: [], liveMatches: [], completedMatches: [], lineupSubmissions: {} }; }
+    function emptyClassData(){ return { roster: [], teams: [], liveMatches: [], completedMatches: [], lineupSubmissions: {}, teamStats:{}, playerStats:{}, pairStats:{}, aiTacticGuides:{}, aiMatchTactics:{} }; }
     function normalizeGender(value){ const raw = String(value ?? '').trim().toUpperCase(); if(['M','MALE','남','남자','BOY','MAN'].includes(raw)) return 'M'; if(['F','FEMALE','여','여자','GIRL','WOMAN'].includes(raw)) return 'F'; return ''; }
     function normalizePlayerForLoad(raw={}){ const id=String(raw.id ?? raw.playerId ?? raw.name ?? '').trim(); const name=String(raw.name ?? raw.playerName ?? raw.label ?? id).trim(); return {...raw,id,name,gender:normalizeGender(raw.gender ?? raw.sex ?? raw.성별),manualGroup:String(raw.manualGroup ?? raw.group ?? raw.teamLetter ?? '').trim().toUpperCase()}; }
     function normalizeTeamForLoad(raw={}){ const letter = String(raw.letter ?? raw.name ?? raw.teamName ?? '').replace('조','').trim().toUpperCase(); const players = Array.isArray(raw.players)&&raw.players.length ? raw.players : (Array.isArray(raw.playerIds)? raw.playerIds : []); return {...raw,id:String(raw.id ?? raw.teamId ?? letter).trim(),name:String(raw.name ?? `${letter}조`).trim(),letter,players,playerIds:players}; }
     function normalizeRoles(raw={}){ return { umpire:String(raw.umpire||''), assistant:String(raw.assistant||''), scorekeeper:String(raw.scorekeeper||''), lineJudge:String(raw.lineJudge||''), data:Array.isArray(raw.data)?raw.data.map(v=>String(v||'')).filter(Boolean).slice(0,2):['',''] }; }
     function normalizeGame(raw={}){ return { lineupA:Array.isArray(raw.lineupA)?raw.lineupA.map(v=>String(v||'')):[], lineupB:Array.isArray(raw.lineupB)?raw.lineupB.map(v=>String(v||'')):[], umpireTeam:String(raw.umpireTeam||''), rolesA:normalizeRoles(raw.rolesA||{}), rolesB:normalizeRoles(raw.rolesB||{}), a:Number(raw.a)||0, b:Number(raw.b)||0, finished:!!raw.finished }; }
     function normalizeMatchForLoad(raw={}){ return {...raw, roundNo:Number(raw.roundNo ?? raw.round ?? 0), teamAId:String(raw.teamAId ?? raw.teamA ?? '').trim(), teamBId:String(raw.teamBId ?? raw.teamB ?? '').trim(), started:raw.started===true, finished:raw.finished===true, games:{women:normalizeGame(raw.games?.women||{}),mixed:normalizeGame(raw.games?.mixed||{}),men:normalizeGame(raw.games?.men||{})}}; }
-    function normalizeClassDataForLoad(raw={}){ return { roster:Array.isArray(raw.roster)?raw.roster.map(normalizePlayerForLoad):[], teams:Array.isArray(raw.teams)?raw.teams.map(normalizeTeamForLoad):[], liveMatches:Array.isArray(raw.liveMatches)?raw.liveMatches.map(normalizeMatchForLoad):[], completedMatches:Array.isArray(raw.completedMatches)?raw.completedMatches.map(normalizeMatchForLoad):[], lineupSubmissions: raw.lineupSubmissions && typeof raw.lineupSubmissions === 'object' ? raw.lineupSubmissions : {} }; }
+    function normalizeClassDataForLoad(raw={}){ return { roster:Array.isArray(raw.roster)?raw.roster.map(normalizePlayerForLoad):[], teams:Array.isArray(raw.teams)?raw.teams.map(normalizeTeamForLoad):[], liveMatches:Array.isArray(raw.liveMatches)?raw.liveMatches.map(normalizeMatchForLoad):[], completedMatches:Array.isArray(raw.completedMatches)?raw.completedMatches.map(normalizeMatchForLoad):[], lineupSubmissions: raw.lineupSubmissions && typeof raw.lineupSubmissions === 'object' ? raw.lineupSubmissions : {}, teamStats: raw.teamStats && typeof raw.teamStats === 'object' ? raw.teamStats : {}, playerStats: raw.playerStats && typeof raw.playerStats === 'object' ? raw.playerStats : {}, pairStats: raw.pairStats && typeof raw.pairStats === 'object' ? raw.pairStats : {}, aiTacticGuides: raw.aiTacticGuides && typeof raw.aiTacticGuides === 'object' ? raw.aiTacticGuides : {}, aiMatchTactics: raw.aiMatchTactics && typeof raw.aiMatchTactics === 'object' ? raw.aiMatchTactics : {} }; }
 
     function getTeamLetter(team){ return (team?.letter || (team?.name || '').replace('조','').trim() || '').toUpperCase(); }
     function getTeamByLetter(letter){ return appData.teams.find(team => getTeamLetter(team) === String(letter || '').toUpperCase()) || null; }
@@ -242,33 +282,23 @@
       if (!activeTeam) return;
       isRefreshingSelects = true;
       const current = getCurrentSelections();
-      const womenPool = getRolePool(activeTeam, 'women');
-      const menPool = getRolePool(activeTeam, 'men');
-      const cross = inferMixedCrossRules(activeTeam);
-
+      const womenPool = getRolePool(activeTeam, 'women'); const menPool = getRolePool(activeTeam, 'men'); const cross = inferMixedCrossRules(activeTeam);
       lineupSelects.women1.innerHTML = buildPlayerOptionHtml(womenPool, current.women[0], new Set(current.women.filter((id,idx)=>idx!==0&&id)));
       lineupSelects.women2.innerHTML = buildPlayerOptionHtml(womenPool, current.women[1], new Set(current.women.filter((id,idx)=>idx!==1&&id)));
       lineupSelects.men1.innerHTML = buildPlayerOptionHtml(menPool, current.men[0], new Set(current.men.filter((id,idx)=>idx!==0&&id)));
       lineupSelects.men2.innerHTML = buildPlayerOptionHtml(menPool, current.men[1], new Set(current.men.filter((id,idx)=>idx!==1&&id)));
-
-      const mixedWomenExcluded = new Set(current.women.filter(Boolean));
-      const mixedMenExcluded = new Set(current.men.filter(Boolean));
-      if (cross.allowWomenReuse && current.mixed[0]) mixedWomenExcluded.delete(current.mixed[0]);
-      if (cross.allowMenReuse && current.mixed[1]) mixedMenExcluded.delete(current.mixed[1]);
-      if (current.mixed[0]) mixedWomenExcluded.delete(current.mixed[0]);
-      if (current.mixed[1]) mixedMenExcluded.delete(current.mixed[1]);
-
-      lineupSelects.mixed1.innerHTML = buildPlayerOptionHtml(womenPool, current.mixed[0], mixedWomenExcluded);
-      lineupSelects.mixed2.innerHTML = buildPlayerOptionHtml(menPool, current.mixed[1], mixedMenExcluded);
-
+      const mixedExcluded1 = new Set(); const mixedExcluded2 = new Set();
+      if(current.mixed[0]) mixedExcluded1.delete(current.mixed[0]);
+      if(current.mixed[1]) mixedExcluded2.delete(current.mixed[1]);
+      current.mixed.filter(Boolean).forEach((id,idx)=>{ if(idx!==0) mixedExcluded1.add(id); if(idx!==1) mixedExcluded2.add(id); });
+      if(!cross.allowWomenReuse) current.women.filter(Boolean).forEach(id=>{ if(id!==current.mixed[0]) mixedExcluded1.add(id); });
+      if(!cross.allowMenReuse) current.men.filter(Boolean).forEach(id=>{ if(id!==current.mixed[1]) mixedExcluded2.add(id); });
+      lineupSelects.mixed1.innerHTML = buildPlayerOptionHtml(womenPool, current.mixed[0], mixedExcluded1);
+      lineupSelects.mixed2.innerHTML = buildPlayerOptionHtml(menPool, current.mixed[1], mixedExcluded2);
       Object.entries(current).forEach(([type, ids])=>{ lineupSelects[`${type}1`].value = ids[0] || ''; lineupSelects[`${type}2`].value = ids[1] || ''; });
-
       hints.women.textContent = womenPool.length <= 2 ? `여학생 ${womenPool.length}명이라 같은 학생 재사용 가능 상황이 생길 수 있습니다.` : '여복은 여학생만 표시됩니다.';
       hints.men.textContent = menPool.length <= 2 ? `남학생 ${menPool.length}명이라 같은 학생 재사용 가능 상황이 생길 수 있습니다.` : '남복은 남학생만 표시됩니다.';
-      hints.mixed.textContent = [
-        !cross.allowWomenReuse ? '여복에 이미 선택된 여학생은 혼복 여자 선수 후보에서 자동 제외됩니다.' : `여학생 ${cross.femaleIds.length}명이라 여복-혼복 중복이 허용됩니다.`,
-        !cross.allowMenReuse ? '남복에 이미 선택된 남학생은 혼복 남자 선수 후보에서 자동 제외됩니다.' : `남학생 ${cross.maleIds.length}명이라 남복-혼복 중복이 허용됩니다.`
-      ].join(' ');
+      hints.mixed.textContent = [!cross.allowMenReuse ? '남복에 이미 선택된 남학생은 혼복 후보에서 자동 제외됩니다.' : `남학생 ${cross.maleIds.length}명이라 남복-혼복 중복이 허용됩니다.`, !cross.allowWomenReuse ? '여복에 이미 선택된 여학생은 혼복 후보에서 자동 제외됩니다.' : `여학생 ${cross.femaleIds.length}명이라 여복-혼복 중복이 허용됩니다.`].join(' ');
       isRefreshingSelects = false;
     }
 
@@ -368,6 +398,9 @@
     function getTeamStatsMap(){
       return appData?.teamStats || appData?.statsByTeam || {};
     }
+    function getPlayerStatsMap(){ return appData?.playerStats || {}; }
+    function getPairStatsMap(){ return appData?.pairStats || {}; }
+
 
     function getDefaultTeamStats(teamObj){
       const name = getTeamLetter(teamObj) || teamObj?.name || '-';
@@ -396,11 +429,17 @@
 
     function getComparisonStats(){
       const statsMap = getTeamStatsMap();
+      const playerStatsMap = getPlayerStatsMap();
+      const pairStatsMap = getPairStatsMap();
       const opponent = getOpponentTeam();
       const myKey = getTeamLetter(activeTeam) || activeTeam?.id || group;
       const oppKey = getTeamLetter(opponent) || opponent?.id || '';
       const myStats = normalizeTeamStats(statsMap[myKey] || statsMap[activeTeam?.id], activeTeam);
       const oppStats = normalizeTeamStats(statsMap[oppKey] || statsMap[opponent?.id], opponent);
+      myStats.players = playerStatsMap[myKey] || playerStatsMap[activeTeam?.id] || {};
+      myStats.pairs = pairStatsMap[myKey] || pairStatsMap[activeTeam?.id] || {};
+      oppStats.players = playerStatsMap[oppKey] || playerStatsMap[opponent?.id] || {};
+      oppStats.pairs = pairStatsMap[oppKey] || pairStatsMap[opponent?.id] || {};
       return { myTeam: myStats, opponentTeam: oppStats };
     }
 
@@ -418,26 +457,16 @@
     }
 
     function buildAiPayload(){
-      const opponentTeam = getOpponentTeam();
       return {
         matchInfo: {
           classNo,
           round,
           team: group,
-          opponent: getTeamLetter(opponentTeam) || '',
+          opponent: getTeamLetter(getOpponentTeam()) || '',
           matchId: activeMatch?.id || ''
         },
         lineup: getCurrentSelections(),
-        stats: getComparisonStats(),
-        playerProfiles: {
-          myTeam: getPlayerProfiles(activeTeam),
-          opponentTeam: getPlayerProfiles(opponentTeam)
-        },
-        pairStats: {
-          myTeam: getPairStatsForTeam(activeTeam),
-          opponentTeam: getPairStatsForTeam(opponentTeam)
-        },
-        opponentPatterns: getOpponentPatterns(opponentTeam)
+        stats: getComparisonStats()
       };
     }
 
@@ -455,183 +484,122 @@
       `;
     }
 
-    function renderAiGuideReport(report=null){
-      if(!report || typeof report !== 'object'){
+
+    function renderAiGuideStrategies(result={}){
+      const summary = result.summary || {};
+      const recommendations = result.recommendations || {};
+      const predictions = result.predictions || {};
+      const order = [['women','여복'],['mixed','혼복'],['men','남복']];
+      if(!Object.keys(recommendations).length){
         aiGuideList.innerHTML = `<div class="summary-item"><div class="summary-sub">생성된 추천이 없습니다.</div></div>`;
         return;
       }
-
-      const buildPairText = (pair=[]) => Array.isArray(pair) && pair.length ? pair.map(escapeHtml).join(' · ') : '예상 정보 없음';
-      const summary = escapeHtml(report.summary?.overallRecommendation || '현재 오더와 상대 조 데이터를 바탕으로 종목별 추천 조합을 제안합니다.');
-      const eventCards = GAME_TYPES.map(type => {
-        const label = gameLabel(type);
-        const pred = report.predictions?.[type] || {};
-        const rec = report.recommendations?.[type] || {};
-        return `
-          <div class="ai-strategy-item">
-            <div class="ai-strategy-title">${label} 추천</div>
-            <div class="ai-strategy-meta">상대 예상 조합</div>
-            <div class="summary-sub"><strong>${buildPairText(pred.expectedOppPair)}</strong><br>${escapeHtml(pred.reason || '최근 기록 기반 예상 정보가 없습니다.')}</div>
-            <div class="ai-strategy-meta" style="margin-top:8px;">추천 조합</div>
-            <div class="summary-sub"><strong>${buildPairText(rec.recommendedPair)}</strong><br>${escapeHtml(rec.reason || '추천 이유 정보가 없습니다.')}</div>
-            <div class="ai-strategy-meta" style="margin-top:8px;">대안 조합</div>
-            <div class="summary-sub"><strong>${buildPairText(rec.alternativePair)}</strong><br>${escapeHtml(rec.alternativeReason || '대안 조합 정보가 없습니다.')}</div>
-            <div class="ai-strategy-meta" style="margin-top:8px;">운영 팁</div>
-            <div class="summary-sub">${escapeHtml(rec.tip || '운영 팁 정보가 없습니다.')}</div>
+      const blocks = [];
+      if(summary.overallRecommendation){
+        blocks.push(`
+          <div class="summary-item">
+            <div class="summary-main">전체 추천 기준</div>
+            <div class="summary-sub">${escapeHtml(summary.overallRecommendation)}</div>
           </div>
-        `;
-      }).join('');
-
-      aiGuideList.innerHTML = `
-        <div class="summary-item">
-          <div class="summary-main">전체 추천 요약</div>
-          <div class="summary-sub">${summary}</div>
-        </div>
-        ${eventCards}
-      `;
+        `);
+      }
+      order.forEach(([type,label]) => {
+        const rec = recommendations[type] || {};
+        const pred = predictions[type] || {};
+        const recPair = Array.isArray(rec.recommendedPair) ? rec.recommendedPair.filter(Boolean).join(' · ') : '';
+        const altPair = Array.isArray(rec.alternativePair) ? rec.alternativePair.filter(Boolean).join(' · ') : '';
+        const oppPair = Array.isArray(pred.expectedOppPair) ? pred.expectedOppPair.filter(Boolean).join(' · ') : '';
+        blocks.push(`
+          <div class="ai-strategy-item">
+            <div class="ai-strategy-title">${label} 추천 조합</div>
+            ${oppPair ? `<div class="ai-strategy-meta">상대 예상: ${escapeHtml(oppPair)}</div>` : ''}
+            ${recPair ? `<div class="summary-item"><div class="summary-main">추천 조합</div><div class="summary-sub">${escapeHtml(recPair)}</div></div>` : ''}
+            ${rec.reason ? `<div class="summary-item"><div class="summary-main">추천 이유</div><div class="summary-sub">${escapeHtml(rec.reason)}</div></div>` : ''}
+            ${altPair ? `<div class="summary-item"><div class="summary-main">대안 조합</div><div class="summary-sub">${escapeHtml(altPair)}</div></div>` : ''}
+            ${rec.alternativeReason ? `<div class="summary-item"><div class="summary-main">대안 설명</div><div class="summary-sub">${escapeHtml(rec.alternativeReason)}</div></div>` : ''}
+            ${rec.tip ? `<div class="summary-item"><div class="summary-main">운영 팁</div><div class="summary-sub">${escapeHtml(rec.tip)}</div></div>` : ''}
+          </div>
+        `);
+      });
+      aiGuideList.innerHTML = blocks.join('');
     }
 
-    function getAiGuideStatusLabel(saved){
+    function getGuideBadgeText(saved){
       if(!saved) return '추천 미생성';
-      return saved.source === 'fallback-rule' ? '기본 추천 생성' : 'AI 추천 생성 완료';
+      if(saved.source === 'fallback-rule') return '기본 추천 생성';
+      return 'AI 추천 생성 완료';
     }
 
     function setAiGuideLoading(isLoading){
       aiGuideSection.classList.toggle('ai-loading', isLoading);
       generateAiGuideBtn.disabled = isLoading;
       regenerateAiGuideBtn.disabled = isLoading;
-      const saved = getSavedAiGuide();
-      aiGuideStatusBadge.textContent = isLoading ? '추천 생성 중' : getAiGuideStatusLabel(saved);
+      aiGuideStatusBadge.textContent = isLoading ? '추천 생성 중' : getGuideBadgeText(getSavedAiGuide());
     }
 
-    function getPlayerProfiles(teamObj){
-      const players = getPlayersForTeam(teamObj);
-      return players.map(player => ({
-        id: player.id,
-        name: player.name,
+    function summarizePlayerStats(playerMap={}){
+      return Object.values(playerMap || {}).slice(0,12).map(player => ({
+        name: player.name || player.playerName || '',
         gender: player.gender || '',
+        eventsPlayed: player.eventsPlayed || {},
+        serveSuccess: Number(player.serveSuccess || 0),
+        serveFail: Number(player.serveFail || 0),
+        attackSuccess: Number(player.attackSuccess || 0),
+        attackFail: Number(player.attackFail || 0),
+        defenseSuccess: Number(player.defenseSuccess || 0),
+        defenseFail: Number(player.defenseFail || 0),
         strengths: Array.isArray(player.strengths) ? player.strengths : [],
-        weaknesses: Array.isArray(player.weaknesses) ? player.weaknesses : [],
-        stats: {
-          serveSuccess: safeNumber(player.serveSuccess || player.stats?.serveSuccess, 0),
-          serveFail: safeNumber(player.serveFail || player.stats?.serveFail, 0),
-          attackSuccess: safeNumber(player.attackSuccess || player.stats?.attackSuccess, 0),
-          attackFail: safeNumber(player.attackFail || player.stats?.attackFail, 0),
-          defenseSuccess: safeNumber(player.defenseSuccess || player.stats?.defenseSuccess, 0),
-          defenseFail: safeNumber(player.defenseFail || player.stats?.defenseFail, 0)
-        },
-        eventsPlayed: player.eventsPlayed || {}
+        weaknesses: Array.isArray(player.weaknesses) ? player.weaknesses : []
       }));
     }
 
-    function getPairStatsForTeam(teamObj){
-      const pairStatsRoot = appData?.pairStats || {};
-      const key = getTeamLetter(teamObj) || teamObj?.id || '';
-      return pairStatsRoot[key] || pairStatsRoot[teamObj?.id] || {};
-    }
-
-    function getOpponentPatterns(teamObj){
-      const patternRoot = appData?.opponentPatterns || {};
-      const key = getTeamLetter(teamObj) || teamObj?.id || '';
-      return patternRoot[key] || patternRoot[teamObj?.id] || {};
-    }
-
-    function heuristicRecommendation(payload){
-      const findName = (id) => getPlayerById(id)?.name || id || '미선택';
-      const womenPair = (payload.lineup.women || []).map(findName);
-      const mixedPair = (payload.lineup.mixed || []).map(findName);
-      const menPair = (payload.lineup.men || []).map(findName);
-      const oppName = payload.matchInfo.opponent ? `${payload.matchInfo.opponent}조` : '상대 조';
-      const firstWeakness = payload.stats.opponentTeam.weaknesses?.[0] || '전위 수비';
-      const myStrength = payload.stats.myTeam.strengths?.[0] || '기본 연결';
-
+    function heuristicStrategies(payload){
+      const lineup = payload.lineup || {};
+      const myTeam = payload.stats?.myTeam || {};
+      const opponentTeam = payload.stats?.opponentTeam || {};
+      const recommend = (pair, alt, reason, altReason, tip) => ({
+        recommendedPair: pair.filter(Boolean),
+        reason, alternativePair: alt.filter(Boolean), alternativeReason: altReason, tip
+      });
       return {
-        source: 'fallback-rule',
-        report: {
-          summary: {
-            overallRecommendation: `현재 기록상 우리 조의 ${myStrength} 강점을 유지하면서 ${oppName}의 ${firstWeakness} 약점을 공략하는 조합이 유리합니다.`
-          },
-          predictions: {
-            women: {
-              expectedOppPair: ['상대 여학생 1', '상대 여학생 2'],
-              reason: `${oppName}의 최근 상세 오더 기록이 부족하여 여복 예상 조합은 기본값으로 표시합니다.`
-            },
-            mixed: {
-              expectedOppPair: ['상대 여학생 1', '상대 남학생 1'],
-              reason: `${oppName}의 최근 상세 오더 기록이 부족하여 혼복 예상 조합은 기본값으로 표시합니다.`
-            },
-            men: {
-              expectedOppPair: ['상대 남학생 1', '상대 남학생 2'],
-              reason: `${oppName}의 최근 상세 오더 기록이 부족하여 남복 예상 조합은 기본값으로 표시합니다.`
-            }
-          },
-          recommendations: {
-            women: {
-              recommendedPair: womenPair,
-              reason: `${womenPair.join(' · ')} 조합은 현재 선택된 여복 조합입니다. 상대 여복의 ${firstWeakness} 약점을 공략하려면 전위 압박과 연결 안정성을 우선하는 운영이 좋습니다.`,
-              alternativePair: womenPair,
-              alternativeReason: '추가 선수별 기록이 부족하여 여복 대안 조합은 현재 선택 조합과 동일하게 제시합니다.',
-              tip: '초반에는 안정적인 서브와 네트 앞 연결로 실수를 줄이는 운영이 적절합니다.'
-            },
-            mixed: {
-              recommendedPair: mixedPair,
-              reason: `${mixedPair.join(' · ')} 조합은 현재 혼복 임시 오더입니다. 여자 선수의 전위 처리와 남자 선수의 후위 공격 역할을 분명히 나누는 것이 좋습니다.`,
-              alternativePair: mixedPair,
-              alternativeReason: '혼복 대안 조합을 구체적으로 계산할 상대·조합 데이터가 아직 충분하지 않습니다.',
-              tip: '혼복은 전위·후위 역할을 자주 바꾸기보다 한 번 정한 역할을 유지하는 편이 안정적입니다.'
-            },
-            men: {
-              recommendedPair: menPair,
-              reason: `${menPair.join(' · ')} 조합은 현재 선택된 남복 조합입니다. 우리 조의 ${myStrength} 강점을 살려 후위 공격과 전위 마무리를 분리하면 좋습니다.`,
-              alternativePair: menPair,
-              alternativeReason: '남복 대안 조합을 세밀하게 계산할 최근 조합 데이터가 아직 충분하지 않습니다.',
-              tip: '남복은 초반 랠리에서 깊은 클리어를 사용해 상대를 뒤로 밀고, 짧은 리턴이 오면 전위에서 마무리하는 운영이 좋습니다.'
-            }
-          }
-        }
+        summary: {
+          overallRecommendation: `${myTeam.team || '우리 조'}의 강점인 ${(myTeam.strengths || ['기본 연결']).slice(0,2).join(', ')}을 살리고, 상대의 ${(opponentTeam.weaknesses || ['전위 수비']).slice(0,1).join(', ')} 약점을 먼저 공략하는 조합을 우선합니다.`
+        },
+        predictions: {
+          women: { expectedOppPair: ['상대 여복 1', '상대 여복 2'], reason: '상대 최근 제출 데이터가 부족하여 일반적인 여복 조합을 기준으로 예측합니다.' },
+          mixed: { expectedOppPair: ['상대 혼복 여자', '상대 혼복 남자'], reason: '상대 최근 제출 데이터가 부족하여 일반적인 혼복 조합을 기준으로 예측합니다.' },
+          men: { expectedOppPair: ['상대 남복 1', '상대 남복 2'], reason: '상대 최근 제출 데이터가 부족하여 일반적인 남복 조합을 기준으로 예측합니다.' }
+        },
+        recommendations: {
+          women: recommend(lineup.women || [], [], '현재 선택한 여복 조합을 우선 유지하되, 수비 연결이 안정적인 학생이 첫 랠리를 길게 가져가면 좋습니다.', '여복 대안 조합 데이터가 아직 충분하지 않습니다.', '초반에는 무리한 공격보다 안정적인 클리어와 네트 연결에 집중합니다.'),
+          mixed: recommend(lineup.mixed || [], [], '현재 선택한 혼복 조합에서 여자 선수는 전위 연결, 남자 선수는 후위 커버를 맡는 방식이 가장 안정적입니다.', '혼복 대안 조합 데이터가 아직 충분하지 않습니다.', '첫 2개 랠리는 전위-후위 역할을 고정하고 짧은 리턴 뒤 빠른 연결을 시도합니다.'),
+          men: recommend(lineup.men || [], [], '현재 선택한 남복 조합을 기준으로 후위 공격과 전위 마무리 역할을 분리하는 운영이 적절합니다.', '남복 대안 조합 데이터가 아직 충분하지 않습니다.', '초반에는 깊은 클리어로 상대를 뒤로 밀고 짧은 리턴이 오면 전위에서 빠르게 마무리합니다.')
+        },
+        source: 'fallback-rule'
       };
     }
 
-    function normalizeAiGuideResult(raw){
-      const data = raw?.data ?? raw;
-      if(data && data.report && !data.recommendations) return { report: data.report, source: data.source || 'ai-function' };
-      if(data && data.summary && data.predictions && data.recommendations) return { report: data, source: data.source || 'ai-function' };
-
-      const text = String(data?.text || data?.output_text || data?.outputText || '').trim();
-      if(text){
+    function normalizeAiGuideResponse(data, payload){
+      if(data && data.summary && data.recommendations) return { ...data, source: data.source || 'ai-endpoint' };
+      if(data && typeof data.text === 'string'){
         try{
-          const parsed = JSON.parse(text);
-          if(parsed?.summary && parsed?.predictions && parsed?.recommendations) return { report: parsed, source: data?.source || 'ai-function' };
-        }catch(error){
-          const match = text.match(/\{[\s\S]*\}/);
-          if(match){
-            const parsed = JSON.parse(match[0]);
-            if(parsed?.summary && parsed?.predictions && parsed?.recommendations) return { report: parsed, source: data?.source || 'ai-function' };
-          }
-        }
+          const parsed = JSON.parse(data.text);
+          if(parsed && parsed.summary && parsed.recommendations) return { ...parsed, source: parsed.source || 'ai-endpoint' };
+        }catch(_){}
       }
-      throw new Error('AI 추천 응답 형식이 올바르지 않습니다.');
+      return heuristicStrategies(payload);
     }
 
     async function requestAiStrategies(payload){
-      if(AI_ENDPOINT){
-        const response = await fetch(AI_ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        if(!response.ok) throw new Error('AI 추천 호출에 실패했습니다.');
-        const data = await response.json();
-        return normalizeAiGuideResult(data);
-      }
-
-      try{
-        const result = await aiCallable(payload);
-        return normalizeAiGuideResult(result);
-      }catch(error){
-        console.error('AI 함수 호출 실패, 기본 추천으로 대체합니다.', error);
-        return heuristicRecommendation(payload);
-      }
+      if(!AI_ENDPOINT) return heuristicStrategies(payload);
+      const response = await fetch(AI_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if(!response.ok) throw new Error('AI 추천 호출에 실패했습니다.');
+      const data = await response.json();
+      return normalizeAiGuideResponse(data, payload);
     }
 
     async function generateAiGuide(mode='generate'){
@@ -640,23 +608,25 @@
         const payload = buildAiPayload();
         renderAiCompareSummary(payload);
         setAiGuideLoading(true);
-        aiGuideHint.textContent = '선택한 선수 구성과 상대 조 데이터를 바탕으로 추천 조합을 생성하고 있습니다.';
+        aiGuideHint.textContent = '선수별 기록과 조합 통계를 바탕으로 오더 추천을 생성하고 있습니다.';
         const result = await requestAiStrategies(payload);
         const guide = {
           generatedAt: new Date().toISOString(),
           mode,
           basedOnLineup: payload.lineup,
           compareSummary: payload.stats,
-          report: result.report,
+          summary: result.summary || {},
+          predictions: result.predictions || {},
+          recommendations: result.recommendations || {},
           source: result.source || (AI_ENDPOINT ? 'ai-endpoint' : 'fallback-rule')
         };
         setSavedAiGuide(guide);
         await persistClass();
-        renderAiGuideReport(guide.report);
-        aiGuideStatusBadge.textContent = guide.source === 'fallback-rule' ? '기본 추천 생성' : 'AI 추천 생성 완료';
+        renderAiGuideStrategies(guide);
+        aiGuideStatusBadge.textContent = getGuideBadgeText(guide);
         aiGuideHint.textContent = guide.source === 'fallback-rule'
-          ? 'AI 서버 함수가 연결되지 않았거나 호출에 실패하여 현재는 규칙 기반 추천을 표시합니다.'
-          : 'AI 추천이 생성되었습니다. 추천 조합과 대안 조합을 비교해 오더를 정하세요.';
+          ? 'AI 서버 함수가 연결되지 않았거나 호출에 실패하여 현재는 기본 추천을 표시합니다.'
+          : 'AI 오더 추천이 생성되었습니다. 추천 조합과 대안 조합을 비교해 오더를 결정하세요.';
         regenerateAiGuideBtn.disabled = false;
       }catch(error){
         console.error(error);
@@ -675,16 +645,155 @@
       if(!saved){
         aiGuideStatusBadge.textContent = '추천 미생성';
         aiGuideList.innerHTML = `<div class="summary-item"><div class="summary-sub">아직 생성된 추천이 없습니다.</div></div>`;
-        aiGuideHint.textContent = '선수 선택 후 AI 추천 생성을 누르면 현재 조합에 맞는 추천 조합과 대안 조합을 확인할 수 있습니다.';
+        aiGuideHint.textContent = '선수 선택 후 AI 오더 추천 생성을 누르면 추천 조합과 대안 조합을 확인할 수 있습니다.';
         regenerateAiGuideBtn.disabled = true;
         return;
       }
-      renderAiGuideReport(saved.report || null);
-      aiGuideStatusBadge.textContent = getAiGuideStatusLabel(saved);
+      renderAiGuideStrategies(saved);
+      aiGuideStatusBadge.textContent = getGuideBadgeText(saved);
       aiGuideHint.textContent = saved.source === 'fallback-rule'
-        ? '현재 저장된 추천은 규칙 기반 추천입니다. 서버 함수를 연결하면 선수별 근거가 더 구체적인 AI 추천으로 바뀝니다.'
-        : '저장된 AI 추천을 불러왔습니다. 필요하면 다시 생성할 수 있습니다.';
+        ? '현재 저장된 추천은 기본 추천입니다. 서버 함수를 연결하면 AI 추천으로 대체할 수 있습니다.'
+        : '저장된 AI 오더 추천을 불러왔습니다. 필요하면 다시 생성할 수 있습니다.';
       regenerateAiGuideBtn.disabled = false;
+    }
+
+    function getMatchTacticsStore(){
+      if(!appData.aiMatchTactics || typeof appData.aiMatchTactics !== 'object') appData.aiMatchTactics = {};
+      return appData.aiMatchTactics;
+    }
+    function getMatchTacticsKey(){
+      return `${activeMatch?.id || `round${round}_${group}`}_${group}`;
+    }
+    function getSavedMatchTactics(){
+      return getMatchTacticsStore()[getMatchTacticsKey()] || null;
+    }
+    function setSavedMatchTactics(tactics){
+      getMatchTacticsStore()[getMatchTacticsKey()] = tactics;
+    }
+    function getOpponentSubmission(){
+      const opponent = getOpponentTeam();
+      return opponent ? getRoundSubmission(opponent.id) : null;
+    }
+    function getSideLineup(match, team, type){
+      if(!match || !team) return [];
+      const isA = match.teamAId === team.id;
+      return isA ? (match.games?.[type]?.lineupA || []) : (match.games?.[type]?.lineupB || []);
+    }
+    function buildMatchTacticsPayload(){
+      const opponent = getOpponentTeam();
+      const base = buildAiPayload();
+      const myActual = { women:getSideLineup(activeMatch, activeTeam,'women'), mixed:getSideLineup(activeMatch, activeTeam,'mixed'), men:getSideLineup(activeMatch, activeTeam,'men') };
+      const oppActual = { women:getSideLineup(activeMatch, opponent,'women'), mixed:getSideLineup(activeMatch, opponent,'mixed'), men:getSideLineup(activeMatch, opponent,'men') };
+      return {
+        ...base,
+        actualLineups: {
+          myTeam: myActual,
+          opponentTeam: oppActual
+        }
+      };
+    }
+    function opponentLineupsReady(){
+      const opp = getOpponentTeam();
+      if(!opp || !activeMatch) return false;
+      return ['women','mixed','men'].every(type => getSideLineup(activeMatch, opp, type).filter(Boolean).length === 2);
+    }
+    function renderMatchTacticsStatus(){
+      if(!matchTacticsCard) return;
+      matchTacticsCard.classList.remove('hidden');
+      const ready = !!activeMatch && opponentLineupsReady();
+      const saved = getSavedMatchTactics();
+      if(ready){
+        matchTacticsStatusText.textContent = saved ? '상대 오더 확정 · 맞춤 전술 준비됨' : '상대 오더 확정 · 맞춤 전술 생성 가능';
+        matchTacticsStatusPill.className = 'status-pill status-edit';
+        matchTacticsStatusPill.textContent = saved ? '생성완료' : '생성가능';
+        generateMatchTacticsBtn.disabled = false;
+        regenerateMatchTacticsBtn.disabled = !saved ? true : false;
+      }else{
+        matchTacticsStatusText.textContent = '상대 팀의 여복·혼복·남복 오더가 모두 제출되면 생성할 수 있습니다.';
+        matchTacticsStatusPill.className = 'status-pill status-lock';
+        matchTacticsStatusPill.textContent = '대기';
+        generateMatchTacticsBtn.disabled = true;
+        regenerateMatchTacticsBtn.disabled = true;
+      }
+      if(!saved){
+        matchTacticsOverview.innerHTML = `<div class="summary-item"><div class="summary-main">전술 생성 조건</div><div class="summary-sub">${ready ? '양 팀 오더가 확정되었습니다. 상대 맞춤 전술을 생성할 수 있습니다.' : '우리 팀과 상대 팀의 여복·혼복·남복 오더가 모두 제출되면 생성할 수 있습니다.'}</div></div>`;
+        matchTacticsList.innerHTML = `<div class="summary-item"><div class="summary-sub">아직 생성된 맞춤 전술이 없습니다.</div></div>`;
+        return;
+      }
+      matchTacticsOverview.innerHTML = `<div class="summary-item"><div class="summary-main">전체 운영 핵심</div><div class="summary-sub">${escapeHtml(saved.summary?.overallPlan || '상대 실제 조합 기준으로 맞춤 전술을 제시합니다.')}</div></div>`;
+      const order = [['women','여복'],['mixed','혼복'],['men','남복']];
+      matchTacticsList.innerHTML = order.map(([type,label])=>{
+        const block = saved[type] || {};
+        const ourPair = Array.isArray(block.ourPair) ? block.ourPair.filter(Boolean).join(' · ') : '';
+        const oppPair = Array.isArray(block.oppPair) ? block.oppPair.filter(Boolean).join(' · ') : '';
+        return `<div class="ai-strategy-item">
+          <div class="ai-strategy-title">${label} 맞춤 전술</div>
+          ${ourPair ? `<div class="summary-item"><div class="summary-main">우리 조합</div><div class="summary-sub">${escapeHtml(ourPair)}</div></div>`:''}
+          ${oppPair ? `<div class="summary-item"><div class="summary-main">상대 실제 조합</div><div class="summary-sub">${escapeHtml(oppPair)}</div></div>`:''}
+          ${block.oppStyle ? `<div class="summary-item"><div class="summary-main">상대 특징</div><div class="summary-sub">${escapeHtml(block.oppStyle)}</div></div>`:''}
+          ${block.attackPoint ? `<div class="summary-item"><div class="summary-main">공략 포인트</div><div class="summary-sub">${escapeHtml(block.attackPoint)}</div></div>`:''}
+          ${block.warning ? `<div class="summary-item"><div class="summary-main">주의할 점</div><div class="summary-sub">${escapeHtml(block.warning)}</div></div>`:''}
+          ${block.openingPlan ? `<div class="summary-item"><div class="summary-main">첫 운영 팁</div><div class="summary-sub">${escapeHtml(block.openingPlan)}</div></div>`:''}
+        </div>`;
+      }).join('');
+    }
+
+    function heuristicMatchTactics(payload){
+      const opp = payload.actualLineups?.opponentTeam || {};
+      const mine = payload.actualLineups?.myTeam || {};
+      const teamName = payload.stats?.opponentTeam?.team || '상대 조';
+      const make = (my, op, opening) => ({
+        ourPair: my, oppPair: op,
+        oppStyle: `${teamName}의 실제 조합 기준 기본 분석입니다. 최근 누적 데이터가 부족하면 일반적인 역할 패턴을 기준으로 설명합니다.`,
+        attackPoint: '상대 전위의 복귀 속도와 짧은 리턴 이후 빈 공간을 먼저 확인합니다.',
+        warning: '상대 후위 강공을 정면으로 받아내기보다 먼저 뒤로 밀어 공격 타이밍을 줄입니다.',
+        openingPlan: opening
+      });
+      return {
+        summary: { overallPlan: '초반 2~3개 랠리에서는 상대 후위와 전위 연결 패턴을 먼저 확인한 뒤, 짧은 리턴과 깊은 클리어를 섞어 공략합니다.' },
+        women: make(mine.women || [], opp.women || [], '여복은 초반에 안정적인 연결과 네트 앞 처리부터 확인합니다.'),
+        mixed: make(mine.mixed || [], opp.mixed || [], '혼복은 여자 선수 전위 연결, 남자 선수 후위 커버를 먼저 유지합니다.'),
+        men: make(mine.men || [], opp.men || [], '남복은 초반에는 깊은 클리어로 뒤로 밀고 짧은 리턴이 오면 전위에서 마무리합니다.'),
+        source:'fallback-rule'
+      };
+    }
+
+    async function requestMatchTactics(payload){
+      if(!MATCH_TACTIC_ENDPOINT) return heuristicMatchTactics(payload);
+      const response = await fetch(MATCH_TACTIC_ENDPOINT, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      if(!response.ok) throw new Error('상대 맞춤 전술 호출에 실패했습니다.');
+      const data = await response.json();
+      if(data && data.summary && data.women) return data;
+      if(data && typeof data.text === 'string'){
+        try{
+          const parsed = JSON.parse(data.text);
+          if(parsed && parsed.summary && parsed.women) return parsed;
+        }catch(_){}
+      }
+      return heuristicMatchTactics(payload);
+    }
+
+    async function generateMatchTactics(mode='generate'){
+      try{
+        if(!opponentLineupsReady()) throw new Error('상대 팀 오더가 모두 확정된 뒤에 생성할 수 있습니다.');
+        const payload = buildMatchTacticsPayload();
+        generateMatchTacticsBtn.disabled = true;
+        regenerateMatchTacticsBtn.disabled = true;
+        matchTacticsStatusText.textContent = '실제 상대 조합 기준으로 맞춤 전술을 생성하고 있습니다.';
+        const result = await requestMatchTactics(payload);
+        const tactics = { generatedAt:new Date().toISOString(), mode, ...result, source: result.source || (MATCH_TACTIC_ENDPOINT ? 'ai-endpoint' : 'fallback-rule') };
+        setSavedMatchTactics(tactics);
+        await persistClass();
+      }catch(error){
+        console.error(error);
+        matchTacticsOverview.innerHTML = `<div class="summary-item"><div class="summary-main">전술 생성 오류</div><div class="summary-sub">${escapeHtml(error.message || '상대 맞춤 전술 생성 중 오류가 발생했습니다.')}</div></div>`;
+      }finally{
+        renderMatchTacticsStatus();
+      }
     }
 
     function validateRoles(){
@@ -728,7 +837,7 @@
       await persistClass();
     }
 
-    function setStep(step){ currentStep = step; lineupCard.classList.toggle('hidden', step !== 'lineup'); rolesCard.classList.toggle('hidden', step !== 'roles'); }
+    function setStep(step){ currentStep = step; lineupCard.classList.toggle('hidden', step !== 'lineup'); rolesCard.classList.toggle('hidden', step !== 'roles'); if(matchTacticsCard) matchTacticsCard.classList.toggle('hidden', false); }
     function updateStatus(){
       const submission = getSubmission();
       const locked = !!activeMatch?.started;
@@ -761,7 +870,7 @@
       if(!activeMatch){ summaryList.innerHTML='<div class="summary-item"><div class="summary-sub">해당 라운드 경기판이 없습니다.</div></div>'; return; }
       const submission = getSubmission();
       if(submission.lineups){ Object.entries(submission.lineups).forEach(([type, ids]) => { if(lineupSelects[`${type}1`]) lineupSelects[`${type}1`].value = ids?.[0] || ''; if(lineupSelects[`${type}2`]) lineupSelects[`${type}2`].value = ids?.[1] || ''; }); }
-      refreshLineupOptions(); renderRoleSections(); updateSummary(); renderAiGuideFromSaved(); updateStatus();
+      refreshLineupOptions(); renderRoleSections(); updateSummary(); renderAiGuideFromSaved(); renderMatchTacticsStatus(); updateStatus();
       if(submission.lineupCompletedAt && !submission.finalSubmittedAt && currentStep==='lineup') setStep('roles');
     }
 
@@ -773,6 +882,8 @@
     document.getElementById('lineupCompleteBtn').addEventListener('click', async () => { try { validateLineups(); const submission = getSubmission(); submission.lineupCompletedAt = new Date().toISOString(); await persistSubmission('lineup_ready', submission, false); setStep('roles'); updateStatus(); } catch(error){ alert(error.message || '선수 선택 완료 처리 중 오류가 발생했습니다.'); } });
     generateAiGuideBtn.addEventListener('click', () => generateAiGuide('generate'));
     regenerateAiGuideBtn.addEventListener('click', () => generateAiGuide('regenerate'));
+    generateMatchTacticsBtn.addEventListener('click', () => generateMatchTactics('generate'));
+    regenerateMatchTacticsBtn.addEventListener('click', () => generateMatchTactics('regenerate'));
     document.getElementById('backToLineupBtn').addEventListener('click', () => setStep('lineup'));
     document.getElementById('saveRolesDraftBtn').addEventListener('click', async () => { try { const { submission } = validateRoles(); await persistSubmission('draft', submission, false); rolesSuccessBox.textContent = '역할 임시저장 완료'; rolesSuccessBox.classList.remove('hidden'); setTimeout(()=>rolesSuccessBox.classList.add('hidden'), 1500); updateStatus(); } catch(error){ rolesErrorBox.textContent = error.message || '역할 임시저장 중 오류가 발생했습니다.'; rolesErrorBox.classList.remove('hidden'); } });
     document.getElementById('rolesCompleteBtn').addEventListener('click', async () => { const result = validateRoles(); if(!result.ok){ rolesErrorBox.innerHTML = result.errors.join('<br>'); rolesErrorBox.classList.remove('hidden'); rolesSuccessBox.classList.add('hidden'); return; } rolesErrorBox.classList.add('hidden'); rolesSuccessBox.textContent = '심판 선택 완료. 제출하기 버튼이 활성화되었습니다.'; rolesSuccessBox.classList.remove('hidden'); result.submission.rolesCompletedAt = new Date().toISOString(); await persistSubmission('roles_ready', result.submission, false); updateStatus(); });

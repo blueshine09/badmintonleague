@@ -476,6 +476,28 @@
       background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.06); border-radius: 14px; padding: 12px;
     }
 
+    #runPage .match-tactic-summary-panel{
+      margin-top:14px;
+      border:1px solid rgba(90,177,255,.18);
+      border-radius:20px;
+      background:linear-gradient(180deg, rgba(90,177,255,.09), rgba(255,255,255,.03));
+      padding:14px;
+      display:grid;
+      gap:10px;
+    }
+    #runPage .match-tactic-summary-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    #runPage .match-tactic-summary-title{font-size:.96rem;font-weight:900;}
+    #runPage .match-tactic-chip{
+      display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;
+      background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:.78rem;font-weight:800;color:#d9e9ff;
+    }
+
     .view-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;background:rgba(15,28,51,.85);padding:10px;border-radius:18px;border:1px solid var(--line);} 
     .view-tab{min-height:44px;padding:10px 16px;border-radius:var(--btn-radius);cursor:pointer;font-weight:800;font-size:var(--btn-font);background:linear-gradient(180deg,#11233f,#0c1b31);color:var(--muted);border:1px solid rgba(255,255,255,.08);display:inline-flex;align-items:center;justify-content:center;line-height:1.2;}
     .view-tab.active{background:linear-gradient(135deg,#2d73ff,#45b3ff);color:#fff;border-color:transparent;box-shadow:0 8px 18px rgba(45,115,255,.22);}
@@ -4681,6 +4703,82 @@ function switchView(view) {
     }
 
     
+
+    function getTeamLetterSafe(team) {
+      return (team?.letter || (team?.name || '').replace('조','').trim() || '').toUpperCase();
+    }
+
+    function getStoredMatchTacticForMatch(match) {
+      const store = currentData().aiMatchTactics || {};
+      const teamA = getTeamById(match.teamAId);
+      const teamB = getTeamById(match.teamBId);
+      const candidates = [
+        `${match.id}_${getTeamLetterSafe(teamA)}`,
+        `${match.id}_${getTeamLetterSafe(teamB)}`,
+        `${match.id}_${match.teamAId}`,
+        `${match.id}_${match.teamBId}`
+      ];
+      for (const key of candidates) {
+        if (store[key]) return store[key];
+      }
+      return null;
+    }
+
+    function getMatchTacticQuickSummary(match) {
+      const tactic = getStoredMatchTacticForMatch(match);
+      if (!tactic) {
+        return {
+          ready: false,
+          overall: '아직 생성된 맞춤 전술이 없습니다. 오더페이지에서 상대 맞춤 전술을 생성하면 이곳에도 요약이 표시됩니다.',
+          women: '여복 전술 대기',
+          mixed: '혼복 전술 대기',
+          men: '남복 전술 대기'
+        };
+      }
+      return {
+        ready: true,
+        overall: tactic.summary?.overallPlan || '상대 맞춤 전술이 준비되었습니다.',
+        women: tactic.women?.attackPoint || '여복 공략 포인트 없음',
+        mixed: tactic.mixed?.attackPoint || '혼복 공략 포인트 없음',
+        men: tactic.men?.attackPoint || '남복 공략 포인트 없음'
+      };
+    }
+
+    function openMatchTacticModal(matchId) {
+      const match = currentData().liveMatches.find(x => x.id === matchId) || (currentData().completedMatches || []).find(x => x.id === matchId);
+      if (!match) return;
+      const tactic = getStoredMatchTacticForMatch(match);
+      const overall = document.getElementById('matchTacticModalOverall');
+      const list = document.getElementById('matchTacticModalDetailList');
+      if (!tactic) {
+        overall.textContent = '아직 생성된 맞춤 전술이 없습니다.';
+        list.innerHTML = '<div class="feedback-item">오더페이지에서 상대 맞춤 전술을 먼저 생성해 주세요.</div>';
+      } else {
+        overall.textContent = tactic.summary?.overallPlan || '현재 경기 기준 맞춤 전술입니다.';
+        const order = [['women','여복'],['mixed','혼복'],['men','남복']];
+        list.innerHTML = order.map(([type, label]) => {
+          const block = tactic[type] || {};
+          const ourPair = Array.isArray(block.ourPair) ? block.ourPair.filter(Boolean).join(' · ') : '';
+          const oppPair = Array.isArray(block.oppPair) ? block.oppPair.filter(Boolean).join(' · ') : '';
+          return `<div class="feedback-item">
+            <strong>${label}</strong>
+            ${ourPair ? `<div style="margin-top:6px;"><b>우리 조합</b> · ${escapeHtml(ourPair)}</div>` : ''}
+            ${oppPair ? `<div style="margin-top:6px;"><b>상대 조합</b> · ${escapeHtml(oppPair)}</div>` : ''}
+            ${block.oppStyle ? `<div style="margin-top:6px;"><b>상대 특징</b> · ${escapeHtml(block.oppStyle)}</div>` : ''}
+            ${block.attackPoint ? `<div style="margin-top:6px;"><b>공략 포인트</b> · ${escapeHtml(block.attackPoint)}</div>` : ''}
+            ${block.warning ? `<div style="margin-top:6px;"><b>주의할 점</b> · ${escapeHtml(block.warning)}</div>` : ''}
+            ${block.openingPlan ? `<div style="margin-top:6px;"><b>첫 운영 팁</b> · ${escapeHtml(block.openingPlan)}</div>` : ''}
+          </div>`;
+        }).join('');
+      }
+      document.getElementById('matchTacticModal').classList.add('show');
+    }
+
+    function closeMatchTacticModal() {
+      document.getElementById('matchTacticModal')?.classList.remove('show');
+    }
+
+
     function renderCurrentMatchCard(m) {
       const teamA = getTeamById(m.teamAId);
       const teamB = getTeamById(m.teamBId);
@@ -4820,6 +4918,23 @@ function switchView(view) {
                   <button class="btn small primary" onclick="finishMatch('${m.id}')">전체 경기 종료</button>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <div class="match-tactic-summary-panel">
+            <div class="match-tactic-summary-head">
+              <div>
+                <div class="match-tactic-summary-title">AI 맞춤 전술 요약</div>
+                <div class="muted tiny">${escapeHtml(getMatchTacticQuickSummary(m).overall)}</div>
+              </div>
+              <div class="actions">
+                <button class="btn small" onclick="openMatchTacticModal('${m.id}')">상세 보기</button>
+              </div>
+            </div>
+            <div class="feedback-list">
+              <div class="feedback-item"><strong>여복</strong><br>${escapeHtml(getMatchTacticQuickSummary(m).women)}</div>
+              <div class="feedback-item"><strong>혼복</strong><br>${escapeHtml(getMatchTacticQuickSummary(m).mixed)}</div>
+              <div class="feedback-item"><strong>남복</strong><br>${escapeHtml(getMatchTacticQuickSummary(m).men)}</div>
             </div>
           </div>
         </div>
@@ -8305,5 +8420,24 @@ function renderAll() {
   } catch (e) { console.error(e); }
 })();
 </script>
+
+  <div class="modal" id="matchTacticModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="panel-title">AI 상대 맞춤 전술</div>
+      </div>
+      <div class="modal-body">
+        <div class="insight-card" style="margin-bottom:12px;">
+          <div class="label">전체 운영 핵심</div>
+          <div class="value" id="matchTacticModalOverall">아직 생성된 전술이 없습니다.</div>
+        </div>
+        <div class="feedback-list" id="matchTacticModalDetailList"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" type="button" onclick="closeMatchTacticModal()">닫기</button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
