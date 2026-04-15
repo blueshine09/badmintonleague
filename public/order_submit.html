@@ -282,6 +282,7 @@
         <div id="roleSections"></div>
         <div class="action-row">
           <button class="btn gray" id="backToLineupBtn">이전</button>
+          <button class="btn blue" id="autoFillRolesBtn">균등 자동 배정</button>
           <button class="btn blue" id="saveRolesDraftBtn">임시저장</button>
           <button class="btn yellow" id="rolesCompleteBtn">심판 선택 완료</button>
           <button class="btn green hidden" id="finalSubmitBtn">제출하기</button>
@@ -379,7 +380,7 @@
 
     function disableInteractiveControls(){
       document.querySelectorAll('button, select, input').forEach(el => {
-        if(['saveLineupDraftBtn','lineupCompleteBtn','generateAiGuideBtn','regenerateAiGuideBtn','generateMatchTacticsBtn','regenerateMatchTacticsBtn','backToLineupBtn','saveRolesDraftBtn','rolesCompleteBtn','finalSubmitBtn'].includes(el.id) || el.tagName === 'SELECT'){
+        if(['saveLineupDraftBtn','lineupCompleteBtn','generateAiGuideBtn','regenerateAiGuideBtn','generateMatchTacticsBtn','regenerateMatchTacticsBtn','backToLineupBtn','autoFillRolesBtn','saveRolesDraftBtn','rolesCompleteBtn','finalSubmitBtn'].includes(el.id) || el.tagName === 'SELECT'){
           el.disabled = true;
         }
       });
@@ -1044,8 +1045,112 @@
       pill.className = 'status-pill ' + (stage==='done' ? 'status-done' : stage==='locked' ? 'status-lock' : stage==='roles' ? 'status-edit' : stage==='lineup' ? 'status-edit' : 'status-draft');
       pill.textContent = stage==='done' ? '제출완료' : stage==='locked' ? '수정잠금' : stage==='roles' ? '심판 선택 완료' : stage==='lineup' ? '선수 선택 완료' : '미제출';
       text.textContent = stage==='done' ? '최종 제출이 완료되었습니다.' : stage==='locked' ? '경기 시작으로 수정할 수 없습니다.' : stage==='roles' ? '제출하기 버튼으로 최종 제출하세요.' : stage==='lineup' ? '역할 선택 단계로 진행해 주세요.' : '선수 선택 전';
-      document.querySelectorAll('select, button').forEach(el => { if(['saveLineupDraftBtn','lineupCompleteBtn','backToLineupBtn','saveRolesDraftBtn','rolesCompleteBtn','finalSubmitBtn','generateAiGuideBtn','regenerateAiGuideBtn'].includes(el.id) || el.tagName==='SELECT'){ if(locked) el.disabled = true; } });
+      document.querySelectorAll('select, button').forEach(el => { if(['saveLineupDraftBtn','lineupCompleteBtn','backToLineupBtn','autoFillRolesBtn','saveRolesDraftBtn','rolesCompleteBtn','finalSubmitBtn','generateAiGuideBtn','regenerateAiGuideBtn'].includes(el.id) || el.tagName==='SELECT'){ if(locked) el.disabled = true; } });
       document.getElementById('finalSubmitBtn').classList.toggle('hidden', !(submission.rolesCompletedAt && !submission.finalSubmittedAt && !locked));
+    }
+
+
+    function getHistoricalRoleCounts(teamId, excludeRound = String(round)){
+      const counts = {};
+      if(!teamId || !appData.lineupSubmissions || typeof appData.lineupSubmissions !== 'object') return counts;
+      const rounds = appData.lineupSubmissions[teamId] || {};
+      Object.entries(rounds).forEach(([roundKey, submission]) => {
+        if(String(roundKey) === String(excludeRound)) return;
+        GAME_TYPES.forEach(type => {
+          const roles = normalizeRoles(submission?.games?.[type]?.roles || {});
+          [roles.umpire, roles.assistant, roles.scorekeeper, roles.lineJudge, ...(roles.data || [])].filter(Boolean).forEach(id => {
+            counts[id] = (counts[id] || 0) + 1;
+          });
+        });
+      });
+      return counts;
+    }
+
+    function shuffleArray(list){
+      const arr = [...list];
+      for(let i = arr.length - 1; i > 0; i -= 1){
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function pickFairCandidate(candidateIds, counts, usedSet){
+      const available = candidateIds.filter(id => id && !usedSet.has(id));
+      if(!available.length) return '';
+      const minCount = Math.min(...available.map(id => counts[id] || 0));
+      const leastUsed = available.filter(id => (counts[id] || 0) === minCount);
+      const [picked] = shuffleArray(leastUsed);
+      if(!picked) return '';
+      usedSet.add(picked);
+      return picked;
+    }
+
+    async function autoFillRolesFair(){
+      try{
+        rolesErrorBox.classList.add('hidden');
+        rolesSuccessBox.classList.add('hidden');
+        const submission = getSubmission();
+        const historicalCounts = getHistoricalRoleCounts(activeTeam?.id);
+        const currentSelections = getCurrentSelections();
+        const warnings = [];
+
+        GAME_TYPES.forEach(type => {
+          const game = getMatchGame(type);
+          const stored = submission.games[type] || { umpireTeam: game.umpireTeam || '', roles: normalizeRoles({}) };
+          const umpireTeam = stored.umpireTeam || game.umpireTeam || '';
+          submission.games[type] = { umpireTeam, roles: normalizeRoles(stored.roles || {}) };
+          const visibleRoleType = getVisibleRoleType(umpireTeam);
+          const candidates = getPlayersForTeam(activeTeam)
+            .filter(player => !currentSelections[type].includes(player.id))
+            .map(player => player.id)
+            .filter(Boolean);
+          const usedSet = new Set();
+          const nextRoles = normalizeRoles({ data:['',''] });
+
+          if(!umpireTeam){
+            warnings.push(`${gameLabel(type)} 주심 담당 조를 먼저 정하면 나머지 역할도 함께 자동 배정됩니다.`);
+          }
+
+          if(visibleRoleType === 'umpire'){
+            nextRoles.umpire = pickFairCandidate(candidates, historicalCounts, usedSet);
+          }else if(visibleRoleType === 'assistant'){
+            nextRoles.assistant = pickFairCandidate(candidates, historicalCounts, usedSet);
+          }
+
+          nextRoles.scorekeeper = pickFairCandidate(candidates, historicalCounts, usedSet);
+          nextRoles.lineJudge = pickFairCandidate(candidates, historicalCounts, usedSet);
+          nextRoles.data = [
+            pickFairCandidate(candidates, historicalCounts, usedSet),
+            pickFairCandidate(candidates, historicalCounts, usedSet)
+          ];
+
+          const unfilledCount = [
+            visibleRoleType === 'umpire' ? nextRoles.umpire : visibleRoleType === 'assistant' ? nextRoles.assistant : '',
+            nextRoles.scorekeeper,
+            nextRoles.lineJudge,
+            ...(nextRoles.data || [])
+          ].filter(v => !v).length;
+          if(unfilledCount > 0){
+            warnings.push(`${gameLabel(type)}은(는) 역할 수보다 가능한 학생 수가 적어 일부 칸을 비워 두었습니다.`);
+          }
+
+          submission.games[type].roles = nextRoles;
+        });
+
+        submission.updatedAt = new Date().toISOString();
+        await persistSubmission('draft', submission, false);
+        renderRoleSections();
+        updateSummary();
+        updateStatus();
+        rolesSuccessBox.textContent = warnings.length
+          ? `균등 자동 배정을 적용했습니다. ${warnings.join(' ')}`
+          : '균등 자동 배정을 적용했습니다. 필요한 경우 직접 수정한 뒤 저장하세요.';
+        rolesSuccessBox.classList.remove('hidden');
+      }catch(error){
+        rolesErrorBox.textContent = error.message || '자동 배정 중 오류가 발생했습니다.';
+        rolesErrorBox.classList.remove('hidden');
+      }
     }
 
     function updateSummary(){
@@ -1098,6 +1203,7 @@
     generateMatchTacticsBtn.addEventListener('click', () => generateMatchTactics('generate'));
     regenerateMatchTacticsBtn.addEventListener('click', () => generateMatchTactics('regenerate'));
     document.getElementById('backToLineupBtn').addEventListener('click', () => setStep('lineup'));
+    document.getElementById('autoFillRolesBtn').addEventListener('click', autoFillRolesFair);
     document.getElementById('saveRolesDraftBtn').addEventListener('click', async () => { try { const { submission } = validateRoles(); await persistSubmission('draft', submission, false); rolesSuccessBox.textContent = '역할 임시저장 완료'; rolesSuccessBox.classList.remove('hidden'); setTimeout(()=>rolesSuccessBox.classList.add('hidden'), 1500); updateStatus(); } catch(error){ rolesErrorBox.textContent = error.message || '역할 임시저장 중 오류가 발생했습니다.'; rolesErrorBox.classList.remove('hidden'); } });
     document.getElementById('rolesCompleteBtn').addEventListener('click', async () => { const result = validateRoles(); if(!result.ok){ rolesErrorBox.innerHTML = result.errors.join('<br>'); rolesErrorBox.classList.remove('hidden'); rolesSuccessBox.classList.add('hidden'); return; } rolesErrorBox.classList.add('hidden'); rolesSuccessBox.textContent = '심판 선택 완료. 제출하기 버튼이 활성화되었습니다.'; rolesSuccessBox.classList.remove('hidden'); result.submission.rolesCompletedAt = new Date().toISOString(); await persistSubmission('roles_ready', result.submission, false); updateStatus(); });
     document.getElementById('finalSubmitBtn').addEventListener('click', async () => { const result = validateRoles(); if(!result.ok){ rolesErrorBox.innerHTML = result.errors.join('<br>'); rolesErrorBox.classList.remove('hidden'); return; } await persistSubmission('submitted', result.submission, true); rolesErrorBox.classList.add('hidden'); rolesSuccessBox.textContent = '최종 제출이 완료되었습니다.'; rolesSuccessBox.classList.remove('hidden'); updateStatus(); });
