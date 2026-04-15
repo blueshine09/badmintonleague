@@ -3006,7 +3006,15 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
       .grid { grid-template-columns: minmax(0, 1fr); }
     }
 
-  </style>
+  
+/* backup restore ui */
+.backup-restore-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-left:auto}
+.backup-restore-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.backup-restore-history{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.backup-restore-note{font-size:.78rem;color:var(--muted);line-height:1.5;margin-top:8px}
+.backup-restore-note strong{color:#dce8ff}
+
+</style>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
@@ -8697,6 +8705,183 @@ function renderAll() {
       </div>
     </div>
   </div>
+
+
+<script>
+(function(){
+  const STORAGE_PREFIX = 'badminton-backup-v3';
+  const MAX_BACKUPS = 3;
+  const SECTION_LABEL = {setup:'조편성', singles:'단식', doubles:'복식'};
+  const deepClone = (v) => JSON.parse(JSON.stringify(v));
+  function storageKey(section, classNo){ return `${STORAGE_PREFIX}:${section}:class${classNo||1}`; }
+  function normalizeBackupList(raw){
+    if(Array.isArray(raw)) return raw.filter(item => item && typeof item === 'object');
+    if(raw && typeof raw === 'object') return [raw];
+    return [];
+  }
+  function loadBackupList(section){
+    try {
+      const raw = localStorage.getItem(storageKey(section, currentClass));
+      return normalizeBackupList(raw ? JSON.parse(raw) : []);
+    } catch(e){ return []; }
+  }
+  function saveBackupList(section, list){
+    try {
+      if(!list?.length) localStorage.removeItem(storageKey(section, currentClass));
+      else localStorage.setItem(storageKey(section, currentClass), JSON.stringify(list.slice(0, MAX_BACKUPS)));
+    } catch(e){}
+    renderBackupControls();
+  }
+  function saveBackup(section, snapshot){
+    const payload = { id: `${Date.now()}-${Math.random().toString(16).slice(2,8)}`, section, classNo: currentClass, savedAt: new Date().toISOString(), snapshot };
+    const list = loadBackupList(section);
+    list.unshift(payload);
+    saveBackupList(section, list);
+    return payload;
+  }
+  function loadBackup(section, backupId){
+    const list = loadBackupList(section);
+    if(!list.length) return null;
+    if(!backupId) return list[0] || null;
+    return list.find(item => item.id === backupId) || null;
+  }
+  function clearBackup(section, backupId){
+    if(!backupId){
+      try { localStorage.removeItem(storageKey(section, currentClass)); } catch(e){}
+      renderBackupControls();
+      return;
+    }
+    const list = loadBackupList(section).filter(item => item.id !== backupId);
+    saveBackupList(section, list);
+  }
+  function backupSummary(payload){
+    if(!payload?.savedAt) return '';
+    const d = new Date(payload.savedAt);
+    if(Number.isNaN(d.getTime())) return '';
+    return `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+  }
+  function backupListMarkup(section, list){
+    if(!list.length) return '';
+    return `<div class="backup-restore-history" id="${section}RestoreHistory">${list.map((payload, idx) => `<button type="button" class="btn small" onclick="restoreSectionBackup('${section}','${payload.id}')">${idx+1}회차 복원 · ${backupSummary(payload)}</button>`).join('')}</div>`;
+  }
+  function setupSnapshot(){ return deepClone(currentData()); }
+  function restoreSetup(snapshot){ appData.classes[currentClass] = normalizeClassDataForLoad(snapshot || emptyClassData()); saveData(); renderAll(); }
+  function singlesSnapshot(){ return deepClone({ singlesLeague: currentData().singlesLeague || { menMatches: [], womenMatches: [], courtCount: 2 } }); }
+  function restoreSingles(snapshot){ currentData().singlesLeague = normalizeSinglesLeagueForLoad(snapshot?.singlesLeague || { menMatches: [], womenMatches: [], courtCount: 2 }); saveData(); renderAll(); }
+  function doublesSnapshot(){ return deepClone({ doubles: currentData().doubles || defaultDoublesState() }); }
+  function restoreDoubles(snapshot){ currentData().doubles = snapshot?.doubles ? deepClone(snapshot.doubles) : defaultDoublesState(); saveData(); renderAll(); }
+  const SNAPSHOTTERS = { setup: setupSnapshot, singles: singlesSnapshot, doubles: doublesSnapshot };
+  const RESTORERS = { setup: restoreSetup, singles: restoreSingles, doubles: restoreDoubles };
+  function confirmMessage(section, actionLabel){
+    if(section === 'setup') return `현재 팀 구성, 경기판, QR 제출 상태, 순위가 새 조 기준으로 바뀝니다.
+이전 상태는 최근 3회까지 자동 백업됩니다.
+
+${actionLabel} 계속하시겠습니까?`;
+    if(section === 'singles') return `현재 단식 대진표와 단식 순위 화면이 변경됩니다.
+이전 단식 상태는 최근 3회까지 자동 백업됩니다.
+
+${actionLabel} 계속하시겠습니까?`;
+    return `현재 복식 경기판과 복식 운영 현황이 변경됩니다.
+이전 복식 상태는 최근 3회까지 자동 백업됩니다.
+
+${actionLabel} 계속하시겠습니까?`;
+  }
+  function backupBefore(section, actionLabel){
+    const snapshotter = SNAPSHOTTERS[section];
+    if(!snapshotter) return false;
+    const snapshot = snapshotter();
+    saveBackup(section, snapshot);
+    return confirm(confirmMessage(section, actionLabel));
+  }
+  window.restoreSectionBackup = function(section, backupId){
+    const payload = loadBackup(section, backupId);
+    if(!payload?.snapshot){ alert(`${SECTION_LABEL[section]} 백업이 없습니다.`); return; }
+    const when = backupSummary(payload);
+    const ok = confirm(`${SECTION_LABEL[section]} 백업 상태로 되돌립니다.${when ? `
+백업 시각: ${when}` : ''}
+
+계속하시겠습니까?`);
+    if(!ok) return;
+    RESTORERS[section](payload.snapshot);
+    clearBackup(section, payload.id);
+    alert(`${SECTION_LABEL[section]} 이전 상태를 복원했습니다.`);
+  };
+  function createRestoreBar(section, noteText){
+    const wrap = document.createElement('div');
+    wrap.className = 'backup-restore-bar';
+    wrap.id = `${section}RestoreBar`;
+    wrap.innerHTML = `
+      <div class="backup-restore-actions" id="${section}RestoreActions"></div>
+      <div class="backup-restore-note" id="${section}RestoreNote">${noteText}</div>
+    `;
+    return wrap;
+  }
+
+  function mountRestoreBars(){
+    const setupHead = document.querySelector('#setupWizardPanel .panel-header');
+    if(setupHead && !document.getElementById('setupRestoreBar')) setupHead.appendChild(createRestoreBar('setup','팀 구성을 새로 확정하기 전 최근 3회까지 자동 백업됩니다.'));
+    const singlesToolbar = document.querySelector('#singlesPage .control-row');
+    if(singlesToolbar && !document.getElementById('singlesRestoreBar')){
+      const wrap = createRestoreBar('singles','단식 대진 생성/초기화 전 최근 3회까지 자동 백업됩니다.');
+      wrap.id = 'singlesRestoreBar';
+      singlesToolbar.parentElement.appendChild(wrap);
+    }
+    const doublesToolbar = document.querySelector('#doublesPage .doubles-toolbar');
+    if(doublesToolbar && !document.getElementById('doublesRestoreBar')){
+      const wrap = createRestoreBar('doubles','복식 재편성/초기화 전 최근 3회까지 자동 백업됩니다.');
+      wrap.id = 'doublesRestoreBar';
+      doublesToolbar.closest('.panel-body').appendChild(wrap);
+    }
+  }
+  window.renderBackupControls = function(){
+    mountRestoreBars();
+    ['setup','singles','doubles'].forEach(section => {
+      const list = loadBackupList(section);
+      const actions = document.getElementById(`${section}RestoreActions`);
+      const note = document.getElementById(`${section}RestoreNote`);
+      if(actions) actions.innerHTML = backupListMarkup(section, list);
+      if(note){
+        const base = section==='setup' ? '팀 구성을 새로 확정하기 전 최근 3회까지 자동 백업됩니다.' : (section==='singles' ? '단식 대진 생성/초기화 전 최근 3회까지 자동 백업됩니다.' : '복식 재편성/초기화 전 최근 3회까지 자동 백업됩니다.');
+        note.innerHTML = list.length ? `${base} <strong>최근 백업:</strong> ${list.map((payload, idx) => `${idx+1}회차 ${backupSummary(payload)}`).join(' · ')}` : base;
+      }
+    });
+  };
+  function wrapAction(fnName, section, actionLabel){
+    const original = window[fnName];
+    if(typeof original !== 'function') return;
+    if(original.__wrappedBackup) return;
+    const wrapped = function(...args){
+      if(!backupBefore(section, actionLabel)) return;
+      return original.apply(this, args);
+    };
+    wrapped.__wrappedBackup = true;
+    window[fnName] = wrapped;
+  }
+  function installWrappers(){
+    wrapAction('generateBalancedTeams','setup','새 조편성을');
+    wrapAction('shuffleTeamsOnly','setup','조편성 재생성을');
+    wrapAction('finalizeTeamsFromWizard','setup','팀 구성 완료를');
+    wrapAction('generateSinglesLeague','singles','단식 대진 생성을');
+    wrapAction('clearSinglesLeague','singles','단식 초기화를');
+    wrapAction('generateInitialDoublesRounds','doubles','복식 초기 라운드 생성을');
+    wrapAction('generateNextDoublesRound','doubles','다음 복식 라운드 생성을');
+    wrapAction('reshuffleVisibleDoublesRounds','doubles','복식 재편성을');
+    wrapAction('resetDoublesAll','doubles','복식 초기화를');
+  }
+  const originalRenderAll = window.renderAll;
+  if(typeof originalRenderAll === 'function' && !originalRenderAll.__backupWrapped){
+    window.renderAll = function(...args){
+      const result = originalRenderAll.apply(this, args);
+      try{ renderBackupControls(); }catch(e){ console.error(e); }
+      return result;
+    };
+    window.renderAll.__backupWrapped = true;
+  }
+  installWrappers();
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', renderBackupControls);
+  else setTimeout(renderBackupControls, 0);
+})();
+</script>
 
 </body>
 </html>
