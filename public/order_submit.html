@@ -25,17 +25,17 @@
     .hint{font-size:.78rem;color:var(--muted);line-height:1.55}.hint.warn{color:#ffe39c}.step-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.step-badge{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;padding:0 10px;border-radius:999px;background:rgba(90,177,255,.18);font-weight:800}
     .action-row{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:#102038;color:var(--text);cursor:pointer;border-radius:13px;min-height:44px;padding:10px 14px;font-weight:800;font-size:.9rem;display:inline-flex;align-items:center;justify-content:center;gap:6px}
     .btn.primary,.btn.blue{background:linear-gradient(135deg,#2d73ff,#45b3ff);border:none}.btn.green{background:linear-gradient(135deg,#1d9d68,#36c98a);border:none}.btn.yellow{background:linear-gradient(135deg,#c4901d,#ffd166);color:#17202e;border:none}.btn.gray{background:linear-gradient(135deg,#5f6b7c,#7f8b99);border:none;color:#eef4ff}.btn[disabled]{opacity:.6;cursor:not-allowed}
-    .summary-list{display:grid;gap:14px}.summary-item{padding:14px 16px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);margin:0;min-width:0}.summary-main{font-size:.9rem;font-weight:700;line-height:1.35}.summary-sub{font-size:.78rem;color:var(--muted);margin-top:6px;line-height:1.68;word-break:break-word;overflow-wrap:anywhere}
+    .summary-list{display:grid;gap:8px}.summary-item{padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06)}.summary-main{font-size:.9rem;font-weight:700}.summary-sub{font-size:.78rem;color:var(--muted);margin-top:4px;line-height:1.6}
     .hidden{display:none!important}.role-box{border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:12px;background:rgba(8,24,49,.55);display:grid;gap:10px}.role-box .role-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.role-status{font-size:.78rem;color:#cfe5ff;font-weight:700}
     .role-help{font-size:.77rem;color:var(--muted);line-height:1.55}.error-box{border:1px solid rgba(255,122,122,.3);background:rgba(255,122,122,.08);color:#ffd6d6;border-radius:14px;padding:10px 12px;font-size:.8rem;line-height:1.55}.success-box{border:1px solid rgba(83,215,105,.28);background:rgba(83,215,105,.08);color:#cffff0;border-radius:14px;padding:10px 12px;font-size:.8rem;line-height:1.55}
     .ai-guide-card{border:1px solid rgba(90,177,255,.2);background:linear-gradient(180deg,rgba(90,177,255,.08),rgba(255,255,255,.03));}
     .ai-guide-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
     .ai-badge{display:inline-flex;align-items:center;gap:6px;padding:7px 11px;border-radius:999px;background:rgba(90,177,255,.14);border:1px solid rgba(90,177,255,.24);font-weight:800;font-size:.8rem;color:#d9ecff}
     .ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .ai-strategy-list{display:grid;gap:14px}
-    .ai-strategy-item{padding:14px;border-radius:16px;background:rgba(8,24,49,.55);border:1px solid rgba(255,255,255,.08);display:grid;gap:12px;min-width:0}
+    .ai-strategy-list{display:grid;gap:8px}
+    .ai-strategy-item{padding:12px;border-radius:14px;background:rgba(8,24,49,.55);border:1px solid rgba(255,255,255,.08)}
     .ai-strategy-title{font-size:.9rem;font-weight:800}
-    .ai-strategy-meta{margin-top:2px;font-size:.74rem;color:#b8d6ff;font-weight:700;line-height:1.58;word-break:break-word;overflow-wrap:anywhere}
+    .ai-strategy-meta{margin-top:4px;font-size:.74rem;color:#b8d6ff;font-weight:700}
     .ai-loading{opacity:.7;pointer-events:none}
     .mini-check{display:flex;gap:8px;align-items:flex-start;color:var(--muted);font-size:.82rem}
     .mini-check input{width:auto;min-width:16px;margin-top:2px}
@@ -434,8 +434,6 @@
     function getPlayerById(id){ return appData.roster.find(player => player.id === id) || null; }
     function gameLabel(type){ return GAME_LABELS[type] || type; }
     function getPlayersForTeam(team){ if(!team) return []; const ids = Array.isArray(team.players)&&team.players.length ? team.players : (Array.isArray(team.playerIds)?team.playerIds:[]); const mapped = ids.map(getPlayerById).filter(Boolean); if(mapped.length) return mapped; const letter = getTeamLetter(team); return appData.roster.filter(player => String(player.manualGroup || '').toUpperCase() === letter); }
-    function getPlayerNameById(id){ return getPlayerById(id)?.name || String(id || '').trim(); }
-    function formatPlayerNames(list=[]){ return (Array.isArray(list) ? list : [list]).filter(Boolean).map(getPlayerNameById).join(' · '); }
     function getRolePool(team, type){ const players = getPlayersForTeam(team); if(type==='women') return players.filter(p=>p.gender==='F'); if(type==='men') return players.filter(p=>p.gender==='M'); return players; }
     function getCurrentSelections(){ return { women:[lineupSelects.women1.value||'',lineupSelects.women2.value||''], mixed:[lineupSelects.mixed1.value||'',lineupSelects.mixed2.value||''], men:[lineupSelects.men1.value||'',lineupSelects.men2.value||''] }; }
     function inferMixedCrossRules(team){ const players=getPlayersForTeam(team); const maleIds=players.filter(p=>p.gender==='M').map(p=>p.id); const femaleIds=players.filter(p=>p.gender==='F').map(p=>p.id); return {maleIds,femaleIds,allowMenReuse:maleIds.length<=2,allowWomenReuse:femaleIds.length<=2}; }
@@ -462,7 +460,10 @@
         if(activeMatch.refereeTeamId === activeMatch.teamAId) return 'A';
         if(activeMatch.refereeTeamId === activeMatch.teamBId) return 'B';
       }
-      return '';
+      const seed = String(activeMatch.id || `${activeMatch.roundNo||round}-${activeMatch.teamAId||'A'}-${activeMatch.teamBId||'B'}`)
+        .split('')
+        .reduce((sum, ch) => sum + ch.charCodeAt(0), 0);
+      return seed % 2 === 0 ? 'A' : 'B';
     }
     function ensureSubmissionAutoUmpire(submission){
       const autoSide = getAutoUmpireSide();
@@ -598,8 +599,8 @@
         const lineups = getCurrentSelections()[type];
         const selectedNames = lineups.map(id => roleName(id)).join(' · ');
         const autoUmpireSide = getAutoUmpireSide();
-        const autoUmpireLabel = autoUmpireSide ? `${getMatchTeamLabel(autoUmpireSide)} 자동 배정` : '';
-        const roleStatus = !umpireTeam ? '주심 담당 조 자동 배정 정보를 불러오는 중입니다.' : (visibleRoleType === 'umpire' ? `우리 조가 ${gameLabel(type)} 주심 담당 조입니다.` : `우리 조가 ${gameLabel(type)} 부심 담당 조입니다.`);
+        const autoUmpireLabel = autoUmpireSide ? `${getMatchTeamLabel(autoUmpireSide)}` : '';
+        const roleStatus = !umpireTeam ? '주심 담당 조를 자동 확인하는 중입니다.' : (visibleRoleType === 'umpire' ? `${gameLabel(type)}은 ${autoUmpireLabel || getMatchTeamLabel(umpireTeam)}가 주심 담당 조입니다.` : `${gameLabel(type)}은 ${autoUmpireLabel || getMatchTeamLabel(umpireTeam)}가 주심 담당 조이며, 우리 조는 부심 담당입니다.`);
         const buildOptions = (selectedId, excluded=[]) => ['<option value="">선택</option>'].concat(players.filter(p => !excluded.includes(p.id) || p.id===selectedId).map(p => `<option value="${escapeHtml(p.id)}"${p.id===selectedId?' selected':''}>${escapeHtml(p.name)}</option>`)).join('');
         const usedForPrimary = [roles.scorekeeper, roles.lineJudge, ...(roles.data||[])].filter(Boolean);
         const usedForSupport = [roles.umpire, roles.assistant, roles.lineJudge, ...(roles.data||[])].filter(Boolean);
@@ -618,14 +619,10 @@
             <div class="role-help">${roleStatus}</div>
             <div class="duo-grid">
               <label class="input-label">주심 담당 조
-                <select data-role="umpireTeam" data-type="${type}" disabled>
-                  <option value="">선택</option>
-                  <option value="A" ${umpireTeam==='A'?'selected':''}>${escapeHtml(getMatchTeamLabel('A'))}가 주심</option>
-                  <option value="B" ${umpireTeam==='B'?'selected':''}>${escapeHtml(getMatchTeamLabel('B'))}가 주심</option>
-                </select>
+                <input value="${!umpireTeam ? '확인 중' : `${autoUmpireLabel || getMatchTeamLabel(umpireTeam)} 주심 담당`}" disabled>
               </label>
               <label class="input-label">우리 조 역할
-                <input value="${!umpireTeam ? '미정' : (visibleRoleType === 'umpire' ? `주심 담당 조 · ${autoUmpireLabel || getMatchTeamLabel(umpireTeam)}` : `부심 담당 조 · ${autoUmpireLabel || getMatchTeamLabel(umpireTeam)}`)}" disabled>
+                <input value="${!umpireTeam ? '확인 중' : (visibleRoleType === 'umpire' ? '주심 담당' : '부심 담당')}" disabled>
               </label>
             </div>
             <div class="role-grid">
@@ -773,9 +770,9 @@
       order.forEach(([type,label]) => {
         const rec = recommendations[type] || {};
         const pred = predictions[type] || {};
-        const recPair = Array.isArray(rec.recommendedPair) ? formatPlayerNames(rec.recommendedPair) : '';
-        const altPair = Array.isArray(rec.alternativePair) ? formatPlayerNames(rec.alternativePair) : '';
-        const oppPair = Array.isArray(pred.expectedOppPair) ? formatPlayerNames(pred.expectedOppPair) : '';
+        const recPair = Array.isArray(rec.recommendedPair) ? rec.recommendedPair.filter(Boolean).join(' · ') : '';
+        const altPair = Array.isArray(rec.alternativePair) ? rec.alternativePair.filter(Boolean).join(' · ') : '';
+        const oppPair = Array.isArray(pred.expectedOppPair) ? pred.expectedOppPair.filter(Boolean).join(' · ') : '';
         blocks.push(`
           <div class="ai-strategy-item">
             <div class="ai-strategy-title">${label} 추천 조합</div>
@@ -838,9 +835,9 @@
           men: { expectedOppPair: ['상대 남복 1', '상대 남복 2'], reason: '상대 최근 제출 데이터가 부족하여 일반적인 남복 조합을 기준으로 예측합니다.' }
         },
         recommendations: {
-          women: recommend(lineup.women || [], [], '추천 조합 기준으로 안정적인 수비 연결과 긴 랠리 운영을 먼저 가져가는 방식이 적절합니다.', '여복 대안 조합 데이터가 아직 충분하지 않습니다.', '초반에는 무리한 공격보다 안정적인 클리어와 네트 연결에 집중합니다.'),
-          mixed: recommend(lineup.mixed || [], [], '추천 조합 기준으로 여자 선수는 전위 연결, 남자 선수는 후위 커버를 맡는 운영이 가장 안정적입니다.', '혼복 대안 조합 데이터가 아직 충분하지 않습니다.', '첫 2개 랠리는 전위-후위 역할을 고정하고 짧은 리턴 뒤 빠른 연결을 시도합니다.'),
-          men: recommend(lineup.men || [], [], '추천 조합 기준으로 후위 공격과 전위 마무리 역할을 분리하는 운영이 적절합니다.', '남복 대안 조합 데이터가 아직 충분하지 않습니다.', '초반에는 깊은 클리어로 상대를 뒤로 밀고 짧은 리턴이 오면 전위에서 빠르게 마무리합니다.')
+          women: recommend(lineup.women || [], [], '현재 선택한 여복 조합을 우선 유지하되, 수비 연결이 안정적인 학생이 첫 랠리를 길게 가져가면 좋습니다.', '여복 대안 조합 데이터가 아직 충분하지 않습니다.', '초반에는 무리한 공격보다 안정적인 클리어와 네트 연결에 집중합니다.'),
+          mixed: recommend(lineup.mixed || [], [], '현재 선택한 혼복 조합에서 여자 선수는 전위 연결, 남자 선수는 후위 커버를 맡는 방식이 가장 안정적입니다.', '혼복 대안 조합 데이터가 아직 충분하지 않습니다.', '첫 2개 랠리는 전위-후위 역할을 고정하고 짧은 리턴 뒤 빠른 연결을 시도합니다.'),
+          men: recommend(lineup.men || [], [], '현재 선택한 남복 조합을 기준으로 후위 공격과 전위 마무리 역할을 분리하는 운영이 적절합니다.', '남복 대안 조합 데이터가 아직 충분하지 않습니다.', '초반에는 깊은 클리어로 상대를 뒤로 밀고 짧은 리턴이 오면 전위에서 빠르게 마무리합니다.')
         },
         source: 'fallback-rule'
       };
@@ -998,8 +995,8 @@
       const order = [['women','여복'],['mixed','혼복'],['men','남복']];
       matchTacticsList.innerHTML = order.map(([type,label])=>{
         const block = saved[type] || {};
-        const ourPair = Array.isArray(block.ourPair) ? formatPlayerNames(block.ourPair) : '';
-        const oppPair = Array.isArray(block.oppPair) ? formatPlayerNames(block.oppPair) : '';
+        const ourPair = Array.isArray(block.ourPair) ? block.ourPair.filter(Boolean).join(' · ') : '';
+        const oppPair = Array.isArray(block.oppPair) ? block.oppPair.filter(Boolean).join(' · ') : '';
         return `<div class="ai-strategy-item">
           <div class="ai-strategy-title">${label} 맞춤 전술</div>
           ${ourPair ? `<div class="summary-item"><div class="summary-main">우리 조합</div><div class="summary-sub">${escapeHtml(ourPair)}</div></div>`:''}
@@ -1091,7 +1088,7 @@
       const errors = [];
       GAME_TYPES.forEach(type => {
         const game = submission.games[type]; const roles = normalizeRoles(game.roles); const umpireTeam = game.umpireTeam || ''; const visibleRoleType = getVisibleRoleType(umpireTeam);
-        if(!umpireTeam) errors.push(`${gameLabel(type)} 주심 담당 조를 선택해 주세요.`);
+        if(!umpireTeam) errors.push(`${gameLabel(type)} 주심 담당 조 자동 배정을 확인하지 못했습니다.`);
         const requiredPrimary = visibleRoleType === 'umpire' ? roles.umpire : roles.assistant;
         if(!requiredPrimary) errors.push(`${gameLabel(type)} ${visibleRoleType === 'umpire' ? '주심' : '부심'}을 선택해 주세요.`);
         if(!roles.scorekeeper) errors.push(`${gameLabel(type)} 점수를 선택해 주세요.`);
@@ -1142,6 +1139,7 @@
       pill.className = 'status-pill ' + (stage==='done' || stage==='finished' ? 'status-done' : stage==='locked' ? 'status-lock' : stage==='roles' ? 'status-edit' : stage==='lineup' ? 'status-edit' : 'status-draft');
       pill.textContent = stage==='finished' ? '경기종료' : stage==='done' ? '제출완료' : stage==='locked' ? '수정잠금' : stage==='roles' ? '심판 선택 완료' : stage==='lineup' ? '선수 선택 완료' : '미제출';
       text.textContent = stage==='finished' ? '이미 종료된 경기입니다.' : stage==='done' ? '최종 제출이 완료되었습니다.' : stage==='locked' ? '경기 시작으로 수정할 수 없습니다.' : stage==='roles' ? '제출하기 버튼으로 최종 제출하세요.' : stage==='lineup' ? '역할 선택 단계로 진행해 주세요.' : 'AI 추천을 먼저 확인하거나 선수를 선택해 주세요.';
+      if(submission.games && GAME_TYPES.every(type => (submission.games[type]?.umpireTeam || getAutoUmpireSide()))){ rolesErrorBox.classList.add('hidden'); rolesErrorBox.textContent=''; }
       const lockAll = locked || finished;
       document.querySelectorAll('select, button').forEach(el => {
         if(['saveLineupDraftBtn','lineupCompleteBtn','backToLineupBtn','saveRolesDraftBtn','rolesCompleteBtn','finalSubmitBtn','generateAiGuideBtn','regenerateAiGuideBtn','autoFillRolesBtn'].includes(el.id) || el.tagName==='SELECT'){
@@ -1165,7 +1163,7 @@
       const lineupItems = GAME_TYPES.map(type => `<div class="summary-item"><div><div class="summary-main">${gameLabel(type)} 선수</div><div class="summary-sub">${getCurrentSelections()[type].map(roleName).filter(Boolean).join(' · ') || '미선택'}</div></div></div>`).join('');
       const roleItems = GAME_TYPES.map(type => {
         const game = submission.games[type]; const roles = normalizeRoles(game.roles); const visibleRoleType = getVisibleRoleType(game.umpireTeam);
-        const primary = visibleRoleType === 'umpire' ? `주심 ${roleName(roles.umpire)}` : visibleRoleType === 'assistant' ? `부심 ${roleName(roles.assistant)}` : '주심/부심 미정';
+        const primary = !game.umpireTeam ? '주심 담당 조 확인 중' : (visibleRoleType === 'umpire' ? `주심 담당 (${getMatchTeamLabel(game.umpireTeam)}) · ${roleName(roles.umpire)}` : `부심 담당 (${getMatchTeamLabel(game.umpireTeam)} 주심) · ${roleName(roles.assistant)}`);
         return `<div class="summary-item"><div><div class="summary-main">${gameLabel(type)} 역할</div><div class="summary-sub">${primary}<br>점수 ${roleName(roles.scorekeeper)} · 선심 ${roleName(roles.lineJudge)} · 데이터 ${(roles.data||[]).map(roleName).join(', ') || '미선택'}</div></div></div>`;
       }).join('');
       summaryList.innerHTML = lineupItems + roleItems;

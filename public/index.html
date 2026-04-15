@@ -117,6 +117,24 @@
   border:1px solid rgba(255,255,255,.06);
 }
 
+
+    .advanced-menu-wrap{position:relative;}
+    .advanced-menu-panel{
+      display:none;
+      position:absolute;
+      top:calc(100% + 8px);
+      right:0;
+      min-width:180px;
+      padding:10px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background:linear-gradient(180deg, rgba(11,27,49,.98), rgba(7,20,39,.98));
+      box-shadow:0 18px 36px rgba(0,0,0,.32);
+      z-index:120;
+    }
+    .advanced-menu-panel.show{display:grid;gap:8px;}
+    .advanced-menu-btn{width:100%;justify-content:flex-start;}
+
 .admin-sync-wrap{margin:0 0 16px;display:grid;gap:10px;}
 .admin-sync-toggle{display:flex;justify-content:flex-end;}
 .admin-sync-toggle .btn{min-height:44px;padding:9px 14px;border-radius:var(--btn-radius-sm);font-size:var(--btn-font-sm);}
@@ -3135,13 +3153,19 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
       <div class="titlebox">
         <h1>배드민턴 리그전 운영 시스템</h1>
         <div class="actions">
-          <button class="btn small" onclick="exportData()">JSON 백업</button>
-          <button class="btn small" id="adminSyncToggleBtn" onclick="toggleAdminSyncPanel()">
-            <span class="admin-sync-label"><span>관리자 설정</span><span class="chev">⌄</span></span>
-          </button>
-          <button class="btn small" onclick="document.getElementById('importFile').click()">불러오기</button>
+          <div class="advanced-menu-wrap">
+            <button class="btn small" id="advancedMenuBtn" type="button" onclick="toggleAdvancedMenu(event)">
+              <span class="admin-sync-label"><span>고급</span><span class="chev">⌄</span></span>
+            </button>
+            <div id="advancedMenuPanel" class="advanced-menu-panel">
+              <button class="btn small advanced-menu-btn" type="button" onclick="saveAllClassesToCloud()">전체반 저장</button>
+              <button class="btn small advanced-menu-btn" type="button" onclick="exportData()">JSON 백업</button>
+              <button class="btn small advanced-menu-btn" type="button" onclick="openImportFromAdvanced()">불러오기</button>
+              <button class="btn small advanced-menu-btn" type="button" onclick="openAdminSyncFromAdvanced()">관리자 설정</button>
+            </div>
+          </div>
           <input id="importFile" type="file" accept="application/json" style="display:none" onchange="importData(event)">
-<button class="btn green" onclick="openCompareModal()">선수 비교</button>
+          <button class="btn green" onclick="openCompareModal()">선수 비교</button>
           <button class="btn red" onclick="resetClassData()">현재 반 초기화</button>
           <button class="btn yellow" onclick="openBroadcastWindow()">전광판</button>
         </div>
@@ -5910,7 +5934,83 @@ function switchView(view) {
       renderAll();
     }
 
-    function exportData() {
+    
+function closeAdvancedMenu() {
+  const panel = document.getElementById('advancedMenuPanel');
+  const btn = document.getElementById('advancedMenuBtn');
+  if (panel) panel.classList.remove('show');
+  if (btn) btn.classList.remove('active');
+}
+
+function toggleAdvancedMenu(event) {
+  if (event) event.stopPropagation();
+  const panel = document.getElementById('advancedMenuPanel');
+  const btn = document.getElementById('advancedMenuBtn');
+  if (!panel) return;
+  const next = !panel.classList.contains('show');
+  closeAdvancedMenu();
+  if (next) {
+    panel.classList.add('show');
+    if (btn) btn.classList.add('active');
+  }
+}
+
+function openImportFromAdvanced() {
+  closeAdvancedMenu();
+  const fileInput = document.getElementById('importFile');
+  if (fileInput) fileInput.click();
+}
+
+function openAdminSyncFromAdvanced() {
+  closeAdvancedMenu();
+  const panel = document.getElementById('adminSyncPanel');
+  const shouldOpen = panel && !panel.classList.contains('show');
+  toggleAdminSyncPanel();
+  if (shouldOpen) {
+    setTimeout(() => {
+      const area = document.getElementById('adminSyncPanel');
+      if (area) area.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 80);
+  }
+}
+
+async function saveAllClassesToCloud() {
+  closeAdvancedMenu();
+  const hasConfig = !!(getApiUrl() || '').trim();
+  if (!hasConfig) {
+    saveData({ skipCloud: true });
+    alert('Firebase 설정이 없어 현재 기기에는 저장했지만 전체반 클라우드 저장은 하지 못했습니다.');
+    return;
+  }
+  try {
+    const response = await apiRequest('saveAll', { classes: appData.classes }, 'POST');
+    if (response?.classes) {
+      for (let i = 1; i <= CLASS_COUNT; i++) {
+        const normalized = normalizeClassDataForLoad(response.classes?.[i] || response.classes?.[String(i)] || appData.classes[i] || emptyClassData());
+        appData.classes[i] = normalized;
+        lastRealtimeSyncedSignatureByClass[i] = JSON.stringify(normalized);
+      }
+    } else {
+      for (let i = 1; i <= CLASS_COUNT; i++) {
+        lastRealtimeSyncedSignatureByClass[i] = JSON.stringify(normalizeClassDataForLoad(appData.classes[i] || emptyClassData()));
+      }
+    }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+    setSyncStatus('전체반 저장 완료');
+    alert('전체반 저장이 완료되었습니다.');
+  } catch (error) {
+    console.error(error);
+    setSyncStatus(`전체반 저장 실패 · ${error.message}`, true);
+    alert(`전체반 저장 실패: ${error.message}`);
+  }
+}
+
+document.addEventListener('click', (event) => {
+  const wrap = document.querySelector('.advanced-menu-wrap');
+  if (!wrap) return;
+  if (!wrap.contains(event.target)) closeAdvancedMenu();
+});
+function exportData() {
       const blob = new Blob([JSON.stringify(appData, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
