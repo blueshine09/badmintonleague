@@ -39,7 +39,10 @@
     .ai-loading{opacity:.7;pointer-events:none}
     .mini-check{display:flex;gap:8px;align-items:flex-start;color:var(--muted);font-size:.82rem}
     .mini-check input{width:auto;min-width:16px;margin-top:2px}
-    @media (max-width:700px){.duo-grid,.tri-grid,.role-grid,.ai-grid{grid-template-columns:1fr}.status-box{display:grid;justify-content:stretch}.action-row .btn{flex:1}}
+        .save-state{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);font-size:.8rem;color:#dff0ff}
+    .save-state b{font-size:.78rem;color:var(--muted);font-weight:700}
+    .save-state .state{font-weight:800}
+    @media (max-width:700px){.shell{padding:12px 10px 22px;gap:10px}.card-head,.card-body{padding:12px 14px 14px}.card-title{font-size:1rem}.duo-grid,.tri-grid,.role-grid,.ai-grid{grid-template-columns:1fr}.status-box{display:grid;justify-content:stretch}.section-box{padding:12px;gap:10px;border-radius:16px}.sub,.section-subtitle,.role-help{display:none}.hint{font-size:.75rem;line-height:1.45}.action-row{position:sticky;bottom:8px;z-index:8;padding:8px;border-radius:18px;background:linear-gradient(180deg,rgba(6,17,31,.08),rgba(6,17,31,.92))}.action-row .btn{flex:1;min-height:48px}.pill-row{gap:6px}.pill{padding:7px 10px;font-size:.8rem}.match-badge{font-size:.76rem;padding:6px 10px}}
   
 
     /* ==== 2026 theme refresh: stadium + AI coaching ==== */
@@ -103,22 +106,32 @@
       border:1px solid rgba(110,173,255,.16);
       box-shadow:inset 0 1px 0 rgba(255,255,255,.04)
     }
-    .btn:hover{filter:none;border-color:rgba(120,199,255,.34);transform:translateY(-1px)}
-    .btn.primary,.btn.blue,.btn.green,.btn.yellow,.status-done{
-      border:none;color:#fff
+    .btn:hover{filter:none;border-color:rgba(120,199,255,.34);transform:translateY(-1px);box-shadow:0 8px 18px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.04)}
+    .btn.primary,.btn.blue,.status-done{
+      border:none;color:#fff;
+      background:linear-gradient(135deg,#3a78f2,#6fb9ff);
+      box-shadow:0 10px 24px rgba(58,120,242,.26)
     }
-    .btn.primary,.btn.blue,.btn.green{
-      background:linear-gradient(135deg,#2387ff,#5bc2ff);
-      box-shadow:0 10px 24px rgba(35,135,255,.26)
+    .btn.green{
+      border:none;color:#fff;
+      background:linear-gradient(135deg,#1b8e74,#49c3a0);
+      box-shadow:0 10px 24px rgba(27,142,116,.22)
     }
     .btn.yellow{
       color:#17202e;
-      background:linear-gradient(135deg,#f0b84e,#ffd166);
-      box-shadow:0 10px 24px rgba(255,209,102,.22)
+      background:linear-gradient(135deg,#c69231,#f2c66d);
+      box-shadow:0 10px 24px rgba(242,198,109,.22);
+      border:none
+    }
+    .btn.red{
+      border:none;color:#fff;
+      background:linear-gradient(135deg,#b95b65,#f07f88);
+      box-shadow:0 10px 24px rgba(185,91,101,.22)
     }
     .btn.gray{
       background:linear-gradient(180deg, rgba(34,47,68,.96), rgba(18,28,43,.96));
-      border:1px solid rgba(110,173,255,.12)
+      border:1px solid rgba(110,173,255,.12);
+      color:#eef4ff
     }
     .pill,
     .match-badge,
@@ -144,13 +157,111 @@
     .card-title,h1,h2,.section-title,.ai-strategy-title{letter-spacing:-.02em}
 
   </style>
+
+<style id="global-design-system-unifier">
+:root{
+  --bg:#061120 !important;
+  --bg2:#0b1730 !important;
+  --panel:rgba(10,20,38,.94) !important;
+  --panel2:rgba(14,27,48,.96) !important;
+  --line:rgba(110,173,255,.18) !important;
+  --text:#eef5ff !important;
+  --muted:#a9bdd9 !important;
+  --accent:#4da3ff !important;
+  --success:#34c884 !important;
+  --warn:#f2c14e !important;
+  --danger:#e86a6a !important;
+  --neutral:#6f7d92 !important;
+  --shadow:0 18px 40px rgba(0,0,0,.32) !important;
+  --radius:22px !important;
+  --radius-sm:16px !important;
+  --green:var(--success) !important;
+}
+html,body{color:var(--text) !important;background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%) !important;}
+.panel,.titlebox,.card,.student-card,.team-panel,.start-panel,.score-panel,.match-card,.modal-card,.modal-card-basic,.sync-url-box,.sync-action-box,.lineup-link-card,.lineup-status-box,.counter-card,.summary-card,.check-card,.section-box,.status-box,.role-box,.summary-item,.ai-strategy-item,.team-card,.team-box,.event-log,.match-stats,.leader-card,.student-round-card,.lineup-card,.team-card,.score-team{
+  background:linear-gradient(180deg, rgba(10,20,38,.96), rgba(8,18,34,.96)) !important;
+  border-color:var(--line) !important;
+  box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.04) !important;
+}
+.card-head,.panel-header,.titlebox,.student-card .panel-header,.modal-header,.modal-footer,.sync-bar,.ref-head{
+  border-color:var(--line) !important;
+}
+.btn,.event-btn,.type-tab,.tab,.overlay-btn,.mini-btn,.icon-btn,.help-icon-btn{
+  background:linear-gradient(180deg, rgba(18,39,68,.96), rgba(11,24,44,.96)) !important;
+  color:var(--text) !important;
+  border:1px solid rgba(110,173,255,.18) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04) !important;
+  transition:transform .16s ease, border-color .16s ease, box-shadow .16s ease, background .16s ease !important;
+}
+.btn:hover,.event-btn:hover,.type-tab:hover,.tab:hover,.overlay-btn:hover,.mini-btn:hover,.icon-btn:hover,.help-icon-btn:hover{
+  filter:none !important;
+  transform:translateY(-1px) !important;
+  border-color:rgba(140,202,255,.34) !important;
+  box-shadow:0 10px 22px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.05) !important;
+}
+.btn:active,.event-btn:active,.type-tab:active,.tab:active,.overlay-btn:active,.mini-btn:active,.icon-btn:active,.help-icon-btn:active{
+  transform:translateY(0) !important;
+}
+.btn.primary,.btn.blue,.type-tab.active,.tab.active,.mini-btn.plus{
+  background:linear-gradient(135deg, #2d73ff, #4da3ff) !important;
+  color:#fff !important;
+  border-color:transparent !important;
+  box-shadow:0 10px 24px rgba(45,115,255,.24) !important;
+}
+.btn.green{
+  background:linear-gradient(135deg, #1f9d67, #34c884) !important;
+  color:#fff !important;
+  border-color:transparent !important;
+  box-shadow:0 10px 24px rgba(31,157,103,.22) !important;
+}
+.btn.yellow,.overlay-btn.warn{
+  background:linear-gradient(135deg, #d49b2d, #f2c14e) !important;
+  color:#17202e !important;
+  border-color:transparent !important;
+  box-shadow:0 10px 24px rgba(212,155,45,.20) !important;
+}
+.btn.red,.overlay-btn.danger{
+  background:linear-gradient(135deg, #d45757, #e86a6a) !important;
+  color:#fff !important;
+  border-color:transparent !important;
+  box-shadow:0 10px 24px rgba(212,87,87,.22) !important;
+}
+.btn.gray{
+  background:linear-gradient(135deg, #5f6b7c, #7f8b99) !important;
+  color:#eef4ff !important;
+  border-color:transparent !important;
+  box-shadow:0 10px 24px rgba(95,107,124,.18) !important;
+}
+.overlay-btn:not(.warn):not(.danger){
+  background:linear-gradient(180deg, rgba(18,39,68,.96), rgba(11,24,44,.96)) !important;
+  color:var(--text) !important;
+}
+.status-pill,.status-dot{border-color:rgba(255,255,255,.08) !important;}
+.status-green,.status-done{background:rgba(52,200,132,.16) !important;color:#9ff0c6 !important;}
+.status-yellow,.status-draft{background:rgba(242,193,78,.16) !important;color:#ffe08a !important;}
+.status-red{background:rgba(232,106,106,.16) !important;color:#ffb1b1 !important;}
+.status-blue,.status-edit{background:rgba(77,163,255,.16) !important;color:#cfe5ff !important;}
+.status-gray,.status-lock{background:rgba(127,139,153,.18) !important;color:#d8e2f2 !important;}
+.score-num,.score.red,.score.blue{letter-spacing:-.05em !important;}
+input,select,textarea,.score-pair input,.lineup-select,.lineup-link-card input,.form-stack input,.form-stack select{
+  background:rgba(7,19,36,.90) !important;
+  color:var(--text) !important;
+  border-color:rgba(110,173,255,.18) !important;
+}
+input:focus,select:focus,textarea:focus,.score-pair input:focus,.lineup-select:focus,.lineup-link-card input:focus,.form-stack input:focus,.form-stack select:focus{
+  border-color:var(--accent) !important;
+  box-shadow:0 0 0 3px rgba(77,163,255,.16) !important;
+  outline:none !important;
+}
+</style>
+
 </head>
 <body>
   <div class="shell">
     <div class="card">
       <div class="card-head">
         <h1 class="card-title">오더 제출</h1>
-        <div class="sub">선수 선택을 먼저 완료한 뒤, 경기별 역할을 입력하고 최종 제출합니다.</div>
+        <div class="sub">선수 선택과 역할 입력을 순서대로 완료하면 됩니다.</div>
       </div>
       <div class="card-body" style="display:grid;gap:12px">
         <div class="pill-row">
@@ -165,13 +276,14 @@
           </div>
           <div class="status-pill status-draft" id="statusPill">미제출</div>
         </div>
+        <div class="save-state"><b>반영 상태</b><span class="state" id="saveStateText">실시간 연결 확인 중</span></div>
       </div>
     </div>
 
     <div class="card" id="lineupCard">
       <div class="card-head">
         <div class="step-row"><span class="step-badge">1</span><h2 class="card-title">선수 선택</h2></div>
-        <div class="sub">여복·혼복·남복 선수를 먼저 모두 선택합니다. 선수 선택 완료를 누르면 역할 입력 단계로 넘어갑니다.</div>
+        <div class="sub">여복·혼복·남복 선수를 먼저 선택합니다.</div>
       </div>
       <div class="card-body form-grid">
         <div class="section-box">
@@ -274,7 +386,7 @@
     <div class="card hidden" id="rolesCard">
       <div class="card-head">
         <div class="step-row"><span class="step-badge">2</span><h2 class="card-title">경기별 역할 선택</h2></div>
-        <div class="sub">현재 경기 선수는 자동으로 제외됩니다. 한 경기 안에서는 한 학생이 한 역할만 맡을 수 있습니다. 다른 경기에서는 중복 가능합니다.</div>
+        <div class="sub">현재 경기 선수는 자동 제외되며, 한 경기 안에서는 역할 중복이 되지 않습니다.</div>
       </div>
       <div class="card-body" style="display:grid;gap:12px">
         <div id="rolesErrorBox" class="error-box hidden"></div>
@@ -291,7 +403,7 @@
     </div>
 
     <div class="card">
-      <div class="card-head"><div class="card-title">입력 요약</div><div class="sub">현재 라운드의 선수·역할 정보를 실시간으로 확인합니다.</div></div>
+      <div class="card-head"><div class="card-title">입력 요약</div><div class="sub">현재 입력 내용을 바로 확인합니다.</div></div>
       <div class="card-body"><div class="summary-list" id="summaryList"></div></div>
     </div>
   </div>
@@ -368,6 +480,12 @@
     let watchUnsubscribe = null;
     let isRefreshingSelects = false;
     let currentStep = 'lineup';
+    function setSaveState(message, tone='info'){
+      const el = document.getElementById('saveStateText');
+      if(!el) return;
+      el.textContent = message;
+      el.style.color = tone === 'error' ? '#ffd6d6' : tone === 'ok' ? '#cffff0' : '#dff0ff';
+    }
 
     function ensureFirebaseReady(){
       if(firebaseState.ready && db) return true;
@@ -1104,7 +1222,9 @@
 
     async function persistClass(){
       if(!ensureFirebaseReady()) throw new Error(firebaseState.error || 'Firebase 설정을 확인해 주세요.');
+      setSaveState('저장 중...', 'info');
       await update(ref(db, `appState/classes/${classNo}`), buildPersistableClassData());
+      setSaveState('저장됨', 'ok');
     }
     async function persistSubmission(status='draft', submission=getSubmission(), final=false){
       if(!activeTeam || !activeMatch) throw new Error('팀 또는 경기 정보를 찾지 못했습니다.');
@@ -1197,6 +1317,10 @@
         appData = incoming;
         hydrateContext();
         renderAll();
+        setSaveState('최신 내용 반영됨', 'ok');
+      }, error => {
+        console.error(error);
+        setSaveState('연결 불안정', 'error');
       });
     }
 
@@ -1242,7 +1366,7 @@
     document.getElementById('rolesCompleteBtn').addEventListener('click', async () => { const result = validateRoles(); if(!result.ok){ rolesErrorBox.innerHTML = result.errors.join('<br>'); rolesErrorBox.classList.remove('hidden'); rolesSuccessBox.classList.add('hidden'); return; } rolesErrorBox.classList.add('hidden'); rolesSuccessBox.textContent = '심판 선택 완료. 제출하기 버튼이 활성화되었습니다.'; rolesSuccessBox.classList.remove('hidden'); result.submission.rolesCompletedAt = new Date().toISOString(); await persistSubmission('roles_ready', result.submission, false); updateStatus(); });
     document.getElementById('finalSubmitBtn').addEventListener('click', async () => { const result = validateRoles(); if(!result.ok){ rolesErrorBox.innerHTML = result.errors.join('<br>'); rolesErrorBox.classList.remove('hidden'); return; } await persistSubmission('submitted', result.submission, true); rolesErrorBox.classList.add('hidden'); rolesSuccessBox.textContent = '최종 제출이 완료되었습니다.'; rolesSuccessBox.classList.remove('hidden'); updateStatus(); });
 
-    loadClass().then(startWatch).catch(error => {
+    loadClass().then(() => { setSaveState('실시간 연결됨', 'ok'); return startWatch(); }).catch(error => {
       console.error(error);
       renderFatalState(error.message || firebaseState.error || 'Firebase 로드 오류');
     });
