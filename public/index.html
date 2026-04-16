@@ -343,6 +343,12 @@
     .form-stack input:focus,.form-stack select:focus{outline:none;border-color:#4da3ff;box-shadow:0 0 0 3px rgba(77,163,255,.16)}
     .modal-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
 
+    @media (min-width: 1440px){
+      .app{max-width:1920px;padding:18px 20px}
+      .grid{grid-template-columns:minmax(320px,390px) minmax(860px,1.45fr) minmax(420px,1fr);align-items:start}
+      .panel-header{padding:12px 14px}
+      .panel-body{padding:12px 14px 14px}
+    }
     @media (max-width: 1220px){
       .grid{grid-template-columns:1fr;}
       .sync-bar{grid-template-columns:1fr;}
@@ -385,6 +391,58 @@
     .control-row input, .control-row select {
       background: #0e1c33; color: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px;
     }
+    .top-control-wrap{display:grid;gap:8px;margin-bottom:14px;}
+    .top-control-bar{
+      display:grid;
+      grid-template-columns:minmax(180px,220px) 1fr auto;
+      gap:12px;
+      align-items:center;
+    }
+    .top-control-left,
+    .top-control-center,
+    .top-control-right,
+    .top-control-sub{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+      min-width:0;
+    }
+    .top-control-center{justify-content:center;}
+    .top-control-right{justify-content:flex-end;}
+    .top-control-sub{padding-left:calc(min(220px, 100%) + 12px);}
+    .doubles-topbar .top-control-right .btn{min-width:118px;}
+    .top-control-field{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      min-height:44px;
+    }
+    .top-control-field .tiny{white-space:nowrap;}
+    .top-control-field input,
+    .top-control-field select{
+      background:#0e1c33;
+      color:#fff;
+      border:1px solid var(--line);
+      border-radius:10px;
+      padding:10px 12px;
+      min-height:42px;
+    }
+    .top-control-field input{width:90px;}
+    .top-control-field select{min-width:92px;}
+    .top-control-left .backup-restore-bar,
+    .top-control-center .backup-restore-bar,
+    .top-control-right .backup-restore-bar,
+    .top-control-sub .backup-restore-bar{margin-left:0;}
+    @media (max-width: 1180px){
+      .top-control-bar{
+        grid-template-columns:1fr;
+        align-items:flex-start;
+      }
+      .top-control-center,
+      .top-control-right{justify-content:flex-start;}
+      .top-control-sub{padding-left:0;}
+    }
     .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
     .team-card {
       background: linear-gradient(180deg, rgba(50,92,160,.28), rgba(23,38,68,.6));
@@ -414,6 +472,24 @@
     }
     .player-chip:hover { background: rgba(255,255,255,.08); }
     .player-chip b { font-size: .95rem; }
+    .player-chip.selectable { cursor:pointer; transition:.15s ease; }
+    .player-chip.selectable:hover { background: rgba(255,255,255,.10); border-color: rgba(90,177,255,.28); }
+    .player-chip.excluded-this-round {
+      background: rgba(255,107,107,.10);
+      border-color: rgba(255,107,107,.30);
+      opacity: .78;
+    }
+    .player-chip.excluded-this-round b { text-decoration: line-through; }
+    .player-chip-status {
+      font-size:.74rem; font-weight:800; padding:4px 8px; border-radius:999px;
+      background:rgba(90,177,255,.14); color:#d9ecff; border:1px solid rgba(90,177,255,.22);
+      white-space:nowrap;
+    }
+    .player-chip.excluded-this-round .player-chip-status {
+      background: rgba(255,107,107,.14);
+      color:#ffc9c9;
+      border-color: rgba(255,107,107,.22);
+    }
     .tag { font-size: .75rem; border-radius: 999px; padding: 3px 8px; background: rgba(123,255,204,.12); color: #cffff0; font-weight: 700; }
 
     .match-grid { display: grid; gap: 14px; }
@@ -492,8 +568,17 @@
       cursor: pointer; font-weight: 800; font-size: var(--btn-font); line-height:1.25;
     }
     .compare-wrap { display: grid; grid-template-columns: 280px 1fr; gap: 16px; }
-    .select-stack { display: grid; gap: 10px; }
+    .select-stack { display: grid; gap: 12px; }
     .select-stack select { width: 100%; }
+    .team-move-head-inline{display:flex;align-items:center;gap:8px;justify-content:space-between;flex-wrap:wrap;}
+    .team-move-head-inline .title-wrap{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+    .team-move-help{margin-top:10px;}
+    .team-move-field{display:grid;gap:6px;}
+    .team-move-field-label{font-size:.82rem;color:var(--muted);font-weight:700;}
+    .team-move-select,.team-move-display{width:100%;min-height:48px;background:linear-gradient(180deg, rgba(11,33,65,.94), rgba(9,28,56,.94));color:#fff;border:1px solid rgba(92,131,190,.52);border-radius:14px;padding:12px 14px;font-size:.95rem;box-shadow: inset 0 1px 0 rgba(255,255,255,.05);}
+    .team-move-select:focus{outline:none;border-color:#5ab1ff;box-shadow:0 0 0 3px rgba(90,177,255,.18);}
+    .team-move-display{display:flex;align-items:center;font-weight:800;color:#dceaff;}
+    .team-move-footer{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;}
 
     .insight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
     .insight-card {
@@ -1026,10 +1111,7 @@
     }
 
     .singles-participant-grid{display:grid;grid-template-columns:minmax(340px,1fr) minmax(420px,1fr);gap:16px;margin-top:16px;align-items:start;}
-    .singles-participant-list{display:grid;gap:10px;max-height:420px;overflow:auto;}
-    .singles-participant-row{display:grid;grid-template-columns:auto 1fr auto auto;gap:10px;align-items:center;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);}
-    .singles-participant-row .name{font-weight:800;}
-    .singles-participant-row .meta{font-size:.8rem;color:var(--muted);}
+    .singles-participant-list{max-height:280px;overflow:auto;border:1px solid rgba(255,255,255,.06);border-radius:16px;background:rgba(255,255,255,.02);}
     .singles-summary-list{display:grid;gap:10px;}
     .singles-summary-card{padding:12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);}
     .singles-rank-stack{display:grid;gap:16px;}
@@ -2771,9 +2853,20 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
     .doubles-shell{display:grid;gap:16px;}
     .doubles-topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;}
     .doubles-toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
-    .doubles-summary{display:flex;gap:8px;flex-wrap:wrap;}
+    .doubles-summary{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+    .doubles-participant-panel .panel-header{align-items:center;}
+    .doubles-participant-panel .doubles-summary-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:nowrap;width:100%;min-width:0;}
+    .doubles-participant-panel .title-wrap{display:flex;align-items:center;gap:10px;flex-wrap:nowrap;min-width:0;flex:1;}
+    .doubles-participant-panel .title-wrap .panel-title{white-space:nowrap;}
+    .doubles-participant-panel .title-wrap .tiny{display:none;}
+    .doubles-participant-panel .doubles-head-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:nowrap;white-space:nowrap;}
+    .doubles-participant-panel .doubles-summary{flex-wrap:nowrap;}
+    .doubles-participant-panel .doubles-head-actions .btn{flex:0 0 auto;}
+    @media (max-width: 1200px){.doubles-participant-panel .doubles-summary-head{flex-wrap:wrap;}.doubles-participant-panel .title-wrap,.doubles-participant-panel .doubles-head-actions{flex-wrap:wrap;white-space:normal;}}
     .doubles-chip{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:999px;background:rgba(90,177,255,.14);border:1px solid rgba(90,177,255,.18);font-size:.82rem;font-weight:800;color:#dcebff;}
-    .doubles-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start;}
+    .doubles-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:start;}
+    .doubles-summary-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:16px;margin-top:14px;align-items:start;}
+    .doubles-summary-grid .panel{height:100%;}
     .doubles-round-stack{display:grid;gap:16px;}
     .doubles-round-section{display:grid;gap:10px;}
     .doubles-round-grid{display:grid;gap:12px;}
@@ -2820,7 +2913,7 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
     .doubles-participants-wrap::-webkit-scrollbar-thumb,.doubles-op-scroll::-webkit-scrollbar-thumb{background:linear-gradient(180deg, rgba(90,177,255,.55), rgba(45,115,255,.5));border-radius:999px;border:1px solid rgba(255,255,255,.05);}
     .doubles-participants-wrap::-webkit-scrollbar-thumb:hover,.doubles-op-scroll::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg, rgba(115,190,255,.72), rgba(62,129,255,.68));}
     .doubles-empty{padding:18px;border-radius:16px;background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.14);color:var(--muted);line-height:1.6;text-align:center;}
-    @media (max-width: 1080px){.doubles-layout{grid-template-columns:1fr;}.doubles-score-actions{grid-template-columns:1fr;}}
+    @media (max-width: 1080px){.doubles-layout,.doubles-summary-grid{grid-template-columns:1fr;}.doubles-score-actions{grid-template-columns:1fr;}}
 
   
 
@@ -2927,6 +3020,7 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
       filter: none;
       border-color: rgba(120,199,255,.34);
       transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.04);
     }
     .btn.primary,
     .btn.green,
@@ -2943,8 +3037,6 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
       color: #fff;
     }
     .btn.primary,
-    .btn.green,
-    .btn.yellow,
     .tab.active,
     .view-tab.active,
     .broadcast-toggle-btn.active,
@@ -2952,6 +3044,10 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
     .mini-btn.plus {
       background: linear-gradient(135deg, #2387ff, #5bc2ff);
       box-shadow: 0 10px 24px rgba(35,135,255,.26);
+    }
+    .btn.green {
+      background: linear-gradient(135deg, #1b8e74, #49c3a0);
+      box-shadow: 0 10px 24px rgba(27,142,116,.22);
     }
     .btn.red,
     .overlay-btn.danger {
@@ -3071,12 +3167,515 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
     }
 
   
+
+#setupWizardPanel > .panel-header{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:nowrap;
+}
+#setupWizardPanel > .panel-header > div:first-child{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 1 auto;
+}
+#setupWizardPanel > .panel-header > div:first-child .panel-title{
+  white-space:nowrap;
+  line-height:1.2;
+}
+#setupWizardPanel > .panel-header #wizardActiveCountPill{
+  order:2;
+  align-self:center;
+  white-space:nowrap;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+}
+#setupWizardPanel > .panel-header .backup-restore-bar{
+  order:3;
+  flex:1 1 auto;
+  min-width:0;
+  width:auto;
+  margin-left:0;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:12px;
+  flex-wrap:nowrap;
+}
+#setupWizardPanel > .panel-header .help-icon-btn{
+  order:4;
+  align-self:center;
+  flex:0 0 auto;
+  margin-left:8px;
+}
+#setupWizardPanel > .panel-header .backup-restore-actions,
+#setupWizardPanel > .panel-header .backup-restore-history{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:nowrap;
+  flex:0 0 auto;
+}
+#setupWizardPanel > .panel-header .backup-restore-note{
+  margin-top:0;
+  min-height:auto;
+  display:flex;
+  align-items:center;
+  line-height:1.2;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+@media (max-width: 980px){
+  #setupWizardPanel > .panel-header{
+    flex-wrap:wrap;
+  }
+  #setupWizardPanel > .panel-header .backup-restore-bar{
+    flex-basis:100%;
+    justify-content:flex-start;
+  }
+}
+
+
+
+/* qr header help button vertical centering fix */
+#qrPage .panel-header{
+  align-items:center !important;
+}
+#qrPage .panel-header > .actions{
+  display:flex !important;
+  align-items:center !important;
+  gap:10px !important;
+}
+#qrPage .qr-mode-tabs{
+  display:flex !important;
+  align-items:center !important;
+  gap:8px !important;
+}
+#qrPage .panel-header > .actions > .help-icon-btn{
+  align-self:center !important;
+  margin:0 !important;
+  position:relative;
+  top:0;
+}
+
 /* backup restore ui */
 .backup-restore-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-left:auto}
 .backup-restore-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .backup-restore-history{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .backup-restore-note{font-size:.78rem;color:var(--muted);line-height:1.5;margin-top:8px}
 .backup-restore-note strong{color:#dce8ff}
+#singlesRestoreBar{display:none !important;}
+
+
+/* compact doubles participant header to match right card */
+#doublesParticipantPanel .panel-header{
+  padding: 10px 14px !important;
+  min-height: 66px !important;
+}
+#doublesParticipantPanel .panel-title{
+  font-size: 1rem !important;
+  line-height: 1.2 !important;
+}
+#doublesParticipantPanel .doubles-participant-header-inline{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:12px !important;
+  width:100% !important;
+  min-height:44px !important;
+}
+#doublesParticipantPanel .doubles-participant-header-left{
+  display:flex !important;
+  align-items:center !important;
+  gap:10px !important;
+  min-width:0 !important;
+  flex:1 1 auto !important;
+}
+#doublesParticipantPanel .doubles-participant-header-right{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-end !important;
+  gap:10px !important;
+  flex:0 0 auto !important;
+}
+#doublesParticipantPanel .doubles-participant-header-right .avg-pill,
+#doublesParticipantPanel .doubles-participant-header-right .btn.small{
+  margin:0 !important;
+}
+#doublesParticipantPanel .doubles-participant-header-right .btn.small{
+  min-height:40px !important;
+  padding:8px 12px !important;
+  font-size:.82rem !important;
+  border-radius:11px !important;
+}
+#doublesParticipantPanel .help-icon-btn{
+  width:28px !important;
+  height:28px !important;
+  min-width:28px !important;
+}
+
+
+/* doubles participant header compact fix */
+#doublesPage .doubles-summary-grid > .doubles-participant-panel .panel-header{
+  padding: 10px 14px !important;
+}
+#doublesPage .doubles-summary-grid > .doubles-participant-panel .doubles-summary-head{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:12px !important;
+  min-height:40px !important;
+}
+#doublesPage .doubles-summary-grid > .doubles-participant-panel .title-wrap{
+  display:flex !important;
+  align-items:center !important;
+  gap:10px !important;
+  flex:1 1 auto !important;
+  min-width:0 !important;
+}
+#doublesPage .doubles-summary-grid > .doubles-participant-panel .title-wrap .panel-title{
+  margin:0 !important;
+  line-height:1.2 !important;
+}
+#doublesPage .doubles-summary-grid > .doubles-participant-panel .doubles-head-actions{
+  display:flex !important;
+  align-items:center !important;
+  gap:10px !important;
+  flex:0 0 auto !important;
+}
+#doublesPage .doubles-summary-grid > .doubles-participant-panel .doubles-summary{
+  display:flex !important;
+  align-items:center !important;
+  gap:8px !important;
+  margin:0 !important;
+}
+#doublesPage .doubles-summary-grid > .doubles-participant-panel .avg-pill{
+  margin:0 !important;
+}
+#doublesPage .doubles-summary-grid > .doubles-participant-panel .btn.small{
+  min-height:38px !important;
+  padding:8px 12px !important;
+  font-size:.82rem !important;
+  border-radius:11px !important;
+}
+
+
+/* force compact height for doubles participant header */
+body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-panel > .panel-header{
+  padding: 0 14px !important;
+  height: 68px !important;
+  min-height: 68px !important;
+  max-height: 68px !important;
+  display: flex !important;
+  align-items: center !important;
+  overflow: hidden !important;
+}
+body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-panel > .panel-header > .doubles-summary-head{
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr) auto !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-panel > .panel-header .title-wrap{
+  display:flex !important;
+  align-items:center !important;
+  min-height:0 !important;
+}
+body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-panel > .panel-header .panel-title{
+  margin:0 !important;
+  line-height:1.2 !important;
+}
+body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-panel > .panel-header .doubles-head-actions{
+  display:flex !important;
+  align-items:center !important;
+  gap:8px !important;
+  min-height:0 !important;
+}
+body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-panel > .panel-header .doubles-summary{
+  display:flex !important;
+  align-items:center !important;
+  gap:8px !important;
+  flex-wrap:nowrap !important;
+}
+body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-panel > .panel-header .btn.small{
+  min-height: 36px !important;
+  height: 36px !important;
+  padding: 0 12px !important;
+  font-size: .82rem !important;
+}
+
+
+/* expand doubles participant table container to fill card more */
+body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-panel{
+  display:grid !important;
+  grid-template-rows:auto 1fr !important;
+  min-height: 620px !important;
+}
+body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-panel > .panel-body{
+  display:flex !important;
+  flex-direction:column !important;
+  padding-top:8px !important;
+  height:100% !important;
+  min-height:0 !important;
+}
+body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-panel .doubles-participants-wrap{
+  flex:1 1 auto !important;
+  height:100% !important;
+  min-height:0 !important;
+  max-height:none !important;
+}
+body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-panel #doublesParticipants{
+  height:100% !important;
+}
+
+
+/* singles layout alignment fix */
+#singlesPage .singles-top-inline{
+  justify-content:flex-start !important;
+}
+#singlesPage .singles-top-inline-group{
+  display:flex !important;
+  align-items:center !important;
+  gap:8px !important;
+  flex-wrap:wrap !important;
+}
+#singlesPage .singles-summary-list{
+  display:grid !important;
+}
+#singlesPage .singles-participant-card{
+  display:grid !important;
+  grid-template-rows:auto 1fr !important;
+  padding:0 !important;
+  border-radius:var(--radius) !important;
+  background:rgba(15,28,51,.92) !important;
+  border:1px solid var(--line) !important;
+  box-shadow:var(--shadow) !important;
+  overflow:hidden !important;
+}
+#singlesPage .singles-participant-head{
+  display:flex !important;
+  justify-content:space-between !important;
+  align-items:center !important;
+  gap:12px !important;
+  margin-bottom:10px !important;
+}
+#singlesPage .singles-participant-title{
+  font-weight:800 !important;
+}
+#singlesPage .singles-participant-head .tiny{
+  margin-top:4px !important;
+}
+#singlesPage .singles-participant-actions{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-end !important;
+  gap:8px !important;
+  flex-wrap:wrap !important;
+}
+#singlesPage .singles-participant-card .panel-body{
+  padding:14px 16px 16px !important;
+}
+#singlesPage .singles-participant-summary-inline{
+  display:flex !important;
+  align-items:center !important;
+  gap:8px !important;
+  flex-wrap:wrap !important;
+}
+
+
+/* singles top bar one-line alignment */
+#singlesPage .top-control-wrap{
+  overflow-x:auto !important;
+}
+#singlesPage .top-control-bar.control-row.singles-top-inline{
+  display:block !important;
+}
+#singlesPage .singles-top-inline-group{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-start !important;
+  gap:8px !important;
+  flex-wrap:nowrap !important;
+  white-space:nowrap !important;
+}
+#singlesPage .singles-top-inline-group .top-control-field{
+  flex:0 0 auto !important;
+}
+#singlesPage .singles-top-inline-group .btn{
+  flex:0 0 auto !important;
+}
+
+
+/* singles participant table -> rank-table style */
+#singlesPage #singlesParticipantList{
+  padding:0 !important;
+  border:none !important;
+  background:transparent !important;
+}
+#singlesPage #singlesParticipantList .doubles-participant-table{
+  width:100% !important;
+  min-width:100% !important;
+  border-collapse:collapse !important;
+  table-layout:fixed !important;
+}
+#singlesPage #singlesParticipantList .doubles-participant-table th,
+#singlesPage #singlesParticipantList .doubles-participant-table td{
+  padding:8px 6px !important;
+  border-bottom:1px solid rgba(255,255,255,.06) !important;
+  background:transparent !important;
+  text-align:center !important;
+  vertical-align:middle !important;
+}
+#singlesPage #singlesParticipantList .doubles-participant-table th{
+  background:#13223d !important;
+  color:#cfe0ff !important;
+  font-size:.82rem !important;
+  font-weight:800 !important;
+}
+#singlesPage #singlesParticipantList .doubles-participant-name{
+  text-align:center !important;
+  font-weight:800 !important;
+}
+#singlesPage #singlesParticipantList .doubles-participant-name > div:first-child{
+  font-size:.98rem !important;
+}
+#singlesPage #singlesParticipantList .doubles-participant-meta{
+  margin-top:3px !important;
+  font-size:.76rem !important;
+  color:var(--muted) !important;
+  text-align:center !important;
+}
+#singlesPage #singlesParticipantList .doubles-participant-check{
+  width:18px !important;
+  height:18px !important;
+}
+#singlesPage #singlesParticipantList .doubles-participant-reason{
+  min-width:118px !important;
+  height:38px !important;
+  padding:6px 10px !important;
+  border-radius:10px !important;
+}
+#singlesPage #singlesParticipantList .doubles-participant-status{
+  min-width:58px !important;
+  padding:4px 9px !important;
+  font-size:.75rem !important;
+}
+
+
+/* enlarge singles participant table container height without changing row height/padding */
+#singlesPage .singles-participant-card{
+  display:grid !important;
+  grid-template-rows:auto 1fr !important;
+  min-height:620px !important;
+}
+#singlesPage #singlesParticipantList{
+  height:100% !important;
+  min-height:520px !important;
+  max-height:none !important;
+}
+
+
+/* make singles participant table frame match men's singles rank table */
+#singlesPage .singles-participant-card{
+  background: rgba(15,28,51,.92) !important;
+  border:1px solid var(--line) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow) !important;
+  overflow:hidden !important;
+}
+#singlesPage .singles-participant-head{
+  padding:14px 16px !important;
+  border-bottom:1px solid var(--line) !important;
+  background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,0)) !important;
+  margin-bottom:0 !important;
+}
+#singlesPage #singlesParticipantList{
+  padding:14px 16px 16px !important;
+  background: transparent !important;
+  border:none !important;
+  min-height:520px !important;
+  max-height:none !important;
+}
+#singlesPage #singlesParticipantList.singles-participant-list{
+  overflow:auto !important;
+}
+#singlesPage #singlesParticipantList .singles-participant-ranklike{
+  width:100% !important;
+  border-collapse:collapse !important;
+  table-layout:fixed !important;
+}
+#singlesPage #singlesParticipantList .singles-participant-ranklike thead th{
+  position:sticky !important;
+  top:0 !important;
+  z-index:2 !important;
+  background:#13223d !important;
+  color:#cfe0ff !important;
+  font-size:.82rem !important;
+  font-weight:800 !important;
+  padding:10px 6px !important;
+  border-bottom:1px solid rgba(255,255,255,.06) !important;
+}
+#singlesPage #singlesParticipantList .singles-participant-ranklike td{
+  background:transparent !important;
+  padding:8px 6px !important;
+  border-bottom:1px solid rgba(255,255,255,.06) !important;
+  text-align:center !important;
+  vertical-align:middle !important;
+}
+#singlesPage #singlesParticipantList .doubles-participant-name{
+  text-align:center !important;
+  font-weight:800 !important;
+}
+#singlesPage #singlesParticipantList .doubles-participant-meta{
+  margin-top:3px !important;
+  font-size:.76rem !important;
+  color:var(--muted) !important;
+  text-align:center !important;
+}
+
+
+/* remove extra inner background layer behind singles participant header/table area */
+#singlesPage .singles-summary-list,
+#singlesPage .singles-participant-grid{
+  background: transparent !important;
+}
+#singlesPage .singles-participant-card{
+  background: transparent !important;
+  box-shadow: none !important;
+}
+#singlesPage .singles-participant-head{
+  background: transparent !important;
+}
+
+
+/* singles participant 7-column table sizing */
+#singlesPage #singlesParticipantList .singles-participant-ranklike{
+  table-layout: fixed !important;
+}
+#singlesPage #singlesParticipantList .singles-participant-ranklike td:nth-child(2){
+  font-weight:800 !important;
+}
+#singlesPage #singlesParticipantList .singles-participant-ranklike td:nth-child(5),
+#singlesPage #singlesParticipantList .singles-participant-ranklike td:nth-child(6){
+  padding-left:4px !important;
+  padding-right:4px !important;
+}
+#singlesPage #singlesParticipantList .singles-participant-ranklike .doubles-participant-reason{
+  width:100% !important;
+  min-width:0 !important;
+  max-width:100% !important;
+}
+#singlesPage #singlesParticipantList .singles-participant-ranklike .doubles-participant-status{
+  min-width:0 !important;
+  width:auto !important;
+}
 
 </style>
 
@@ -3255,6 +3854,169 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
 }
 </style>
 
+
+<style id="global-design-system-unifier">
+:root{
+  --bg:#061120 !important;
+  --bg2:#0b1730 !important;
+  --panel:rgba(10,20,38,.94) !important;
+  --panel2:rgba(14,27,48,.96) !important;
+  --line:rgba(110,173,255,.18) !important;
+  --text:#eef5ff !important;
+  --muted:#a9bdd9 !important;
+  --accent:#4da3ff !important;
+  --success:#34c884 !important;
+  --warn:#f2c14e !important;
+  --danger:#e86a6a !important;
+  --neutral:#6f7d92 !important;
+  --shadow:0 18px 40px rgba(0,0,0,.32) !important;
+  --radius:22px !important;
+  --radius-sm:16px !important;
+  --green:var(--success) !important;
+}
+html,body{color:var(--text) !important;background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%) !important;}
+.panel,.titlebox,.card,.student-card,.team-panel,.start-panel,.score-panel,.match-card,.modal-card,.modal-card-basic,.sync-url-box,.sync-action-box,.lineup-link-card,.lineup-status-box,.counter-card,.summary-card,.check-card,.section-box,.status-box,.role-box,.summary-item,.ai-strategy-item,.team-card,.team-box,.event-log,.match-stats,.leader-card,.student-round-card,.lineup-card,.team-card,.score-team{
+  background:linear-gradient(180deg, rgba(10,20,38,.96), rgba(8,18,34,.96)) !important;
+  border-color:var(--line) !important;
+  box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.04) !important;
+}
+.card-head,.panel-header,.titlebox,.student-card .panel-header,.modal-header,.modal-footer,.sync-bar,.ref-head{
+  border-color:var(--line) !important;
+}
+.btn,.event-btn,.type-tab,.tab,.overlay-btn,.mini-btn,.icon-btn,.help-icon-btn{
+  background:linear-gradient(180deg, rgba(18,39,68,.96), rgba(11,24,44,.96)) !important;
+  color:var(--text) !important;
+  border:1px solid rgba(110,173,255,.18) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04) !important;
+  transition:transform .16s ease, border-color .16s ease, box-shadow .16s ease, background .16s ease !important;
+}
+.btn:hover,.event-btn:hover,.type-tab:hover,.tab:hover,.overlay-btn:hover,.mini-btn:hover,.icon-btn:hover,.help-icon-btn:hover{
+  filter:none !important;
+  transform:translateY(-1px) !important;
+  border-color:rgba(140,202,255,.34) !important;
+  box-shadow:0 10px 22px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.05) !important;
+}
+.btn:active,.event-btn:active,.type-tab:active,.tab:active,.overlay-btn:active,.mini-btn:active,.icon-btn:active,.help-icon-btn:active{
+  transform:translateY(0) !important;
+}
+.btn.primary,.btn.blue,.type-tab.active,.tab.active,.mini-btn.plus{
+  background:linear-gradient(135deg, #2d73ff, #4da3ff) !important;
+  color:#fff !important;
+  border-color:transparent !important;
+  box-shadow:0 10px 24px rgba(45,115,255,.24) !important;
+}
+.btn.green{
+  background:linear-gradient(135deg, #1f9d67, #34c884) !important;
+  color:#fff !important;
+  border-color:transparent !important;
+  box-shadow:0 10px 24px rgba(31,157,103,.22) !important;
+}
+.btn.yellow,.overlay-btn.warn{
+  background:linear-gradient(135deg, #d49b2d, #f2c14e) !important;
+  color:#17202e !important;
+  border-color:transparent !important;
+  box-shadow:0 10px 24px rgba(212,155,45,.20) !important;
+}
+.btn.red,.overlay-btn.danger{
+  background:linear-gradient(135deg, #d45757, #e86a6a) !important;
+  color:#fff !important;
+  border-color:transparent !important;
+  box-shadow:0 10px 24px rgba(212,87,87,.22) !important;
+}
+.btn.gray{
+  background:linear-gradient(135deg, #5f6b7c, #7f8b99) !important;
+  color:#eef4ff !important;
+  border-color:transparent !important;
+  box-shadow:0 10px 24px rgba(95,107,124,.18) !important;
+}
+.overlay-btn:not(.warn):not(.danger){
+  background:linear-gradient(180deg, rgba(18,39,68,.96), rgba(11,24,44,.96)) !important;
+  color:var(--text) !important;
+}
+.status-pill,.status-dot{border-color:rgba(255,255,255,.08) !important;}
+.status-green,.status-done{background:rgba(52,200,132,.16) !important;color:#9ff0c6 !important;}
+.status-yellow,.status-draft{background:rgba(242,193,78,.16) !important;color:#ffe08a !important;}
+.status-red{background:rgba(232,106,106,.16) !important;color:#ffb1b1 !important;}
+.status-blue,.status-edit{background:rgba(77,163,255,.16) !important;color:#cfe5ff !important;}
+.status-gray,.status-lock{background:rgba(127,139,153,.18) !important;color:#d8e2f2 !important;}
+.score-num,.score.red,.score.blue{letter-spacing:-.05em !important;}
+input,select,textarea,.score-pair input,.lineup-select,.lineup-link-card input,.form-stack input,.form-stack select{
+  background:rgba(7,19,36,.90) !important;
+  color:var(--text) !important;
+  border-color:rgba(110,173,255,.18) !important;
+}
+input:focus,select:focus,textarea:focus,.score-pair input:focus,.lineup-select:focus,.lineup-link-card input:focus,.form-stack input:focus,.form-stack select:focus{
+  border-color:var(--accent) !important;
+  box-shadow:0 0 0 3px rgba(77,163,255,.16) !important;
+  outline:none !important;
+}
+
+/* unify tab-under card title rows to panel-header standard */
+#singlesPage .singles-participant-head.panel-header,
+#doublesParticipantPanel .panel-header,
+#doublesPage .doubles-summary-grid > .doubles-participant-panel .panel-header,
+body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-panel > .panel-header{
+  padding:18px 20px !important;
+  min-height:auto !important;
+  height:auto !important;
+  max-height:none !important;
+  border-bottom:1px solid var(--line) !important;
+  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,0)) !important;
+  gap:14px !important;
+  overflow:visible !important;
+}
+#singlesPage .singles-participant-head.panel-header{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) auto auto !important;
+  align-items:center !important;
+  padding:14px 16px !important;
+  min-height:84px !important;
+  margin-bottom:0 !important;
+  column-gap:12px !important;
+}
+#singlesPage .singles-participant-head.panel-header > div:first-child{
+  display:flex !important;
+  align-items:center !important;
+  min-height:100% !important;
+}
+#singlesPage .singles-participant-head.panel-header .singles-participant-actions{
+  min-height:100% !important;
+  display:flex !important;
+  align-items:center !important;
+}
+#singlesPage .singles-participant-head.panel-header > .help-icon-btn{
+  justify-self:end !important;
+  align-self:center !important;
+  margin:0 !important;
+}
+#singlesPage .singles-participant-head.panel-header > *{
+  min-width:0 !important;
+}
+#singlesPage .singles-participant-head.panel-header .btn.small{
+  min-height:40px !important;
+}
+#doublesParticipantPanel .panel-header .doubles-summary-head,
+#doublesPage .doubles-summary-grid > .doubles-participant-panel .panel-header .doubles-summary-head,
+body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-panel > .panel-header > .doubles-summary-head{
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) auto !important;
+  align-items:center !important;
+  gap:12px !important;
+}
+#doublesParticipantPanel .panel-header .panel-title,
+#doublesPage .doubles-summary-grid > .doubles-participant-panel .panel-header .panel-title,
+#singlesPage .singles-participant-head.panel-header .singles-participant-title{
+  font-size:1rem !important;
+  line-height:1.2 !important;
+  font-weight:800 !important;
+  margin:0 !important;
+}
+
+</style>
+
 </head>
 <body>
 
@@ -3289,7 +4051,7 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
       <div class="ref-head">
         <div>
           <div id="refPageTitle" class="ref-title">심판 입력</div>
-          <div id="refPageSub" class="ref-sub">해당 경기만 점수를 입력합니다.</div>
+          <div id="refPageSub" class="ref-sub">점수만 입력합니다.</div>
         </div>
         <div class="ref-pill-row">
           <span id="refMatchState" class="status-pill status-yellow"><span class="dot"></span>오더 확인 중</span>
@@ -3308,7 +4070,7 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
         <section class="start-panel">
           <div class="start-stack">
             <button id="refStartBtn" class="btn small">오더 제출 대기</button>
-            <div id="refStartHint" class="tiny muted">양쪽 팀 오더가 모두 제출되면 경기 시작 버튼을 누를 수 있습니다.</div>
+            <div id="refStartHint" class="tiny muted">양쪽 팀 제출 후 시작 가능합니다.</div>
           </div>
         </section>
         <section class="team-panel">
@@ -3334,7 +4096,7 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
         <div class="score-top">
           <div>
             <div id="refScoreTitle" class="score-heading">여복 점수 입력</div>
-            <div id="refScoreSub" class="tiny muted">실시간 점수 입력</div>
+            <div id="refScoreSub" class="tiny muted">점수 입력</div>
           </div>
           <div style="display:flex;gap:8px;align-items:center">
             <span id="refLiveBadge" class="status-pill status-blue"><span class="dot"></span>실시간 입력</span>
@@ -3540,11 +4302,10 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
           </div>
         </section>
 
-        <section class="panel collapsed" id="rawRosterPanel" style="display:none;">
-          <div class="panel-header" style="cursor:pointer" onclick="toggleRawRosterPanel()">
+        <section class="panel" id="rawRosterPanel">
+          <div class="panel-header">
             <div>
-              <div class="panel-title collapse-toggle" style="display:none;">학생 명단 · 능력치 원본 관리 <span class="chev">▾</span></div>
-              
+              <div class="panel-title">학생 명단 · 능력치 원본 관리</div>
             </div>
             <span class="avg-pill" id="playerCountPill">0명</span>
           </div>
@@ -3592,7 +4353,11 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
             <div class="panel-header">
               <div>
                 <div class="panel-title">팀 구성 현황</div>
-                <div class="tiny muted">설정 페이지에서 편성한 결과를 보여주는 화면입니다.</div>
+                
+              </div>
+              <div class="actions">
+                <button class="btn small" type="button" onclick="openTeamMoveModal()">조 이동</button>
+                <button class="btn small" type="button" onclick="tidyRunTeams()">조 정리</button>
               </div>
             </div>
             <div class="panel-body">
@@ -3700,7 +4465,7 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
             </div>
           </div>
 
-          <div class="panel">
+          <div class="panel" id="doublesParticipantPanel">
             <div class="panel-header">
               <div>
                 <div class="panel-title">경기 기록</div>
@@ -3725,39 +4490,81 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
               <div class="panel-title">복식 자동 편성</div>
               <div class="tiny muted">개인 랜덤 복식을 공정성 우선 방식으로 편성하고, 심판 2명을 자동으로 균등 배정합니다.</div>
             </div>
-            <div class="doubles-summary" id="doublesSummaryPills"></div>
           </div>
           <div class="panel-body">
-            <div class="doubles-topbar">
-              <div class="doubles-toolbar">
-                <label class="tiny muted">동시 경기 수
-                  <select id="doublesConcurrentSelect" onchange="updateDoublesConcurrent(this.value)" style="margin-left:8px;background:#0e1c33;color:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;">
-                    <option value="1">1경기</option>
-                    <option value="2" selected>2경기</option>
-                    <option value="3">3경기</option>
-                    <option value="4">4경기</option>
-                  </select>
-                </label>
-                <button class="btn small" onclick="toggleAllDoublesParticipants(true)">전체 선택</button>
-                <button class="btn small" onclick="toggleAllDoublesParticipants(false)">전체 해제</button>
-                <button class="btn primary" onclick="generateInitialDoublesRounds()">초기 2라운드 생성</button>
-                <button class="btn small green" onclick="generateNextDoublesRound()">다음 라운드 생성</button>
-                <button class="btn small" onclick="reshuffleVisibleDoublesRounds()">현재/다음 재편성</button>
-                <button class="btn small red" onclick="resetDoublesAll()">복식 기록 초기화</button>
+            <div class="top-control-wrap doubles-topbar">
+              <div class="top-control-bar">
+                <div class="top-control-left">
+                  <label class="top-control-field">
+                    <span class="tiny muted">동시 경기 수</span>
+                    <select id="doublesConcurrentSelect" onchange="updateDoublesConcurrent(this.value)">
+                      <option value="1">1경기</option>
+                      <option value="2" selected>2경기</option>
+                      <option value="3">3경기</option>
+                      <option value="4">4경기</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="top-control-center doubles-toolbar">
+                  <button class="btn primary" onclick="generateInitialDoublesRounds()">초기 2라운드 생성</button>
+                  <button class="btn green" onclick="generateNextDoublesRound()">다음 라운드 생성</button>
+                </div>
+                <div class="top-control-right">
+                  <button class="btn small" onclick="reshuffleVisibleDoublesRounds()">현재/다음 재편성</button>
+                  <button class="btn small red" onclick="resetDoublesAll()">복식 기록 초기화</button>
+                  <button class="btn small" type="button" onclick="openDoublesRestoreModal()">기록 복원</button>
+                </div>
               </div>
+            </div>
+
+            <div class="doubles-summary-grid">
+              <section class="panel doubles-round-section doubles-participant-panel">
+                <div class="panel-header">
+                  <div class="doubles-summary-head">
+                    <div class="title-wrap">
+                      <div class="panel-title">복식 참여 명단</div>
+                      
+                    </div>
+                    <div class="doubles-head-actions">
+                      <div class="doubles-summary" id="doublesParticipantSummaryPills"></div>
+                      <button class="btn small" onclick="toggleAllDoublesParticipants(true)">전체 선택</button>
+                      <button class="btn small" onclick="toggleAllDoublesParticipants(false)">전체 해제</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="panel-body">
+                  <div class="doubles-participants-wrap">
+                    <div id="doublesParticipants" class="doubles-participants-grid"></div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="panel">
+                <div class="panel-header">
+                  <div class="doubles-summary-head">
+                    <div class="title-wrap">
+                      <div class="panel-title">학생별 복식 운영 현황</div>
+                      <div class="tiny muted">출전 수, 심판 수, 최근 파트너/상대, 중복 정도를 확인할 수 있습니다.</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="panel-body doubles-op-wrap">
+                  <div class="doubles-op-scroll">
+                    <table>
+                      <thead>
+                        <tr><th>번호</th><th>이름</th><th>참여</th><th>출전</th><th>심판</th><th>승</th><th>패</th><th>득점</th><th>실점</th><th>득실</th><th>최근 파트너</th><th>파트너 중복</th><th>최근 상대</th><th>상대 중복</th></tr>
+                      </thead>
+                      <tbody id="doublesOperationBody"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </section>
             </div>
           </div>
         </section>
+
         <div class="doubles-layout">
           <section class="doubles-round-stack">
-            <section class="panel doubles-round-section">
-              <div class="panel-header"><div><div class="panel-title">복식 참여 명단</div><div class="tiny muted">현재 라운드 칸과 같은 폭으로 표시되며, 높이는 고정하고 스크롤로 확인합니다.</div></div></div>
-              <div class="panel-body">
-                <div class="doubles-participants-wrap">
-                  <div id="doublesParticipants" class="doubles-participants-grid"></div>
-                </div>
-              </div>
-            </section>
             <section class="panel doubles-round-section">
               <div class="panel-header"><div><div class="panel-title">현재 라운드</div><div class="tiny muted">경기 종료 후에도 결과 수정이 가능합니다.</div></div></div>
               <div class="panel-body"><div id="doublesCurrentRound" class="doubles-round-grid"></div></div>
@@ -3766,19 +4573,6 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
               <div class="panel-header"><div><div class="panel-title">다음 라운드</div><div class="tiny muted">다음으로 진행할 복식 경기와 자동 배정된 심판입니다.</div></div></div>
               <div class="panel-body"><div id="doublesNextRound" class="doubles-round-grid"></div></div>
             </section>
-          </section>
-          <section class="panel">
-            <div class="panel-header"><div><div class="panel-title">학생별 복식 운영 현황</div><div class="tiny muted">출전 수, 심판 수, 최근 파트너/상대, 중복 정도를 확인할 수 있습니다.</div></div></div>
-            <div class="panel-body doubles-op-wrap">
-              <div class="doubles-op-scroll">
-                <table>
-                  <thead>
-                    <tr><th>번호</th><th>이름</th><th>참여</th><th>출전</th><th>심판</th><th>승</th><th>패</th><th>득점</th><th>실점</th><th>득실</th><th>최근 파트너</th><th>파트너 중복</th><th>최근 상대</th><th>상대 중복</th></tr>
-                  </thead>
-                  <tbody id="doublesOperationBody"></tbody>
-                </table>
-              </div>
-            </div>
           </section>
         </div>
       </div>
@@ -3852,16 +4646,8 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
 
     <div class="page" id="qrPage">
       <div class="qr-manage-shell">
-        <section class="qr-hero">
-          <div>
-            <h2>QR 관리</h2>
-            <p>오더 제출 QR과 심판용 QR을 분리해서 관리하는 화면입니다. 운영 페이지에서는 QR을 빼고, 여기서 라운드별 링크와 제출 상태를 확인합니다.</p>
-          </div>
-          <div class="qr-status-pill" id="qrHeroPill">● 현재 반 기준</div>
-        </section>
-
         <section class="panel">
-          <div class="panel-header" style="border-bottom:none;padding-bottom:0;">
+          <div class="panel-header" style="padding-bottom:0;">
             <div>
               <div class="panel-title" id="qrPanelTitle">오더 제출 QR 관리</div>
               <div class="tiny muted" id="qrPanelDesc">조별로 오더를 작성할 수 있도록, 라운드별 조 전용 링크를 표시합니다.</div>
@@ -3915,7 +4701,7 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
           <div class="panel-header">
             <div>
               <div class="panel-title">데이터 확인</div>
-              <div class="tiny muted">데이터 QR로 제출된 기록을 경기별과 선수별로 확인합니다.</div>
+              <div class="tiny muted">데이터 기록을 확인합니다.</div>
             </div>
           </div>
           <div class="panel-body">
@@ -4019,32 +4805,43 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
       <div class="section-stack">
         <div class="panel">
           <div class="panel-header">
-            <div>
-              <div class="panel-title">단식 능력 리그</div>
-              <div class="tiny muted">남녀는 같은 성별끼리 경기하되, 전체 경기 순서는 남녀 구분 없이 랜덤으로 섞습니다. 동시에 진행할 경기 수를 정할 수 있고, 같은 시간대 경기 안에는 중복 학생이 배치되지 않도록 자동 편성합니다.</div>
-            </div>
+            <div class="panel-title">단식 능력 리그</div>
+            <button class="help-icon-btn" type="button" onclick="toggleSinglesLeagueHelp()">!</button>
           </div>
           <div class="panel-body">
-            <div class="control-row">
-              <label class="tiny muted">동시 경기 수</label>
-              <input type="number" id="singlesCourtCountInput" min="1" max="6" value="2" style="width:90px">
-              <button class="btn primary" onclick="generateSinglesLeague()">단식 풀리그 대진 생성</button>
-              <button class="btn green" onclick="applySinglesSkillConversion()">결과를 단식 능력치로 반영</button>
-              <button class="btn small" onclick="clearSinglesLeague()">단식 경기 초기화</button>
+            <div id="singlesLeagueHelpBox" class="help-inline-box" style="margin-bottom:12px;">남학생은 남학생끼리, 여학생은 여학생끼리 경기합니다. 전체 경기 순서는 남녀 구분 없이 랜덤으로 섞되 늦게 배치로 표시한 학생의 경기는 가능한 한 뒤쪽 시간대로 배치합니다. 같은 시간대에는 같은 학생이 중복 배치되지 않도록 자동 편성됩니다. 경기 중 변동이 생기면 각 경기 카드의 뒤로 미루기 버튼으로 다시 뒤쪽으로 보낼 수 있습니다.</div>
+            <div class="top-control-wrap">
+              <div class="top-control-bar control-row singles-top-inline">
+                <div class="top-control-left singles-top-inline-group">
+                  <label class="top-control-field">
+                    <span class="tiny muted">동시 경기 수</span>
+                    <input type="number" id="singlesCourtCountInput" min="1" max="6" value="2">
+                  </label>
+                  <button class="btn primary" onclick="generateSinglesLeague()">단식 풀리그 대진 생성</button>
+                  <button class="btn green" onclick="applySinglesSkillConversion()">결과를 단식 능력치로 반영</button>
+                  <button class="btn small" onclick="clearSinglesLeague()">단식 경기 초기화</button>
+                  <button class="btn small" type="button" onclick="openSinglesRestoreModal()">기록 복원</button>
+                </div>
+              </div>
             </div>
             <div class="singles-participant-grid">
               <div class="singles-summary-list">
-                <div class="singles-summary-card">
-                  <div style="font-weight:800;margin-bottom:10px">단식 참가자 선택</div>
-                  <div class="control-row" style="margin-bottom:10px">
-                    <button class="btn small" onclick="setSinglesParticipantAll(true)">전체 참가</button>
-                    <button class="btn small" onclick="setSinglesParticipantAll(false)">전체 제외</button>
-                    <button class="btn small" onclick="setSinglesParticipantByGender('M', true)">남자만 참가</button>
-                    <button class="btn small" onclick="setSinglesParticipantByGender('F', true)">여자만 참가</button>
+                <div class="panel singles-participant-card">
+                  <div class="singles-participant-head panel-header">
+                    <div>
+                      <div class="panel-title singles-participant-title">단식 참가자 선택</div>
+                      <div class="tiny muted">참가 여부와 사유, 배치를 설정합니다.</div>
+                    </div>
+                    <div class="singles-participant-actions">
+                      <div id="singlesParticipantSummary" class="singles-participant-summary-inline"></div>
+                      <button class="btn small" onclick="setSinglesParticipantAll(true)">전체 선택</button>
+                      <button class="btn small" onclick="setSinglesParticipantAll(false)">전체 해제</button>
+                    </div>
                   </div>
-                  <div id="singlesParticipantList" class="singles-participant-list scrollbar-ui"></div>
+                  <div class="panel-body">
+                    <div id="singlesParticipantList" class="singles-participant-list scrollbar-ui"></div>
+                  </div>
                 </div>
-                <div class="singles-summary-card" id="singlesParticipantSummary"></div>
               </div>
               <div class="singles-rank-stack">
                 <div class="panel">
@@ -4086,7 +4883,6 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
                 </div>
               </div>
             </div>
-            <div class="footer-note">단식 참가 체크가 된 학생만 포함됩니다. 남학생은 남학생끼리, 여학생은 여학생끼리 경기합니다. 전체 경기 순서는 남녀 구분 없이 랜덤으로 섞되, <b>늦게 배치</b>로 표시한 학생의 경기는 가능한 한 뒤쪽 시간대로 배치합니다. 같은 시간대에는 같은 학생이 중복 배치되지 않도록 자동 편성됩니다. 경기 중 변동이 생기면 각 경기 카드의 <b>뒤로 미루기</b> 버튼으로 다시 뒤쪽으로 보낼 수 있습니다.</div>
           </div>
         </div>
 
@@ -4150,6 +4946,78 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
     </div>
   </div>
 
+  <div class="modal" id="teamMoveModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="team-move-head-inline">
+          <div class="title-wrap">
+            <strong>조 이동</strong>
+            <button class="help-icon-btn" type="button" onclick="toggleInlineHelp('teamMoveHelpBox')">!</button>
+          </div>
+        </div>
+        <div class="help-inline-box team-move-help" id="teamMoveHelpBox">학생을 다른 조로 옮기거나, 서로 다른 조 학생 2명을 맞교환할 수 있습니다.</div>
+      </div>
+      <div class="modal-body">
+        <div class="view-tabs" id="teamMoveTabs">
+          <button class="view-tab active" type="button" onclick="setTeamMoveTab('move')">학생 이동</button>
+          <button class="view-tab" type="button" onclick="setTeamMoveTab('swap')">맞교환</button>
+        </div>
+
+        <div id="teamMoveTabMove" class="team-move-tab">
+          <div class="compare-wrap">
+            <div class="select-stack">
+              <div class="team-move-field">
+                <div class="team-move-field-label">이동할 학생</div>
+                <select id="teamMovePlayerSelect" class="team-move-select" onchange="onTeamMovePlayerChange(this.value)"></select>
+              </div>
+
+              <div class="team-move-field">
+                <div class="team-move-field-label">현재 조</div>
+                <div id="teamMoveCurrentTeam" class="team-move-display">선택 전</div>
+              </div>
+
+              <div class="team-move-field">
+                <div class="team-move-field-label">이동할 조</div>
+                <div class="picker-grid" id="teamMoveTargetButtons"></div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header"><div class="panel-title">이동 미리보기</div></div>
+              <div class="panel-body">
+                <div id="teamMovePreview" class="muted">학생과 이동할 조를 선택하세요.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="teamMoveTabSwap" class="team-move-tab" style="display:none;">
+          <div class="compare-wrap">
+            <div class="select-stack">
+              <div class="team-move-field">
+                <div class="team-move-field-label">첫 번째 학생</div>
+                <select id="teamSwapPlayerA" class="team-move-select" onchange="onTeamSwapChange()"></select>
+              </div>
+
+              <div class="team-move-field">
+                <div class="team-move-field-label">두 번째 학생</div>
+                <select id="teamSwapPlayerB" class="team-move-select" onchange="onTeamSwapChange()"></select>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header"><div class="panel-title">맞교환 미리보기</div></div>
+              <div class="panel-body">
+                <div id="teamSwapPreview" class="muted">서로 다른 조의 학생 2명을 선택하세요.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer team-move-footer">
+        <button class="btn" type="button" onclick="closeTeamMoveModal()">닫기</button>
+        <button class="btn primary" id="teamMoveApplyBtn" type="button" onclick="applyTeamMoveModal()">적용</button>
+      </div>
+    </div>
+  </div>
 <script>
     const STORAGE_KEY = 'badminton-class-complete-v6-google-sync';
     const API_URL_KEY = 'badminton-firebase-config-v1';
@@ -4248,9 +5116,7 @@ let broadcastInfoView = 'current';
     }
 
     function toggleRawRosterPanel() {
-      const panel = document.getElementById('rawRosterPanel');
-      if (!panel) return;
-      panel.classList.toggle('collapsed');
+      return;
     }
 
     function renderSetupWizard() {
@@ -4731,6 +5597,7 @@ function switchView(view) {
         matchRecordSkill: Number(matchRecordSkill) || 50,
         isSingles: isSingles !== false,
         singlesTiming,
+        singlesReason: '',
         stats: {
           win: 0,
           lose: 0,
@@ -4982,6 +5849,276 @@ function switchView(view) {
       return Math.round(members.reduce((sum, p) => sum + playerAvg(p), 0) / members.length);
     }
 
+    const teamMoveState = {
+      tab: 'move',
+      selectedPlayerId: '',
+      targetTeam: '',
+      swapPlayerA: '',
+      swapPlayerB: ''
+    };
+
+    function getRunTeamLetters() {
+      return (currentData().teams || []).map(team => team.letter).filter(Boolean);
+    }
+
+    function getRunTeamByLetter(letter) {
+      return (currentData().teams || []).find(team => team.letter === letter) || null;
+    }
+
+    function getRunPlayerTeamLetter(playerId) {
+      const team = (currentData().teams || []).find(entry => (entry.playerIds || []).includes(playerId));
+      return team?.letter || '';
+    }
+
+    function isRunTeamCaptain(playerId) {
+      return (ensureWizardState().captainIds || []).includes(playerId);
+    }
+
+    function buildRunTeamPlayerOptions(includeBlank = true) {
+      const players = getTodayPlayers().filter(player => getRunPlayerTeamLetter(player.id));
+      const options = players.map(player => {
+        const teamLetter = getRunPlayerTeamLetter(player.id);
+        const captainMark = isRunTeamCaptain(player.id) ? ' · 조장' : '';
+        return `<option value="${player.id}">${escapeHtml(player.name)} · ${escapeHtml(teamLetter)}조${captainMark}</option>`;
+      }).join('');
+      return `${includeBlank ? '<option value="">학생 선택</option>' : ''}${options}`;
+    }
+
+    function openTeamMoveModal() {
+      if (!(currentData().teams || []).length) {
+        alert('먼저 팀 구성을 완료하세요.');
+        return;
+      }
+      teamMoveState.tab = 'move';
+      teamMoveState.selectedPlayerId = '';
+      teamMoveState.targetTeam = '';
+      teamMoveState.swapPlayerA = '';
+      teamMoveState.swapPlayerB = '';
+      renderTeamMoveModal();
+      document.getElementById('teamMoveModal')?.classList.add('show');
+    }
+
+    function closeTeamMoveModal() {
+      document.getElementById('teamMoveModal')?.classList.remove('show');
+    }
+
+    function setTeamMoveTab(tab) {
+      teamMoveState.tab = tab === 'swap' ? 'swap' : 'move';
+      renderTeamMoveModal();
+    }
+
+    function renderTeamMoveModal() {
+      const tabMove = document.getElementById('teamMoveTabMove');
+      const tabSwap = document.getElementById('teamMoveTabSwap');
+      if (tabMove) tabMove.style.display = teamMoveState.tab === 'move' ? '' : 'none';
+      if (tabSwap) tabSwap.style.display = teamMoveState.tab === 'swap' ? '' : 'none';
+      document.querySelectorAll('#teamMoveTabs .view-tab').forEach((btn, idx) => {
+        const tab = idx === 0 ? 'move' : 'swap';
+        btn.classList.toggle('active', tab === teamMoveState.tab);
+      });
+
+      const optionsHtml = buildRunTeamPlayerOptions(true);
+      const moveSelect = document.getElementById('teamMovePlayerSelect');
+      const swapA = document.getElementById('teamSwapPlayerA');
+      const swapB = document.getElementById('teamSwapPlayerB');
+      if (moveSelect) {
+        moveSelect.innerHTML = optionsHtml;
+        moveSelect.value = teamMoveState.selectedPlayerId || '';
+      }
+      if (swapA) {
+        swapA.innerHTML = optionsHtml;
+        swapA.value = teamMoveState.swapPlayerA || '';
+      }
+      if (swapB) {
+        swapB.innerHTML = optionsHtml;
+        swapB.value = teamMoveState.swapPlayerB || '';
+      }
+      const currentTeamInput = document.getElementById('teamMoveCurrentTeam');
+      if (currentTeamInput) {
+        const letter = getRunPlayerTeamLetter(teamMoveState.selectedPlayerId);
+        currentTeamInput.textContent = letter ? `${letter}조` : '선택 전';
+      }
+      renderTeamMoveTargetButtons();
+      updateTeamMovePreview();
+      updateTeamSwapPreview();
+    }
+
+    function onTeamMovePlayerChange(playerId) {
+      teamMoveState.selectedPlayerId = playerId || '';
+      const currentLetter = getRunPlayerTeamLetter(teamMoveState.selectedPlayerId);
+      if (!currentLetter || currentLetter === teamMoveState.targetTeam) teamMoveState.targetTeam = '';
+      renderTeamMoveModal();
+    }
+
+    function selectTeamMoveTarget(letter) {
+      const currentLetter = getRunPlayerTeamLetter(teamMoveState.selectedPlayerId);
+      if (!teamMoveState.selectedPlayerId || !letter || currentLetter === letter) return;
+      teamMoveState.targetTeam = letter;
+      renderTeamMoveTargetButtons();
+      updateTeamMovePreview();
+    }
+
+    function renderTeamMoveTargetButtons() {
+      const container = document.getElementById('teamMoveTargetButtons');
+      if (!container) return;
+      const currentLetter = getRunPlayerTeamLetter(teamMoveState.selectedPlayerId);
+      const html = getRunTeamLetters().map(letter => {
+        const isCurrent = currentLetter === letter;
+        const isActive = teamMoveState.targetTeam === letter;
+        return `<button class="picker-btn ${isActive ? 'active' : ''}" type="button" ${isCurrent ? 'disabled' : ''} onclick="selectTeamMoveTarget('${letter}')">${letter}조${isCurrent ? ' (현재)' : ''}</button>`;
+      }).join('');
+      container.innerHTML = html || '<div class="tiny muted">이동할 조가 없습니다.</div>';
+    }
+
+    function updateTeamMovePreview() {
+      const el = document.getElementById('teamMovePreview');
+      if (!el) return;
+      const player = getPlayerById(teamMoveState.selectedPlayerId);
+      const currentLetter = getRunPlayerTeamLetter(teamMoveState.selectedPlayerId);
+      const targetLetter = teamMoveState.targetTeam;
+      if (!player || !currentLetter || !targetLetter) {
+        el.innerHTML = '<div class="muted">학생과 이동할 조를 선택하세요.</div>';
+        return;
+      }
+      el.innerHTML = `<strong>${escapeHtml(player.name)}</strong> · ${escapeHtml(currentLetter)}조 → <strong>${escapeHtml(targetLetter)}조</strong>`;
+    }
+
+    function onTeamSwapChange() {
+      teamMoveState.swapPlayerA = document.getElementById('teamSwapPlayerA')?.value || '';
+      teamMoveState.swapPlayerB = document.getElementById('teamSwapPlayerB')?.value || '';
+      updateTeamSwapPreview();
+    }
+
+    function updateTeamSwapPreview() {
+      const el = document.getElementById('teamSwapPreview');
+      if (!el) return;
+      const playerA = getPlayerById(teamMoveState.swapPlayerA);
+      const playerB = getPlayerById(teamMoveState.swapPlayerB);
+      const teamA = getRunPlayerTeamLetter(teamMoveState.swapPlayerA);
+      const teamB = getRunPlayerTeamLetter(teamMoveState.swapPlayerB);
+      if (!playerA || !playerB) {
+        el.innerHTML = '<div class="muted">서로 다른 조의 학생 2명을 선택하세요.</div>';
+        return;
+      }
+      el.innerHTML = `<strong>${escapeHtml(playerA.name)}</strong> · ${escapeHtml(teamA || '?')}조 ↔ <strong>${escapeHtml(playerB.name)}</strong> · ${escapeHtml(teamB || '?')}조`;
+    }
+
+    function moveRunPlayerToTeam(playerId, targetLetter) {
+      const sourceLetter = getRunPlayerTeamLetter(playerId);
+      if (!sourceLetter || !targetLetter || sourceLetter === targetLetter) return false;
+      const sourceTeam = getRunTeamByLetter(sourceLetter);
+      const targetTeam = getRunTeamByLetter(targetLetter);
+      if (!sourceTeam || !targetTeam) return false;
+      sourceTeam.playerIds = (sourceTeam.playerIds || []).filter(id => id !== playerId);
+      if (!(targetTeam.playerIds || []).includes(playerId)) targetTeam.playerIds.push(playerId);
+      syncWizardAssignmentsFromTeams();
+      return true;
+    }
+
+    function swapRunPlayersBetweenTeams(playerAId, playerBId) {
+      const teamA = getRunPlayerTeamLetter(playerAId);
+      const teamB = getRunPlayerTeamLetter(playerBId);
+      if (!teamA || !teamB || teamA === teamB) return false;
+      const entryA = getRunTeamByLetter(teamA);
+      const entryB = getRunTeamByLetter(teamB);
+      if (!entryA || !entryB) return false;
+      entryA.playerIds = (entryA.playerIds || []).filter(id => id !== playerAId);
+      entryB.playerIds = (entryB.playerIds || []).filter(id => id !== playerBId);
+      entryA.playerIds.push(playerBId);
+      entryB.playerIds.push(playerAId);
+      syncWizardAssignmentsFromTeams();
+      return true;
+    }
+
+    function syncWizardAssignmentsFromTeams() {
+      const wizard = ensureWizardState();
+      const assignments = {};
+      (currentData().teams || []).forEach(team => {
+        assignments[team.letter] = [...(team.playerIds || [])];
+      });
+      wizard.teamAssignments = assignments;
+      wizard.captainIds = (wizard.captainIds || []).filter(id => getRunPlayerTeamLetter(id));
+    }
+
+    function applyTeamMoveModal() {
+      if (teamMoveState.tab === 'move') {
+        const playerId = teamMoveState.selectedPlayerId;
+        const targetLetter = teamMoveState.targetTeam;
+        if (!playerId || !targetLetter) {
+          alert('학생과 이동할 조를 선택하세요.');
+          return;
+        }
+        if (isRunTeamCaptain(playerId)) {
+          alert('조장은 조 이동 대상에서 제외됩니다.');
+          return;
+        }
+        if (!moveRunPlayerToTeam(playerId, targetLetter)) {
+          alert('조 이동을 적용할 수 없습니다.');
+          return;
+        }
+      } else {
+        const playerAId = document.getElementById('teamSwapPlayerA')?.value || '';
+        const playerBId = document.getElementById('teamSwapPlayerB')?.value || '';
+        if (!playerAId || !playerBId || playerAId === playerBId) {
+          alert('서로 다른 학생 2명을 선택하세요.');
+          return;
+        }
+        if (isRunTeamCaptain(playerAId) || isRunTeamCaptain(playerBId)) {
+          alert('조장은 맞교환할 수 없습니다.');
+          return;
+        }
+        if (!swapRunPlayersBetweenTeams(playerAId, playerBId)) {
+          alert('서로 다른 조의 학생만 맞교환할 수 있습니다.');
+          return;
+        }
+      }
+      saveData();
+      renderAll();
+      closeTeamMoveModal();
+    }
+
+    function tidyRunTeams() {
+      const teams = currentData().teams || [];
+      if (!teams.length) {
+        alert('먼저 팀 구성을 완료하세요.');
+        return;
+      }
+      const ok = confirm('현재 팀 구성을 유지한 채 빠진 학생을 정리하고, 미배정 학생을 자동으로 채웁니다. 계속할까요?');
+      if (!ok) return;
+      const todayIds = new Set(getTodayPlayers().map(player => player.id));
+      const assignedIds = new Set();
+      teams.forEach(team => {
+        team.playerIds = (team.playerIds || []).filter(id => todayIds.has(id));
+        team.playerIds.forEach(id => assignedIds.add(id));
+      });
+      const unassignedIds = getTodayPlayers().map(player => player.id).filter(id => !assignedIds.has(id));
+      while (unassignedIds.length) {
+        const targetTeam = [...teams].sort((a, b) => (a.playerIds || []).length - (b.playerIds || []).length)[0];
+        if (!targetTeam) break;
+        targetTeam.playerIds.push(unassignedIds.shift());
+      }
+      let changed = true;
+      while (changed) {
+        changed = false;
+        const sorted = [...teams].sort((a, b) => (a.playerIds || []).length - (b.playerIds || []).length);
+        const smallest = sorted[0];
+        const largest = sorted[sorted.length - 1];
+        if (!smallest || !largest) break;
+        const sizeGap = (largest.playerIds || []).length - (smallest.playerIds || []).length;
+        if (sizeGap >= 2) {
+          const movable = [...(largest.playerIds || [])].reverse().find(id => !isRunTeamCaptain(id));
+          if (!movable) break;
+          largest.playerIds = (largest.playerIds || []).filter(id => id !== movable);
+          smallest.playerIds.push(movable);
+          changed = true;
+        }
+      }
+      syncWizardAssignmentsFromTeams();
+      saveData();
+      renderAll();
+      alert('현재 팀 구성을 유지한 채 인원만 정리했습니다.');
+    }
+
     function setTeamName(teamId, nextName) {
       const team = currentData().teams.find(t => t.id === teamId);
       if (!team) return;
@@ -4989,6 +6126,69 @@ function switchView(view) {
       team.name = trimmed || `${team.letter || '조'}조`;
       saveData();
       renderAll();
+    }
+
+
+    function ensureRoundOrderExcluded(data = currentData()) {
+      if (!data.roundOrderExcluded || typeof data.roundOrderExcluded !== 'object') data.roundOrderExcluded = {};
+      return data.roundOrderExcluded;
+    }
+
+    function getRunCurrentRoundNo() {
+      const matches = (currentData().liveMatches || []).filter(Boolean);
+      if (!matches.length) return 1;
+      const pending = matches.filter(m => !m.finished);
+      const pool = pending.length ? pending : matches;
+      return Math.min(...pool.map(m => Number(m.roundNo) || 999)) || 1;
+    }
+
+    function getRoundExcludedIds(teamId, roundNo = getRunCurrentRoundNo()) {
+      const store = ensureRoundOrderExcluded();
+      return Array.isArray(store?.[String(roundNo)]?.[teamId]) ? store[String(roundNo)][teamId] : [];
+    }
+
+    function isRoundExcludedPlayer(teamId, playerId, roundNo = getRunCurrentRoundNo()) {
+      return getRoundExcludedIds(teamId, roundNo).includes(playerId);
+    }
+
+    function toggleRoundExcludedPlayer(teamId, playerId, roundNo = getRunCurrentRoundNo()) {
+      const team = getTeamById(teamId);
+      const player = getPlayerById(playerId);
+      if (!team || !player) return;
+      const store = ensureRoundOrderExcluded();
+      const roundKey = String(roundNo);
+      if (!store[roundKey] || typeof store[roundKey] !== 'object') store[roundKey] = {};
+      if (!Array.isArray(store[roundKey][teamId])) store[roundKey][teamId] = [];
+      const list = store[roundKey][teamId];
+      const idx = list.indexOf(playerId);
+      if (idx >= 0) list.splice(idx, 1);
+      else list.push(playerId);
+
+      const match = getTeamMatchForRound(teamId, roundNo);
+      if (match && match.games) {
+        const isA = match.teamAId === teamId;
+        ['women','mixed','men'].forEach(type => {
+          const arr = isA ? (match.games[type].lineupA || []) : (match.games[type].lineupB || []);
+          const filtered = arr.map(id => id === playerId ? '' : id);
+          if (isA) match.games[type].lineupA = filtered;
+          else match.games[type].lineupB = filtered;
+        });
+      }
+
+      const submissionStore = ensureLineupSubmissionState();
+      if (submissionStore?.[teamId]?.[String(roundNo)]) delete submissionStore[teamId][String(roundNo)];
+
+      saveData();
+      renderTeams();
+      renderMatches();
+      renderLineupLinkPanel();
+      if (typeof renderStudentLineupMode === 'function') renderStudentLineupMode();
+    }
+
+    function getRoundLineupPlayerPool(team, type, roundNo = getRunCurrentRoundNo()) {
+      const base = getLineupRolePlayerPool(team, type);
+      const excluded = new Set(getRoundExcludedIds(team.id, roundNo));
+      return base.filter(p => !excluded.has(p.id));
     }
 
     function renderTeams() {
@@ -4999,6 +6199,7 @@ function switchView(view) {
         boards.forEach(board => board.innerHTML = '<div class="muted tiny">아직 조가 생성되지 않았습니다.</div>');
         return;
       }
+      const currentRoundNo = getRunCurrentRoundNo();
       const html = teams.map((team) => {
         const members = teamMembers(team);
         const maleCount = members.filter(m => m.gender === 'M').length;
@@ -5015,18 +6216,29 @@ function switchView(view) {
                 onkeydown="if(event.key==='Enter'){ this.blur(); }"
               />
             </div>
-            ${members.map(m => `
-              <div class="player-chip">
+            ${members.map(m => {
+              const excluded = isRoundExcludedPlayer(team.id, m.id, currentRoundNo);
+              return `
+              <div
+                class="player-chip selectable ${excluded ? 'excluded-this-round' : ''}"
+                onclick="toggleRoundExcludedPlayer('${team.id}', '${m.id}', ${currentRoundNo})"
+                title="${currentRoundNo}라운드 오더에서만 ${excluded ? '복구' : '제외'}">
                 <b>${escapeHtml(m.name)}</b>
-                <span class="tag">${m.gender || '미지정'}</span>
+                <span class="player-chip-status">${excluded ? '이번 라운드 제외' : (m.gender || '미지정')}</span>
               </div>
-            `).join('') || '<div class="tiny muted">배정된 학생 없음</div>'}
-            <div class="league-note">인원 ${members.length}명 · 남 ${maleCount}명 · 여 ${femaleCount}명<br>조 이름은 위 칸에서 직접 수정할 수 있습니다.</div>
+            `;
+            }).join('') || '<div class="tiny muted">배정된 학생 없음</div>'}
+            <div class="league-note">인원 ${members.length}명 · 남 ${maleCount}명 · 여 ${femaleCount}명<br>${currentRoundNo}라운드 기준으로 학생 칩을 눌러 오더 제외를 설정합니다.</div>
           </div>
         `;
       }).join('');
       boards.forEach(board => board.innerHTML = html);
     }
+
+    window.addEventListener('click', (event) => {
+      const modal = document.getElementById('teamMoveModal');
+      if (modal && event.target === modal) closeTeamMoveModal();
+    });
 
     function buildLeagueSchedule(teams) {
       if (teams.length !== 4) return [];
@@ -5038,7 +6250,7 @@ function switchView(view) {
     }
 
     function createDefaultLineup(team, type) {
-      const pool = getLineupRolePlayerPool(team, type);
+      const pool = getRoundLineupPlayerPool(team, type, Number(match.roundNo) || studentSelectedRound);
       return [pool[0]?.id || '', pool[1]?.id || pool[0]?.id || ''];
     }
 
@@ -5089,8 +6301,8 @@ function switchView(view) {
       return currentData().teams.find(t => t.id === id);
     }
 
-    function buildLineupOptions(team, selectedId) {
-      return ['<option value="">선수 선택</option>'].concat(teamMembers(team).map(p => `<option value="${p.id}" ${selectedId === p.id ? 'selected' : ''}>${escapeHtml(p.name)}</option>`)).join('');
+    function buildLineupOptions(team, selectedId, roundNo = getRunCurrentRoundNo()) {
+      return ['<option value="">선수 선택</option>'].concat(getRoundLineupPlayerPool(team, 'mixed', roundNo).map(p => `<option value="${p.id}" ${selectedId === p.id ? 'selected' : ''}>${escapeHtml(p.name)}</option>`)).join('');
     }
 
     function lineupNames(team, ids) {
@@ -6339,9 +7551,17 @@ function exportData() {
 
 function setSyncStatus(message, isError = false) {
   const el = document.getElementById('syncStatus');
-  if (!el) return;
-  el.textContent = message;
-  el.className = 'sync-status' + (isError ? ' error' : '');
+  if (el) {
+    el.textContent = message;
+    el.className = 'sync-status' + (isError ? ' error' : '');
+  }
+  const topEl = document.getElementById('topSavePill');
+  if (topEl) {
+    topEl.textContent = message;
+    topEl.style.color = isError ? '#ffd6d6' : '#dcebff';
+    topEl.style.borderColor = isError ? 'rgba(255,107,107,.28)' : 'rgba(77,163,255,.22)';
+    topEl.style.background = isError ? 'rgba(255,107,107,.12)' : 'rgba(77,163,255,.14)';
+  }
 }
 
 function getApiUrl() {
@@ -6874,7 +8094,7 @@ function renderStudentLineupMode() {
         <div class="footer-note" style="margin-top:10px;margin-bottom:12px">${roundLocked ? '경기가 시작되어 이 라운드 오더는 수정할 수 없습니다.' : '필요한 선수만 수정 후 제출하세요.'}</div>
         <div class="student-form-grid">
           ${['women','mixed','men'].map(type => {
-            const pool = getLineupRolePlayerPool(team, type);
+            const pool = getRoundLineupPlayerPool(team, type, Number(match.roundNo) || studentSelectedRound);
             const game = match.games[type];
             const selected = isA ? (game.lineupA || []) : (game.lineupB || []);
             return `
@@ -7438,6 +8658,7 @@ function startLineupPolling() {
       getTodayPlayers().forEach(p => {
         if (typeof p.isSingles === 'undefined') p.isSingles = !!(p.gender === 'M' || p.gender === 'F');
         if (!p.singlesTiming) p.singlesTiming = 'normal';
+        if (typeof p.singlesReason === 'undefined') p.singlesReason = '';
       });
     }
 
@@ -7450,6 +8671,21 @@ function startLineupPolling() {
       const p = getPlayerById(playerId);
       if (!p) return;
       p.isSingles = !!checked;
+      if (checked) {
+        p.singlesReason = '';
+      } else if (!p.singlesReason) {
+        p.singlesReason = '제외';
+      }
+      saveData();
+      renderSinglesParticipantControls();
+    }
+
+    function setSinglesReason(playerId, value) {
+      const p = getPlayerById(playerId);
+      if (!p) return;
+      p.singlesReason = value || '';
+      if (p.singlesReason) p.isSingles = false;
+      else p.isSingles = true;
       saveData();
       renderSinglesParticipantControls();
     }
@@ -7465,7 +8701,10 @@ function startLineupPolling() {
     function setSinglesParticipantAll(flag) {
       ensureSinglesPreferences();
       getTodayPlayers().forEach(p => {
-        if (p.gender === 'M' || p.gender === 'F') p.isSingles = !!flag;
+        if (p.gender === 'M' || p.gender === 'F') {
+          p.isSingles = !!flag;
+          p.singlesReason = flag ? '' : '제외';
+        }
       });
       saveData();
       renderSinglesParticipantControls();
@@ -7493,37 +8732,65 @@ function startLineupPolling() {
       const players = getTodayPlayers().filter(p => p.gender === 'M' || p.gender === 'F')
         .sort((a,b) => (a.gender || '').localeCompare(b.gender || '') || playerAvg(b) - playerAvg(a) || a.name.localeCompare(b.name,'ko'));
       if (!players.length) {
-        listWrap.innerHTML = '<div class="muted tiny">성별이 지정된 출석 학생이 없습니다.</div>';
+        listWrap.innerHTML = '<div class="muted tiny" style="padding:14px;">성별이 지정된 출석 학생이 없습니다.</div>';
         summaryWrap.innerHTML = '<div class="muted tiny">단식 참가 학생이 없습니다.</div>';
         return;
       }
-      listWrap.innerHTML = players.map(p => `
-        <div class="singles-participant-row">
-          <input type="checkbox" ${p.isSingles !== false ? 'checked' : ''} onchange="toggleSinglesParticipant('${p.id}', this.checked)">
-          <div>
-            <div class="name">${escapeHtml(p.name || '이름없음')}</div>
-            <div class="meta">${p.gender === 'M' ? '남학생' : '여학생'} · 기본능력 ${playerAvg(p)} · 단식능력 ${Number(p.singleSkill) || 50}</div>
-          </div>
-          <span class="singles-badge ${p.singlesTiming === 'late' ? 'singles-late' : ''}">${p.singlesTiming === 'late' ? '늦게 배치' : '기본 배치'}</span>
-          <select class="lineup-select" style="max-width:120px" onchange="setSinglesTiming('${p.id}', this.value)">
-            <option value="normal" ${p.singlesTiming !== 'late' ? 'selected' : ''}>기본 배치</option>
-            <option value="late" ${p.singlesTiming === 'late' ? 'selected' : ''}>늦게 배치</option>
-          </select>
-        </div>
-      `).join('');
-      const active = players.filter(p => p.isSingles !== false);
+      listWrap.innerHTML = `
+        <table class="singles-rank-table singles-participant-ranklike" style="width:100%">
+          <thead>
+            <tr>
+              <th style="width:64px">번호</th>
+              <th style="width:120px">이름</th>
+              <th style="width:76px">성별</th>
+              <th style="width:72px">참여</th>
+              <th style="width:120px">사유</th>
+              <th style="width:128px">배치</th>
+              <th style="width:84px">상태</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${players.map((p, idx) => {
+              const enabled = p.isSingles !== false && !p.singlesReason;
+              const reason = p.singlesReason || '';
+              const statusLabel = enabled ? '참가' : (reason || '제외');
+              const genderLabel = p.gender === 'M' ? '남' : p.gender === 'F' ? '여' : '-';
+              return `
+                <tr>
+                  <td>${idx + 1}</td>
+                  <td class="doubles-participant-name">${escapeHtml(p.name || '이름없음')}</td>
+                  <td>${genderLabel}</td>
+                  <td><input class="doubles-participant-check" type="checkbox" ${enabled ? 'checked' : ''} onchange="toggleSinglesParticipant('${p.id}', this.checked)"></td>
+                  <td>
+                    <select class="doubles-participant-reason" onchange="setSinglesReason('${p.id}', this.value)">
+                      <option value="" ${reason === '' ? 'selected' : ''}>없음</option>
+                      <option value="결석" ${reason === '결석' ? 'selected' : ''}>결석</option>
+                      <option value="부상" ${reason === '부상' ? 'selected' : ''}>부상</option>
+                      <option value="제외" ${reason === '제외' ? 'selected' : ''}>제외</option>
+                    </select>
+                  </td>
+                  <td>
+                    <select class="doubles-participant-reason" onchange="setSinglesTiming('${p.id}', this.value)">
+                      <option value="normal" ${p.singlesTiming !== 'late' ? 'selected' : ''}>기본 배치</option>
+                      <option value="late" ${p.singlesTiming === 'late' ? 'selected' : ''}>늦게 배치</option>
+                    </select>
+                  </td>
+                  <td><span class="doubles-participant-status ${enabled ? 'active' : 'inactive'}">${escapeHtml(statusLabel)}</span></td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      `;
+      const active = players.filter(p => p.isSingles !== false && !p.singlesReason);
       const men = active.filter(p => p.gender === 'M').length;
       const women = active.filter(p => p.gender === 'F').length;
       const late = active.filter(p => p.singlesTiming === 'late').length;
       summaryWrap.innerHTML = `
-        <div style="font-weight:800;margin-bottom:10px">현재 단식 참가 현황</div>
-        <div class="control-row" style="margin-bottom:6px">
-          <span class="singles-badge">전체 ${active.length}명</span>
-          <span class="singles-badge">남 ${men}명</span>
-          <span class="singles-badge">여 ${women}명</span>
-          <span class="singles-badge singles-late">늦게 배치 ${late}명</span>
-        </div>
-        <div class="tiny muted">대진 생성 시 체크된 학생만 포함됩니다. 늦게 배치를 선택한 학생의 경기는 가능한 한 뒤쪽 슬롯으로 보냅니다.</div>
+        <span class="singles-badge">전체 ${active.length}명</span>
+        <span class="singles-badge">남자 ${men}명</span>
+        <span class="singles-badge">여자 ${women}명</span>
+        <span class="singles-badge singles-late">늦게 배치 ${late}명</span>
       `;
     }
 
@@ -8710,7 +9977,8 @@ function renderDataInsightsPage() {
           <thead>
             <tr>
               <th style="width:70px;">번호</th>
-              <th>이름</th>
+              <th style="width:220px;">이름</th>
+              <th style="width:90px;">성별</th>
               <th style="width:90px;">참여</th>
               <th style="width:150px;">사유</th>
               <th style="width:90px;">상태</th>
@@ -8722,12 +9990,11 @@ function renderDataInsightsPage() {
               const enabled = !!participant.enabled && !participant.excludedReason;
               const reason = participant.excludedReason || '';
               const statusLabel = enabled ? '참여' : (reason || '제외');
+              const genderLabel = player.gender === 'M' ? '남' : player.gender === 'F' ? '여' : '-';
               return `<tr>
                 <td>${idx + 1}</td>
-                <td class="doubles-participant-name">
-                  ${escapeHtml(player.name || '')}
-                  <div class="doubles-participant-meta">${player.gender === 'M' ? '남' : player.gender === 'F' ? '여' : '-'} · ${escapeHtml(player.manualGroup || '공통 명단')}</div>
-                </td>
+                <td class="doubles-participant-name">${escapeHtml(player.name || '')}</td>
+                <td>${genderLabel}</td>
                 <td><input class="doubles-participant-check" type="checkbox" ${enabled ? 'checked' : ''} onchange="toggleDoublesParticipant('${player.id}', this.checked)"></td>
                 <td>
                   <select class="doubles-participant-reason" onchange="setDoublesParticipantReason('${player.id}', this.value)">
@@ -8744,17 +10011,13 @@ function renderDataInsightsPage() {
         </table>`;
     }
     function renderDoublesSummary() {
-      const wrap = document.getElementById('doublesSummaryPills'); if (!wrap) return;
+      const wrap = document.getElementById('doublesParticipantSummaryPills'); if (!wrap) return;
       const d = ensureDoublesData();
       const enabledCount = getDoublesEnabledPlayers().length;
       const excludedCount = (currentData().roster || []).filter(player => player && String(player.name || '').trim()).length - enabledCount;
-      const current = getDoublesPendingRounds()[0]; const next = getDoublesPendingRounds()[1];
       wrap.innerHTML = `
         <span class="doubles-chip">참여 ${enabledCount}명</span>
-        <span class="doubles-chip">제외 ${Math.max(0, excludedCount)}명</span>
-        <span class="doubles-chip">동시 ${d.settings.concurrentMatches}경기</span>
-        <span class="doubles-chip">현재 ${current ? current.roundNo : '-'}라운드</span>
-        <span class="doubles-chip">다음 ${next ? next.roundNo : '-'}라운드</span>`;
+        <span class="doubles-chip">제외 ${Math.max(0, excludedCount)}명</span>`;
       const sel = document.getElementById('doublesConcurrentSelect'); if (sel) sel.value = String(d.settings.concurrentMatches || 2);
     }
     function renderSingleDoublesMatch(match, allowEdit = true) {
@@ -9178,7 +10441,125 @@ function renderDataInsightsPage() {
 }
 </style>
 
-</head><body><div class="page"><div class="head"><h1>배드민턴 수업 학생 성장 리포트</h1><div class="sub">누적 관찰 데이터를 바탕으로 생성된 종합형 리포트</div></div><div class="meta"><div><strong>반</strong> ${currentClass}반</div><div><strong>이름</strong> ${escapeHtml(report.player.name)}</div><div><strong>종목</strong> ${escapeHtml(growthEventFilter === 'all' ? '전체' : GAME_LABEL[growthEventFilter])}</div></div><div class="kpis"><div class="kpi"><div class="label">관찰 기록</div><div class="value">${report.summary.totalRecords}</div></div><div class="kpi"><div class="label">서브 성공률</div><div class="value">${report.summary.serveRate}%</div></div><div class="kpi"><div class="label">공격 성공률</div><div class="value">${report.summary.attackRate}%</div></div><div class="kpi"><div class="label">수비 성공률</div><div class="value">${report.summary.defenseRate}%</div></div></div><div class="section"><h3>누적 수행 요약</h3><div class="body"><table><tr><th>서브</th><td>성공 ${report.summary.totalServeSuccess}회 / 실패 ${report.summary.totalServeFail}회</td></tr><tr><th>공격</th><td>성공 ${report.summary.totalAttackSuccess}회 / 실패 ${report.summary.totalAttackFail}회</td></tr><tr><th>수비</th><td>성공 ${report.summary.totalDefenseSuccess}회 / 실패 ${report.summary.totalDefenseFail}회</td></tr><tr><th>서브 실패 최빈값</th><td>${escapeHtml(report.summary.topServeFail)}</td></tr><tr><th>공격 실패 최빈값</th><td>${escapeHtml(report.summary.topAttackFail)}</td></tr><tr><th>수비 실패 최빈값</th><td>${escapeHtml(report.summary.topDefenseFail)}</td></tr></table></div></div><div class="section"><h3>종합 분석</h3><div class="body"><div class="grid"><div class="box"><h4>대표 수행 유형</h4><div><strong>${escapeHtml(report.playType.label)}</strong></div><div style="margin-top:6px;">${escapeHtml(report.playType.desc)}</div></div><div class="box"><h4>강점</h4><div>${escapeHtml(report.strengthText)}</div></div><div class="box"><h4>보완점</h4><div>${escapeHtml(report.improveText)}</div></div><div class="box"><h4>다음 목표</h4><div>${escapeHtml(report.goalText)}</div></div></div></div></div><div class="section"><h3>교사 종합 코멘트</h3><div class="body">${escapeHtml(report.teacherComment)}</div></div></div><script>window.onload=()=>window.print();<\/script></body></html>`);
+
+<style id="global-design-system-unifier">
+:root{
+  --bg:#061120 !important;
+  --bg2:#0b1730 !important;
+  --panel:rgba(10,20,38,.94) !important;
+  --panel2:rgba(14,27,48,.96) !important;
+  --line:rgba(110,173,255,.18) !important;
+  --text:#eef5ff !important;
+  --muted:#a9bdd9 !important;
+  --accent:#4da3ff !important;
+  --success:#34c884 !important;
+  --warn:#f2c14e !important;
+  --danger:#e86a6a !important;
+  --neutral:#6f7d92 !important;
+  --shadow:0 18px 40px rgba(0,0,0,.32) !important;
+  --radius:22px !important;
+  --radius-sm:16px !important;
+  --green:var(--success) !important;
+}
+html,body{color:var(--text) !important;background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%) !important;}
+.panel,.titlebox,.card,.student-card,.team-panel,.start-panel,.score-panel,.match-card,.modal-card,.modal-card-basic,.sync-url-box,.sync-action-box,.lineup-link-card,.lineup-status-box,.counter-card,.summary-card,.check-card,.section-box,.status-box,.role-box,.summary-item,.ai-strategy-item,.team-card,.team-box,.event-log,.match-stats,.leader-card,.student-round-card,.lineup-card,.team-card,.score-team{
+  background:linear-gradient(180deg, rgba(10,20,38,.96), rgba(8,18,34,.96)) !important;
+  border-color:var(--line) !important;
+  box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.04) !important;
+}
+.card-head,.panel-header,.titlebox,.student-card .panel-header,.modal-header,.modal-footer,.sync-bar,.ref-head{
+  border-color:var(--line) !important;
+}
+.btn,.event-btn,.type-tab,.tab,.overlay-btn,.mini-btn,.icon-btn,.help-icon-btn{
+  background:linear-gradient(180deg, rgba(18,39,68,.96), rgba(11,24,44,.96)) !important;
+  color:var(--text) !important;
+  border:1px solid rgba(110,173,255,.18) !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04) !important;
+  transition:transform .16s ease, border-color .16s ease, box-shadow .16s ease, background .16s ease !important;
+}
+.btn:hover,.event-btn:hover,.type-tab:hover,.tab:hover,.overlay-btn:hover,.mini-btn:hover,.icon-btn:hover,.help-icon-btn:hover{
+  filter:none !important;
+  transform:translateY(-1px) !important;
+  border-color:rgba(140,202,255,.34) !important;
+  box-shadow:0 10px 22px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.05) !important;
+}
+.btn:active,.event-btn:active,.type-tab:active,.tab:active,.overlay-btn:active,.mini-btn:active,.icon-btn:active,.help-icon-btn:active{
+  transform:translateY(0) !important;
+}
+.btn.primary,.btn.blue,.type-tab.active,.tab.active,.mini-btn.plus{
+  background:linear-gradient(135deg, #2d73ff, #4da3ff) !important;
+  color:#fff !important;
+  border-color:transparent !important;
+  box-shadow:0 10px 24px rgba(45,115,255,.24) !important;
+}
+.btn.green{
+  background:linear-gradient(135deg, #1f9d67, #34c884) !important;
+  color:#fff !important;
+  border-color:transparent !important;
+  box-shadow:0 10px 24px rgba(31,157,103,.22) !important;
+}
+.btn.yellow,.overlay-btn.warn{
+  background:linear-gradient(135deg, #d49b2d, #f2c14e) !important;
+  color:#17202e !important;
+  border-color:transparent !important;
+  box-shadow:0 10px 24px rgba(212,155,45,.20) !important;
+}
+.btn.red,.overlay-btn.danger{
+  background:linear-gradient(135deg, #d45757, #e86a6a) !important;
+  color:#fff !important;
+  border-color:transparent !important;
+  box-shadow:0 10px 24px rgba(212,87,87,.22) !important;
+}
+.btn.gray{
+  background:linear-gradient(135deg, #5f6b7c, #7f8b99) !important;
+  color:#eef4ff !important;
+  border-color:transparent !important;
+  box-shadow:0 10px 24px rgba(95,107,124,.18) !important;
+}
+.overlay-btn:not(.warn):not(.danger){
+  background:linear-gradient(180deg, rgba(18,39,68,.96), rgba(11,24,44,.96)) !important;
+  color:var(--text) !important;
+}
+.status-pill,.status-dot{border-color:rgba(255,255,255,.08) !important;}
+.status-green,.status-done{background:rgba(52,200,132,.16) !important;color:#9ff0c6 !important;}
+.status-yellow,.status-draft{background:rgba(242,193,78,.16) !important;color:#ffe08a !important;}
+.status-red{background:rgba(232,106,106,.16) !important;color:#ffb1b1 !important;}
+.status-blue,.status-edit{background:rgba(77,163,255,.16) !important;color:#cfe5ff !important;}
+.status-gray,.status-lock{background:rgba(127,139,153,.18) !important;color:#d8e2f2 !important;}
+.score-num,.score.red,.score.blue{letter-spacing:-.05em !important;}
+input,select,textarea,.score-pair input,.lineup-select,.lineup-link-card input,.form-stack input,.form-stack select{
+  background:rgba(7,19,36,.90) !important;
+  color:var(--text) !important;
+  border-color:rgba(110,173,255,.18) !important;
+}
+input:focus,select:focus,textarea:focus,.score-pair input:focus,.lineup-select:focus,.lineup-link-card input:focus,.form-stack input:focus,.form-stack select:focus{
+  border-color:var(--accent) !important;
+  box-shadow:0 0 0 3px rgba(77,163,255,.16) !important;
+  outline:none !important;
+}
+</style>
+
+</head><body><div class="page"><div class="head"><h1>배드민턴 수업 학생 성장 리포트</h1><div class="sub">누적 관찰 데이터를 바탕으로 생성된 종합형 리포트</div></div><div class="meta"><div><strong>반</strong> ${currentClass}반</div><div><strong>이름</strong> ${escapeHtml(report.player.name)}</div><div><strong>종목</strong> ${escapeHtml(growthEventFilter === 'all' ? '전체' : GAME_LABEL[growthEventFilter])}</div></div><div class="kpis"><div class="kpi"><div class="label">관찰 기록</div><div class="value">${report.summary.totalRecords}</div></div><div class="kpi"><div class="label">서브 성공률</div><div class="value">${report.summary.serveRate}%</div></div><div class="kpi"><div class="label">공격 성공률</div><div class="value">${report.summary.attackRate}%</div></div><div class="kpi"><div class="label">수비 성공률</div><div class="value">${report.summary.defenseRate}%</div></div></div><div class="section"><h3>누적 수행 요약</h3><div class="body"><table><tr><th>서브</th><td>성공 ${report.summary.totalServeSuccess}회 / 실패 ${report.summary.totalServeFail}회</td></tr><tr><th>공격</th><td>성공 ${report.summary.totalAttackSuccess}회 / 실패 ${report.summary.totalAttackFail}회</td></tr><tr><th>수비</th><td>성공 ${report.summary.totalDefenseSuccess}회 / 실패 ${report.summary.totalDefenseFail}회</td></tr><tr><th>서브 실패 최빈값</th><td>${escapeHtml(report.summary.topServeFail)}</td></tr><tr><th>공격 실패 최빈값</th><td>${escapeHtml(report.summary.topAttackFail)}</td></tr><tr><th>수비 실패 최빈값</th><td>${escapeHtml(report.summary.topDefenseFail)}</td></tr></table></div></div><div class="section"><h3>종합 분석</h3><div class="body"><div class="grid"><div class="box"><h4>대표 수행 유형</h4><div><strong>${escapeHtml(report.playType.label)}</strong></div><div style="margin-top:6px;">${escapeHtml(report.playType.desc)}</div></div><div class="box"><h4>강점</h4><div>${escapeHtml(report.strengthText)}</div></div><div class="box"><h4>보완점</h4><div>${escapeHtml(report.improveText)}</div></div><div class="box"><h4>다음 목표</h4><div>${escapeHtml(report.goalText)}</div></div></div></div></div><div class="section"><h3>교사 종합 코멘트</h3><div class="body">${escapeHtml(report.teacherComment)}</div></div></div><script>window.onload=()=>window.print();<\/script>
+    <div class="modal" id="doublesRestoreModal">
+      <div class="modal-card" style="width:min(620px, 100%);">
+        <div class="modal-header">
+          <div>
+            <div class="panel-title">기록 복원</div>
+            <div class="tiny muted">복원할 복식 자동 편성 백업 시점을 선택하세요. 화면에 보이던 복원 안내와 백업 목록은 이 창에서만 확인됩니다.</div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="footer-note" style="margin-top:0;">복식 초기 라운드 생성, 다음 라운드 생성, 재편성, 초기화 전 상태가 최근 3회까지 자동 저장됩니다. 복원하면 현재 복식 경기판과 운영 현황이 선택한 시점으로 되돌아갑니다.</div>
+          <div id="doublesRestoreModalList" class="feedback-list" style="margin-top:12px;"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" onclick="closeDoublesRestoreModal()">닫기</button>
+        </div>
+      </div>
+    </div>
+
+
+</body></html>`);
       win.document.close();
     }
     window.printGrowthReport = printGrowthReport;
@@ -9635,6 +11016,9 @@ function renderAll() {
   }
   function backupListMarkup(section, list){
     if(!list.length) return '';
+    if(section === 'doubles'){
+      return `<div class="backup-restore-history" id="${section}RestoreHistory"><button type="button" class="btn small" onclick="openDoublesRestoreModal()">기록 복원</button></div>`;
+    }
     return `<div class="backup-restore-history" id="${section}RestoreHistory">${list.map((payload, idx) => `<button type="button" class="btn small" onclick="restoreSectionBackup('${section}','${payload.id}')">${idx+1}회차 복원 · ${backupSummary(payload)}</button>`).join('')}</div>`;
   }
   function setupSnapshot(){ return deepClone(currentData()); }
@@ -9694,17 +11078,12 @@ ${actionLabel} 계속하시겠습니까?`;
     const setupHead = document.querySelector('#setupWizardPanel .panel-header');
     if(setupHead && !document.getElementById('setupRestoreBar')) setupHead.appendChild(createRestoreBar('setup','팀 구성을 새로 확정하기 전 최근 3회까지 자동 백업됩니다.'));
     const singlesToolbar = document.querySelector('#singlesPage .control-row');
-    if(singlesToolbar && !document.getElementById('singlesRestoreBar')){
-      const wrap = createRestoreBar('singles','단식 대진 생성/초기화 전 최근 3회까지 자동 백업됩니다.');
-      wrap.id = 'singlesRestoreBar';
-      singlesToolbar.parentElement.appendChild(wrap);
+    if(singlesToolbar){
+      const singlesRestoreBar = document.getElementById('singlesRestoreBar');
+      if(singlesRestoreBar) singlesRestoreBar.remove();
     }
-    const doublesToolbar = document.querySelector('#doublesPage .doubles-toolbar');
-    if(doublesToolbar && !document.getElementById('doublesRestoreBar')){
-      const wrap = createRestoreBar('doubles','복식 재편성/초기화 전 최근 3회까지 자동 백업됩니다.');
-      wrap.id = 'doublesRestoreBar';
-      doublesToolbar.closest('.panel-body').appendChild(wrap);
-    }
+    const doublesRestoreBar = document.getElementById('doublesRestoreBar');
+    if(doublesRestoreBar) doublesRestoreBar.remove();
   }
   window.renderBackupControls = function(){
     mountRestoreBars();
@@ -9730,6 +11109,51 @@ ${actionLabel} 계속하시겠습니까?`;
     wrapped.__wrappedBackup = true;
     window[fnName] = wrapped;
   }
+
+  function renderRestoreModalList(section, listElId, emptyText){
+    const listEl = document.getElementById(listElId);
+    if(!listEl) return;
+    const list = loadBackupList(section);
+    if(!list.length){
+      listEl.innerHTML = `<div class="feedback-item">${emptyText}</div>`;
+      return;
+    }
+    listEl.innerHTML = list.map((payload, idx) => `
+      <div class="feedback-item">
+        <strong>${idx+1}회차 복원</strong>
+        <div class="tiny muted" style="margin-top:6px;">저장 시각: ${backupSummary(payload) || '-'}</div>
+        <div class="tiny muted" style="margin-top:6px;">복원하면 현재 ${SECTION_LABEL[section]} 화면이 이 시점 상태로 되돌아갑니다.</div>
+        <div style="margin-top:10px; display:flex; justify-content:flex-end;">
+          <button type="button" class="btn small" onclick="restoreSectionBackup('${section}','${payload.id}'); ${section === 'singles' ? 'closeSinglesRestoreModal()' : 'closeDoublesRestoreModal()'}">이 시점으로 복원</button>
+        </div>
+      </div>
+    `).join('');
+  }
+  window.openSinglesRestoreModal = function(){
+    renderRestoreModalList('singles', 'singlesRestoreModalList', '복원 가능한 단식 백업이 없습니다. 단식 대진 생성 또는 초기화 전에 자동 백업이 저장됩니다.');
+    const modal = document.getElementById('singlesRestoreModal');
+    if(modal) modal.classList.add('show');
+  };
+  window.closeSinglesRestoreModal = function(){
+    const modal = document.getElementById('singlesRestoreModal');
+    if(modal) modal.classList.remove('show');
+  };
+  window.openDoublesRestoreModal = function(){
+    renderRestoreModalList('doubles', 'doublesRestoreModalList', '복원 가능한 복식 백업이 없습니다. 복식 재편성 또는 초기 라운드 생성 전에 자동 백업이 저장됩니다.');
+    const modal = document.getElementById('doublesRestoreModal');
+    if(modal) modal.classList.add('show');
+  };
+  window.closeDoublesRestoreModal = function(){
+    const modal = document.getElementById('doublesRestoreModal');
+    if(modal) modal.classList.remove('show');
+  };
+  document.addEventListener('click', function(e){
+    const singlesModal = document.getElementById('singlesRestoreModal');
+    const doublesModal = document.getElementById('doublesRestoreModal');
+    if(singlesModal && e.target === singlesModal) closeSinglesRestoreModal();
+    if(doublesModal && e.target === doublesModal) closeDoublesRestoreModal();
+  });
+
   function installWrappers(){
     wrapAction('generateBalancedTeams','setup','새 조편성을');
     wrapAction('shuffleTeamsOnly','setup','조편성 재생성을');
@@ -9755,6 +11179,44 @@ ${actionLabel} 계속하시겠습니까?`;
   else setTimeout(renderBackupControls, 0);
 })();
 </script>
+
+
+    
+    <div class="modal" id="singlesRestoreModal">
+      <div class="modal-card" style="width:min(620px, 100%);">
+        <div class="modal-header">
+          <div>
+            <div class="panel-title">기록 복원</div>
+            <div class="tiny muted">복원할 단식 대진 백업 시점을 선택하세요. 화면에 보이던 복원 안내와 백업 목록은 이 창에서만 확인됩니다.</div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="footer-note" style="margin-top:0;">단식 대진 생성 또는 초기화 전 상태가 최근 3회까지 자동 저장됩니다. 복원하면 현재 단식 대진표와 순위 화면이 선택한 시점으로 되돌아갑니다.</div>
+          <div id="singlesRestoreModalList" class="feedback-list" style="margin-top:12px;"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" onclick="closeSinglesRestoreModal()">닫기</button>
+        </div>
+      </div>
+    </div>
+
+<div class="modal" id="doublesRestoreModal">
+      <div class="modal-card" style="width:min(620px, 100%);">
+        <div class="modal-header">
+          <div>
+            <div class="panel-title">기록 복원</div>
+            <div class="tiny muted">복원할 복식 자동 편성 백업 시점을 선택하세요.</div>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div id="doublesRestoreModalList" class="feedback-list"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" onclick="closeDoublesRestoreModal()">닫기</button>
+        </div>
+      </div>
+    </div>
+
 
 </body>
 </html>
