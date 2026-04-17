@@ -247,6 +247,10 @@
       --btn-font-sm: .84rem;
     }
     * { box-sizing: border-box; }
+    /* Hide scrollbars globally while preserving scroll */
+    * { scrollbar-width: none; -ms-overflow-style: none; }
+    *::-webkit-scrollbar { width: 0 !important; height: 0 !important; display: none !important; }
+
     body {
       margin: 0;
       font-family: Pretendard, Arial, sans-serif;
@@ -342,6 +346,127 @@
     .form-stack input,.form-stack select{width:100%;background:#0d1b31;color:#f4f8ff;border:1px solid rgba(77,163,255,.18);border-radius:12px;padding:12px 12px;font:inherit}
     .form-stack input:focus,.form-stack select:focus{outline:none;border-color:#4da3ff;box-shadow:0 0 0 3px rgba(77,163,255,.16)}
     .modal-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+
+    
+
+    .team-adjust-shell{display:grid;gap:16px;align-content:start;}
+    .team-adjust-hero{background:linear-gradient(180deg, rgba(18,37,68,.95), rgba(10,23,48,.95));border:1px solid rgba(255,255,255,.08);border-radius:22px;box-shadow:var(--shadow);padding:18px;display:grid;gap:14px;}
+    .team-adjust-hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;}
+    .team-adjust-hero .panel-title{font-size:1.08rem;}
+    .team-adjust-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;}
+    .team-adjust-stat{padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);display:grid;gap:4px;}
+    .team-adjust-stat .label{font-size:.78rem;color:var(--muted);}
+    .team-adjust-stat .value{font-size:1.18rem;font-weight:900;}
+    .team-adjust-toggle-row{display:flex;gap:8px;flex-wrap:wrap;}
+    .team-adjust-tab-btn{min-height:44px;padding:10px 16px;border-radius:var(--btn-radius);cursor:pointer;font-weight:800;font-size:var(--btn-font);background:linear-gradient(180deg,#11233f,#0c1b31);color:var(--muted);border:1px solid rgba(255,255,255,.08);display:inline-flex;align-items:center;justify-content:center;line-height:1.2;}
+    .team-adjust-tab-btn.active{background:linear-gradient(135deg,#2d73ff,#45b3ff);color:#fff;border-color:transparent;box-shadow:0 8px 18px rgba(45,115,255,.22);}
+    .team-adjust-panel{display:none;}
+    .team-adjust-panel.active{display:grid;gap:16px;}
+    .team-adjust-grid{display:grid;grid-template-columns:minmax(300px,.9fr) minmax(0,1.25fr);gap:16px;align-items:start;}
+    .team-adjust-direct-shell{display:grid;gap:14px;align-content:start;}
+    .team-selector-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto auto;gap:10px;align-items:stretch;}
+    .team-selector-btn{min-height:56px;padding:12px 14px;border-radius:18px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,#11233f,#0c1b31);color:#d9eaff;display:grid;gap:6px;justify-items:start;align-content:center;cursor:pointer;transition:.15s ease;text-align:left;}
+    .team-selector-btn:hover{filter:brightness(1.06);}
+    .team-selector-btn.active{background:linear-gradient(135deg,#2d73ff,#45b3ff);color:#fff;border-color:transparent;box-shadow:0 8px 18px rgba(45,115,255,.22);}
+    .team-selector-btn .selector-title{font-size:.96rem;font-weight:900;line-height:1.2;}
+    .team-selector-btn .selector-sub{font-size:.74rem;color:inherit;opacity:.9;line-height:1.35;}
+    .team-selector-action{min-width:120px;}
+    .team-selector-guide{font-size:.8rem;color:var(--muted);line-height:1.55;padding:0 2px;}
+    .team-overview-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start;}
+    .team-overview-card{padding:14px;border-radius:18px;background:linear-gradient(180deg, rgba(50,92,160,.18), rgba(23,38,68,.45));border:1px solid rgba(90,177,255,.14);display:grid;gap:10px;align-content:start;align-self:start;height:auto;}
+    .team-overview-card.selected{box-shadow:inset 0 0 0 2px rgba(90,177,255,.42);border-color:rgba(90,177,255,.3);}
+    .team-overview-head{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:14px;}
+    .team-overview-head > div{display:grid;gap:12px;justify-items:start;align-content:start;}
+    .team-overview-name{font-size:1rem;font-weight:900;text-align:left;justify-self:start;line-height:1.2;}
+    .team-overview-meta{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-start;align-items:center;}
+    .team-overview-chip{padding:5px 8px;border-radius:999px;font-size:.74rem;font-weight:800;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:#d9eaff;}
+    .team-overview-players{display:grid;gap:8px;}
+    .team-overview-player{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);font-size:.82rem;}
+    .team-overview-player.is-fixed{opacity:.72;background:rgba(255,107,107,.08);border-color:rgba(255,107,107,.16);}
+    .team-overview-player-main{display:grid;gap:3px;min-width:0;}
+    .team-overview-player-name{font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .team-overview-player-sub{color:var(--muted);font-size:.75rem;}
+    .team-adjust-card{padding:16px;border-radius:20px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);display:grid;gap:12px;}
+    .team-adjust-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;}
+    .team-adjust-card-title{font-size:.98rem;font-weight:900;}
+    .team-adjust-card-sub{color:var(--muted);font-size:.8rem;line-height:1.55;}
+    .recommend-card{padding:18px;border-radius:20px;background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08);display:grid;gap:16px;}
+    #teamAdjustRecommendList{display:grid;gap:18px;padding-top:4px;}
+    .recommend-card.active{border-color:rgba(90,177,255,.34);box-shadow:inset 0 0 0 1px rgba(90,177,255,.24);}
+    .recommend-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;}
+    .recommend-title{font-size:1rem;font-weight:900;}
+    .recommend-swap{font-size:1.04rem;font-weight:900;line-height:1.4;}
+    .recommend-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;}
+    .recommend-metric{padding:14px 14px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);display:grid;gap:6px;}
+    .recommend-metric .label{font-size:.74rem;color:var(--muted);}
+    .recommend-metric .value{font-size:.94rem;font-weight:900;}
+    .recommend-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;}
+    .direct-layout{display:grid;grid-template-columns:minmax(250px,.78fr) minmax(420px,1.32fr) minmax(250px,.78fr);gap:18px;align-items:start;}
+    .direct-layout > .team-adjust-card,.direct-layout > .direct-center{align-self:start;}
+    .direct-team-list{display:grid;gap:10px;max-height:620px;overflow:auto;align-content:start;scrollbar-width:none;-ms-overflow-style:none;padding-right:2px;}
+    .direct-team-list::-webkit-scrollbar{width:0;height:0;display:none;}
+    .direct-player-card{width:100%;text-align:left;padding:12px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;cursor:pointer;transition:.15s ease;}
+    .direct-player-card:hover{background:rgba(255,255,255,.06);border-color:rgba(90,177,255,.2);}
+    .direct-player-card.selected-a{background:rgba(77,163,255,.12);border-color:rgba(77,163,255,.35);}
+    .direct-player-card.selected-b{background:rgba(123,255,204,.10);border-color:rgba(123,255,204,.26);}
+    .direct-player-no{width:38px;height:38px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);display:grid;place-items:center;font-size:.82rem;font-weight:900;color:#dceaff;}
+    .direct-player-main{display:grid;gap:4px;min-width:0;}
+    .direct-player-name{font-size:.94rem;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#eef5ff;}
+    .direct-player-meta{font-size:.76rem;color:#a9bdd9;line-height:1.5;}
+    .direct-player-card.is-blocked{opacity:.68;cursor:not-allowed;background:rgba(255,107,107,.06);} .direct-player-card.is-blocked .direct-player-name,.direct-player-card.is-blocked .direct-player-no,.direct-player-card.is-blocked .direct-player-meta{color:rgba(169,189,217,.45) !important;}
+    .direct-center{position:sticky;top:16px;}
+    .direct-preview-box{padding:16px;border-radius:20px;background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.025));border:1px solid rgba(255,255,255,.08);display:grid;gap:12px;}
+    .direct-preview-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+    .direct-preview-title{font-size:1rem;font-weight:900;}
+    .direct-preview-sub{font-size:.8rem;color:var(--muted);line-height:1.55;}
+    .direct-picked-row{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;}
+    .direct-picked-card{min-height:94px;padding:12px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);display:grid;place-items:center;text-align:center;}
+    .direct-picked-card.active-a{background:rgba(77,163,255,.12);border-color:rgba(77,163,255,.35);}
+    .direct-picked-card.active-b{background:rgba(123,255,204,.10);border-color:rgba(123,255,204,.26);}
+    .direct-picked-name{font-size:1rem;font-weight:900;}
+    .direct-picked-sub{font-size:.76rem;color:var(--muted);line-height:1.5;margin-top:5px;}
+    .direct-arrow{font-size:1.5rem;font-weight:900;color:#9fcfff;text-align:center;}
+    .direct-detail-compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .direct-detail-card{padding:14px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);display:grid;gap:10px;align-content:start;}
+    .direct-detail-card.empty{place-items:center;text-align:center;color:var(--muted);min-height:196px;}
+    .direct-detail-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;}
+    .direct-detail-title{font-size:.9rem;font-weight:900;}
+    .direct-detail-name{font-size:.98rem;font-weight:900;line-height:1.35;}
+    .direct-detail-badge{padding:5px 8px;border-radius:999px;font-size:.72rem;font-weight:800;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:#d9eaff;}
+    .direct-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;}
+    .direct-detail-item{padding:10px 11px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);display:grid;gap:4px;}
+    .direct-detail-item .label{font-size:.72rem;color:var(--muted);line-height:1.3;}
+    .direct-detail-item .value{font-size:.84rem;font-weight:800;line-height:1.35;}
+    .rule-check-list{display:grid;gap:8px;}
+    .rule-check-item{display:flex;justify-content:space-between;gap:8px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);font-size:.8rem;}
+    .rule-check-item strong{font-weight:800;}
+    .rule-check-item.pass span{color:#bff6d0;}
+    .rule-check-item.fail span{color:#ffb8b8;}
+    .team-adjust-log-list{display:grid;gap:10px;}
+    .team-adjust-log-item{padding:12px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);display:grid;gap:6px;}
+    .team-adjust-log-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
+    .team-adjust-log-title{font-size:.9rem;font-weight:900;}
+    .team-adjust-log-meta{font-size:.76rem;color:var(--muted);line-height:1.55;}
+    .team-adjust-empty{padding:24px 16px;border-radius:18px;background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.08);text-align:center;color:var(--muted);font-size:.84rem;line-height:1.6;}
+    .team-adjust-confirm-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.58);display:none;align-items:center;justify-content:center;z-index:120;padding:20px;}
+    .team-adjust-confirm-backdrop.show{display:flex;}
+    .team-adjust-confirm-card{width:min(620px,100%);background:#0d1830;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;}
+    .team-adjust-confirm-head,.team-adjust-confirm-foot{padding:14px 16px;border-bottom:1px solid var(--line);}
+    .team-adjust-confirm-foot{border-top:1px solid var(--line);border-bottom:none;display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;}
+    .team-adjust-confirm-body{padding:16px;display:grid;gap:14px;}
+    .team-adjust-confirm-title{font-size:1rem;font-weight:900;}
+    .team-adjust-confirm-anon{font-size:1.06rem;font-weight:900;line-height:1.4;}
+    .team-adjust-confirm-note{font-size:.82rem;color:var(--muted);line-height:1.6;}
+    @media (max-width: 1180px){
+      .team-adjust-grid,.direct-layout{grid-template-columns:1fr;}
+      .direct-center{position:static;}
+    }
+    @media (max-width: 760px){
+      .team-adjust-summary,.team-overview-grid,.recommend-metrics,.direct-detail-compare,.direct-detail-grid{grid-template-columns:1fr 1fr;}
+      .team-selector-row{grid-template-columns:1fr 1fr;}
+      .direct-picked-row,.direct-detail-compare,.direct-detail-grid{grid-template-columns:1fr;}
+      .direct-arrow{transform:rotate(90deg);}
+    }
 
     @media (min-width: 1440px){
       .app{max-width:1920px;padding:18px 20px}
@@ -631,7 +756,7 @@
     .broadcast-hero{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:clamp(12px,1.4vw,18px) clamp(14px,1.6vw,20px);border-radius:22px;background:linear-gradient(180deg, rgba(18,37,68,.95), rgba(10,23,48,.95));border:1px solid rgba(255,255,255,.08);box-shadow:var(--shadow);min-height:0;}
     .broadcast-hero h2{margin:0;font-size:clamp(1.05rem,1.8vw,1.35rem);letter-spacing:-.02em;}
     .broadcast-hero p{margin:6px 0 0;color:var(--muted);line-height:1.45;font-size:clamp(.74rem,.95vw,.88rem);}
-    .broadcast-mode-pill{display:inline-flex;align-items:center;gap:8px;padding:clamp(8px,.9vw,10px) clamp(10px,1vw,14px);border-radius:999px;background:rgba(90,177,255,.14);border:1px solid rgba(90,177,255,.22);font-weight:800;color:#d8e9ff;white-space:nowrap;font-size:clamp(.72rem,.9vw,.88rem);}
+    .broadcast-mode-pill{display:inline-flex;align-items:center;justify-content:center;align-self:center;gap:8px;min-height:48px;padding:0 clamp(14px,1.2vw,18px);border-radius:999px;background:rgba(90,177,255,.14);border:1px solid rgba(90,177,255,.22);font-weight:800;color:#d8e9ff;white-space:nowrap;font-size:clamp(.72rem,.9vw,.88rem);line-height:1;margin-top:0 !important;}
     .broadcast-toggle-group{display:inline-flex;gap:8px;padding:6px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);}
     .broadcast-toggle-btn{min-height:clamp(34px,3vw,40px);padding:clamp(6px,.7vw,8px) clamp(12px,1vw,16px);border-radius:999px;border:1px solid transparent;background:transparent;color:var(--muted);font-weight:900;cursor:pointer;white-space:nowrap;font-size:clamp(.74rem,.92vw,.9rem);}
     .broadcast-toggle-btn.active{background:linear-gradient(135deg,#2d73ff,#45b3ff);color:#fff;box-shadow:0 8px 18px rgba(45,115,255,.22);}
@@ -1111,7 +1236,7 @@
     }
 
     .singles-participant-grid{display:grid;grid-template-columns:minmax(340px,1fr) minmax(420px,1fr);gap:16px;margin-top:16px;align-items:start;}
-    .singles-participant-list{max-height:280px;overflow:auto;border:1px solid rgba(255,255,255,.06);border-radius:16px;background:rgba(255,255,255,.02);}
+    .singles-participant-list{max-height:630px;overflow:auto;border:1px solid rgba(255,255,255,.06);border-radius:16px;background:rgba(255,255,255,.02);}
     .singles-summary-list{display:grid;gap:10px;}
     .singles-summary-card{padding:12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);}
     .singles-rank-stack{display:grid;gap:16px;}
@@ -1132,7 +1257,7 @@
     .singles-score-inputs input{width:100%;height:84px;background:#0e1c33;color:#fff;border:1px solid var(--line);border-radius:14px;padding:8px 8px;text-align:center;font-size:2rem;font-weight:800;}
     .singles-score-sep{display:flex;align-items:center;justify-content:center;min-width:26px;height:84px;font-size:2rem;font-weight:800;line-height:1;text-align:center;}
     .singles-meta{font-size:.8rem;color:var(--muted);margin-top:6px;}
-    .singles-rank-table th,.singles-rank-table td{padding:8px 6px;}
+    .singles-rank-table th,.singles-rank-table td{padding:10px 6px;}
     .single-skill-pill{display:inline-block;padding:3px 8px;border-radius:999px;background:rgba(123,255,204,.12);color:#d9fff1;font-weight:700;font-size:.78rem;}
     @media (max-width: 1080px){.singles-participant-grid,.singles-grid{grid-template-columns:1fr;}}
     @media (max-width: 760px){
@@ -2865,8 +2990,10 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
     @media (max-width: 1200px){.doubles-participant-panel .doubles-summary-head{flex-wrap:wrap;}.doubles-participant-panel .title-wrap,.doubles-participant-panel .doubles-head-actions{flex-wrap:wrap;white-space:normal;}}
     .doubles-chip{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:999px;background:rgba(90,177,255,.14);border:1px solid rgba(90,177,255,.18);font-size:.82rem;font-weight:800;color:#dcebff;}
     .doubles-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:start;}
-    .doubles-summary-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:16px;margin-top:14px;align-items:start;}
-    .doubles-summary-grid .panel{height:100%;}
+    .doubles-summary-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:16px;margin-top:14px;align-items:stretch;}
+    .doubles-summary-grid > .panel{height:100%;display:flex;flex-direction:column;}
+    .doubles-summary-grid > .panel > .panel-body{flex:1;}
+    .doubles-summary-grid > .doubles-participant-panel{height:100%;align-self:stretch;}
     .doubles-round-stack{display:grid;gap:16px;}
     .doubles-round-section{display:grid;gap:10px;}
     .doubles-round-grid{display:grid;gap:12px;}
@@ -2892,9 +3019,11 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
     .doubles-btn-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
     .doubles-ref-inline{display:inline-flex;align-items:center;min-height:44px;padding:0 10px 0 14px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);font-size:.84rem;line-height:1.2;color:#dce8ff;white-space:nowrap;}
     .doubles-participants-grid{display:grid;grid-template-columns:1fr;gap:12px;}
-    .doubles-participant-table{width:100%;border-collapse:collapse;min-width:640px;}
+    .doubles-participant-table{width:100%;border-collapse:separate;border-spacing:0;min-width:640px;table-layout:fixed;}
     .doubles-participant-table th,.doubles-participant-table td{padding:10px 8px;border-bottom:1px solid rgba(255,255,255,.06);text-align:center;}
-    .doubles-participant-table th{background:#13223d;color:#cfe0ff;font-size:.82rem;}
+    .doubles-participant-table th{background:#13223d;color:#cfe0ff;font-size:.82rem;font-weight:800;}
+    .doubles-participant-table th:first-child{border-top-left-radius:14px;}
+    .doubles-participant-table th:last-child{border-top-right-radius:14px;}
     .doubles-participant-table td{background:transparent;}
     .doubles-participant-name{font-weight:800;text-align:left;}
     .doubles-participant-meta{font-size:.76rem;color:var(--muted);margin-top:3px;}
@@ -2904,9 +3033,13 @@ body.broadcast-only .broadcast-stadium-score{font-size:clamp(6.6rem,13vw,11rem);
     .doubles-participant-status.active{background:rgba(123,255,204,.15);color:#d7fff0;}
     .doubles-participant-status.inactive{background:rgba(255,107,107,.16);color:#ffd1d1;}
     .doubles-rank-wrap,.doubles-participants-scroll{max-height:520px;overflow:auto;}
-    .doubles-participants-wrap{max-height:280px;overflow:auto;border:1px solid rgba(255,255,255,.06);border-radius:16px;}
+    .doubles-participants-wrap{max-height:520px;overflow:auto;border:1px solid rgba(255,255,255,.06);border-radius:16px;}
     .doubles-op-wrap{padding-top:0;padding-bottom:0;}
-    .doubles-op-scroll{max-height:860px;overflow:auto;}
+    .doubles-op-scroll{max-height:520px;overflow:auto;border-radius:16px;}
+    .doubles-op-scroll table{width:100%;border-collapse:separate;border-spacing:0;table-layout:auto;}
+    .doubles-op-scroll th,.doubles-op-scroll td{padding:10px 6px;}
+    .doubles-op-scroll thead th:first-child{border-top-left-radius:14px;}
+    .doubles-op-scroll thead th:last-child{border-top-right-radius:14px;}
     .doubles-participants-wrap,.doubles-op-scroll{scrollbar-width:thin;scrollbar-color:rgba(90,177,255,.42) rgba(255,255,255,.04);}
     .doubles-participants-wrap::-webkit-scrollbar,.doubles-op-scroll::-webkit-scrollbar{width:8px;height:8px;}
     .doubles-participants-wrap::-webkit-scrollbar-track,.doubles-op-scroll::-webkit-scrollbar-track{background:rgba(255,255,255,.035);border-radius:999px;}
@@ -3412,30 +3545,6 @@ body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-pane
 }
 
 
-/* expand doubles participant table container to fill card more */
-body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-panel{
-  display:grid !important;
-  grid-template-rows:auto 1fr !important;
-  min-height: 620px !important;
-}
-body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-panel > .panel-body{
-  display:flex !important;
-  flex-direction:column !important;
-  padding-top:8px !important;
-  height:100% !important;
-  min-height:0 !important;
-}
-body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-panel .doubles-participants-wrap{
-  flex:1 1 auto !important;
-  height:100% !important;
-  min-height:0 !important;
-  max-height:none !important;
-}
-body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-panel #doublesParticipants{
-  height:100% !important;
-}
-
-
 /* singles layout alignment fix */
 #singlesPage .singles-top-inline{
   justify-content:flex-start !important;
@@ -3481,6 +3590,8 @@ body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-pane
 }
 #singlesPage .singles-participant-card .panel-body{
   padding:14px 16px 16px !important;
+  overflow:hidden !important;
+  position:relative !important;
 }
 #singlesPage .singles-participant-summary-inline{
   display:flex !important;
@@ -3569,19 +3680,6 @@ body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-pane
 }
 
 
-/* enlarge singles participant table container height without changing row height/padding */
-#singlesPage .singles-participant-card{
-  display:grid !important;
-  grid-template-rows:auto 1fr !important;
-  min-height:620px !important;
-}
-#singlesPage #singlesParticipantList{
-  height:100% !important;
-  min-height:520px !important;
-  max-height:none !important;
-}
-
-
 /* make singles participant table frame match men's singles rank table */
 #singlesPage .singles-participant-card{
   background: rgba(15,28,51,.92) !important;
@@ -3593,15 +3691,19 @@ body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-pane
 #singlesPage .singles-participant-head{
   padding:14px 16px !important;
   border-bottom:1px solid var(--line) !important;
-  background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,0)) !important;
+  background: linear-gradient(180deg, rgba(17,35,63,.98), rgba(12,27,49,.98)) !important;
   margin-bottom:0 !important;
+  position:relative !important;
+  z-index:3 !important;
 }
 #singlesPage #singlesParticipantList{
-  padding:14px 16px 16px !important;
-  background: transparent !important;
+  padding:0 16px 16px !important;
+  background: rgba(15,28,51,.92) !important;
   border:none !important;
-  min-height:520px !important;
-  max-height:none !important;
+  min-height:0 !important;
+  max-height:630px !important;
+  display:block !important;
+  overflow:auto !important;
 }
 #singlesPage #singlesParticipantList.singles-participant-list{
   overflow:auto !important;
@@ -3641,23 +3743,37 @@ body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-pane
 }
 
 
-/* remove extra inner background layer behind singles participant header/table area */
+/* keep singles participant card opaque so scrolled rows do not show through the header area */
 #singlesPage .singles-summary-list,
 #singlesPage .singles-participant-grid{
   background: transparent !important;
 }
 #singlesPage .singles-participant-card{
-  background: transparent !important;
-  box-shadow: none !important;
+  background: rgba(15,28,51,.92) !important;
+  box-shadow: var(--shadow) !important;
 }
 #singlesPage .singles-participant-head{
-  background: transparent !important;
+  background: linear-gradient(180deg, rgba(17,35,63,.98), rgba(12,27,49,.98)) !important;
+}
+#singlesPage .singles-participant-card .panel-body{
+  background: rgba(15,28,51,.92) !important;
+  padding:0 0 0 0 !important;
+  overflow:hidden !important;
 }
 
 
 /* singles participant 7-column table sizing */
 #singlesPage #singlesParticipantList .singles-participant-ranklike{
   table-layout: fixed !important;
+}
+
+#singlesPage .singles-participant-card .panel-body > .singles-participant-head{
+  padding:14px 16px !important;
+}
+#singlesPage #singlesParticipantList .singles-participant-ranklike thead th{
+  position:sticky !important;
+  top:0 !important;
+  z-index:2 !important;
 }
 #singlesPage #singlesParticipantList .singles-participant-ranklike td:nth-child(2){
   font-weight:800 !important;
@@ -3677,6 +3793,82 @@ body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-pane
   width:auto !important;
 }
 
+
+    /* Force-hide visible scrollbars across the entire page while preserving scrolling */
+    html, body, .app, .page, .panel-body, .roster-wrap, .event-log-list, .history-list, .draft-pool-list, .singles-participant-list, .singles-rank-wrap, .broadcast-side-scroll, .broadcast-side-body, .doubles-participants-wrap, .doubles-op-scroll, .direct-team-list, .team-overview-grid, .team-overview-players, .match-grid, .team-adjust-log-list, #dataInsightList, [style*="overflow:auto"], [style*="overflow: auto"], [style*="overflow-y:auto"], [style*="overflow-y: auto"], [style*="overflow-x:auto"], [style*="overflow-x: auto"]{scrollbar-width:none !important;-ms-overflow-style:none !important;}
+    html::-webkit-scrollbar, body::-webkit-scrollbar, .app::-webkit-scrollbar, .page::-webkit-scrollbar, .panel-body::-webkit-scrollbar, .roster-wrap::-webkit-scrollbar, .event-log-list::-webkit-scrollbar, .history-list::-webkit-scrollbar, .draft-pool-list::-webkit-scrollbar, .singles-participant-list::-webkit-scrollbar, .singles-rank-wrap::-webkit-scrollbar, .broadcast-side-scroll::-webkit-scrollbar, .broadcast-side-body::-webkit-scrollbar, .doubles-participants-wrap::-webkit-scrollbar, .doubles-op-scroll::-webkit-scrollbar, .direct-team-list::-webkit-scrollbar, .team-overview-grid::-webkit-scrollbar, .team-overview-players::-webkit-scrollbar, .match-grid::-webkit-scrollbar, .team-adjust-log-list::-webkit-scrollbar, #dataInsightList::-webkit-scrollbar, [style*="overflow:auto"]::-webkit-scrollbar, [style*="overflow: auto"]::-webkit-scrollbar, [style*="overflow-y:auto"]::-webkit-scrollbar, [style*="overflow-y: auto"]::-webkit-scrollbar, [style*="overflow-x:auto"]::-webkit-scrollbar, [style*="overflow-x: auto"]::-webkit-scrollbar{width:0 !important;height:0 !important;display:none !important;background:transparent !important;}
+
+
+/* singles participant scroll clipping fix */
+#singlesPage .singles-participant-card{
+  position:relative !important;
+  overflow:hidden !important;
+  isolation:isolate !important;
+}
+#singlesPage .singles-participant-head.panel-header{
+  position:relative !important;
+  z-index:8 !important;
+  background:linear-gradient(180deg, rgba(10,26,50,.98), rgba(8,22,43,.98)) !important;
+}
+#singlesPage #singlesParticipantList{
+  position:relative !important;
+  z-index:1 !important;
+  overflow:auto !important;
+  overscroll-behavior:contain !important;
+  background:transparent !important;
+}
+#singlesPage #singlesParticipantList .singles-participant-ranklike{
+  margin-top:0 !important;
+}
+#singlesPage #singlesParticipantList .singles-participant-ranklike thead th{
+  top:0 !important;
+  z-index:4 !important;
+  background:#13223d !important;
+  box-shadow:0 1px 0 rgba(255,255,255,.04) inset, 0 1px 0 rgba(255,255,255,.04);
+}
+
+
+
+/* FINAL FIX: singles participant panel background must match singles rank panels */
+#singlesPage .singles-summary-list > .singles-participant-card,
+#singlesPage .singles-summary-list > .singles-participant-card.panel{
+  background: rgba(15,28,51,.92) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: var(--radius) !important;
+  overflow: hidden !important;
+}
+#singlesPage .singles-summary-list > .singles-participant-card > .panel-body{
+  padding: 0 !important;
+  background: transparent !important;
+  border-top: none !important;
+}
+#singlesPage #singlesParticipantList.singles-participant-list,
+#singlesPage #singlesParticipantList{
+  max-height: 630px !important;
+  overflow: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+#singlesPage #singlesParticipantList .singles-participant-ranklike,
+#singlesPage #singlesParticipantList .singles-rank-table{
+  width: 100% !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+#singlesPage #singlesParticipantList .singles-participant-ranklike tbody,
+#singlesPage #singlesParticipantList .singles-participant-ranklike tr,
+#singlesPage #singlesParticipantList .singles-participant-ranklike td,
+#singlesPage #singlesParticipantList .singles-rank-table tbody,
+#singlesPage #singlesParticipantList .singles-rank-table tr,
+#singlesPage #singlesParticipantList .singles-rank-table td{
+  background: transparent !important;
+}
 </style>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -3756,9 +3948,11 @@ body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-pane
 .avg-pill,
 .tag,
 .broadcast-badge,
-.broadcast-meta,
-.broadcast-mode-pill{
+.broadcast-meta{
   margin-top:10px !important;
+}
+.broadcast-mode-pill{
+  margin-top:0 !important;
 }
 .btn,.tab,.view-tab,.type-tab,.qr-mode-tab,.qr-round-btn{
   min-height:46px !important;
@@ -3852,6 +4046,35 @@ body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-pane
   .panel-body,.card-body{padding:16px 16px 18px !important;}
   .titlebox{padding:18px 18px !important;}
 }
+
+/* singles participant scroll clipping fix */
+#singlesPage .singles-participant-card{
+  position:relative !important;
+  overflow:hidden !important;
+  isolation:isolate !important;
+}
+#singlesPage .singles-participant-head.panel-header{
+  position:relative !important;
+  z-index:8 !important;
+  background:linear-gradient(180deg, rgba(10,26,50,.98), rgba(8,22,43,.98)) !important;
+}
+#singlesPage #singlesParticipantList{
+  position:relative !important;
+  z-index:1 !important;
+  overflow:auto !important;
+  overscroll-behavior:contain !important;
+  background:transparent !important;
+}
+#singlesPage #singlesParticipantList .singles-participant-ranklike{
+  margin-top:0 !important;
+}
+#singlesPage #singlesParticipantList .singles-participant-ranklike thead th{
+  top:0 !important;
+  z-index:4 !important;
+  background:#13223d !important;
+  box-shadow:0 1px 0 rgba(255,255,255,.04) inset, 0 1px 0 rgba(255,255,255,.04);
+}
+
 </style>
 
 
@@ -4015,6 +4238,35 @@ body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-pane
   margin:0 !important;
 }
 
+
+/* singles participant scroll clipping fix */
+#singlesPage .singles-participant-card{
+  position:relative !important;
+  overflow:hidden !important;
+  isolation:isolate !important;
+}
+#singlesPage .singles-participant-head.panel-header{
+  position:relative !important;
+  z-index:8 !important;
+  background:linear-gradient(180deg, rgba(10,26,50,.98), rgba(8,22,43,.98)) !important;
+}
+#singlesPage #singlesParticipantList{
+  position:relative !important;
+  z-index:1 !important;
+  overflow:auto !important;
+  overscroll-behavior:contain !important;
+  background:transparent !important;
+}
+#singlesPage #singlesParticipantList .singles-participant-ranklike{
+  margin-top:0 !important;
+}
+#singlesPage #singlesParticipantList .singles-participant-ranklike thead th{
+  top:0 !important;
+  z-index:4 !important;
+  background:#13223d !important;
+  box-shadow:0 1px 0 rgba(255,255,255,.04) inset, 0 1px 0 rgba(255,255,255,.04);
+}
+
 </style>
 
 </head>
@@ -4158,6 +4410,7 @@ body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-pane
     <div class="view-tabs" id="viewTabs">
       <button class="view-tab" data-view="roster" onclick="switchView('roster')">학생 명단</button>
       <button class="view-tab active" data-view="setup" onclick="switchView('setup')">조편성</button>
+      <button class="view-tab" data-view="teamAdjust" onclick="switchView('teamAdjust')">팀 조정</button>
       <button class="view-tab" data-view="run" onclick="switchView('run')">경기 운영</button>
       <button class="view-tab" data-view="qr" onclick="switchView('qr')">QR코드</button>
       <button class="view-tab" data-view="data" onclick="switchView('data')">데이터 확인</button>
@@ -4346,6 +4599,92 @@ body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-pane
       </div>
     </div>
 
+
+    <div class="page" id="teamAdjustPage">
+      <div class="team-adjust-shell">
+        <section class="team-adjust-hero">
+          <div class="team-adjust-hero-top">
+            <div>
+              <div class="panel-title">팀 조정</div>
+              <div class="tiny muted">추천 트레이드와 직접 트레이드를 같은 화면에서 확인하고 적용할 수 있습니다. 직접 트레이드는 익명 보기 기준으로 선택하고, 규칙 확인 후 적용 완료 시 실명이 로그에 기록됩니다.</div>
+            </div>
+            <div class="team-adjust-toggle-row">
+              <button class="team-adjust-tab-btn active" type="button" data-adjust-tab="recommend" onclick="setTeamAdjustTab('recommend')">추천 트레이드</button>
+              <button class="team-adjust-tab-btn" type="button" data-adjust-tab="direct" onclick="setTeamAdjustTab('direct')">직접 트레이드</button>
+            </div>
+          </div>
+          <div class="team-adjust-summary">
+            <div class="team-adjust-stat"><div class="label">현재 라운드</div><div class="value" id="teamAdjustRoundValue">1라운드</div></div>
+            <div class="team-adjust-stat"><div class="label">현재 팀 수</div><div class="value" id="teamAdjustTeamCountValue">0팀</div></div>
+            <div class="team-adjust-stat"><div class="label">이번 라운드 트레이드</div><div class="value" id="teamAdjustRoundTradeCountValue">0회</div></div>
+            <div class="team-adjust-stat"><div class="label">추천안 수</div><div class="value" id="teamAdjustRecommendCountValue">3안</div></div>
+          </div>
+        </section>
+
+        <section class="team-adjust-panel active" id="teamAdjustRecommendPanel">
+          <div class="team-adjust-grid">
+            <div class="team-adjust-card">
+              <div class="team-adjust-card-head">
+                <div>
+                  <div class="team-adjust-card-title">4팀 현황</div>
+                  <div class="team-adjust-card-sub">조장과 각 팀 상위 1명은 교체 대상에서 제외하며, 같은 성별·능력치 차 1단계 이내 후보만 추천에 사용합니다.</div>
+                </div>
+                <button class="btn small" type="button" onclick="renderTeamAdjustPage()">다시 계산</button>
+              </div>
+              <div class="team-overview-grid" id="teamAdjustOverviewGrid"></div>
+            </div>
+            <div class="team-adjust-card">
+              <div class="team-adjust-card-head">
+                <div>
+                  <div class="team-adjust-card-title">AI 균형 조정 추천</div>
+                  <div class="team-adjust-card-sub">전체 팀 편차가 줄어드는 1:1 맞교환만 최대 3개까지 추천합니다. 선택 후 확인창에서 규칙 통과 여부를 확인하고 적용합니다.</div>
+                </div>
+              </div>
+              <div id="teamAdjustRecommendList"></div>
+              <div class="team-adjust-empty" id="teamAdjustRecommendEmpty" style="display:none;">현재 조건에서 추천 가능한 트레이드가 없습니다. 팀 구성을 다시 확인하거나 직접 트레이드를 사용하세요.</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="team-adjust-panel" id="teamAdjustDirectPanel">
+          <div class="team-adjust-card team-adjust-direct-shell">
+            <div class="team-adjust-card-head">
+              <div>
+                <div class="team-adjust-card-title">직접 트레이드</div>
+                <div class="team-adjust-card-sub">상단에서 트레이드할 조 2개를 선택한 뒤, 아래 작업 화면에서 학생을 1명씩 고릅니다. 익명 보기 기준으로 선택하고 확인창에서는 규칙만 점검합니다.</div>
+              </div>
+            </div>
+            <div class="team-selector-row" id="teamAdjustDirectTeamGrid"></div>
+            <div class="team-selector-guide">조 2개를 선택하면 아래에 해당 조 학생 명단과 중앙 맞교환 미리보기가 표시됩니다.</div>
+            <div class="team-adjust-card" id="teamAdjustDirectWorkArea">
+              <div class="team-adjust-empty">상단에서 트레이드할 팀 버튼 2개를 선택하세요.</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="team-adjust-card">
+          <div class="team-adjust-card-head">
+            <div>
+              <div class="team-adjust-card-title">승인 대기</div>
+              <div class="team-adjust-card-sub">직접 트레이드는 학생이 보며 의견을 말하고 교사가 같은 자리에서 직접 조작하는 방식으로 설계했습니다. 별도 승인 요청은 쓰지 않고, 규칙 확인 후 바로 적용합니다.</div>
+            </div>
+          </div>
+          <div class="team-adjust-empty">현재 구조에서는 별도 승인 대기 항목 없이, 확인창 통과 후 즉시 적용합니다.</div>
+        </section>
+
+        <section class="team-adjust-card">
+          <div class="team-adjust-card-head">
+            <div>
+              <div class="team-adjust-card-title">조정 로그</div>
+              <div class="team-adjust-card-sub">추천 트레이드와 직접 트레이드 적용 결과를 최근 순으로 표시합니다.</div>
+            </div>
+          </div>
+          <div class="team-adjust-log-list" id="teamAdjustLogList"></div>
+        </section>
+      </div>
+    </div>
+
+
     <div class="page" id="runPage">
       <div class="run-grid">
         <section class="section-stack">
@@ -4356,7 +4695,7 @@ body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-pane
                 
               </div>
               <div class="actions">
-                <button class="btn small" type="button" onclick="openTeamMoveModal()">조 이동</button>
+                <button class="btn small" type="button" onclick="switchView('teamAdjust')">팀 조정 열기</button>
                 <button class="btn small" type="button" onclick="tidyRunTeams()">조 정리</button>
               </div>
             </div>
@@ -4584,7 +4923,6 @@ body #doublesPage .doubles-summary-grid > section.panel.doubles-participant-pane
           <div class="broadcast-hero">
             <div>
               <h2>전광판</h2>
-              <p>현재 반 기준으로 단식과 복식을 나누어 TV 화면처럼 보여주는 전용 화면입니다.</p>
             </div>
             <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end;">
               <div class="broadcast-toggle-group">
@@ -5521,11 +5859,12 @@ let broadcastInfoView = 'current';
 function switchView(view) {
       currentView = IS_BROADCAST_MODE
         ? 'broadcast'
-        : (['roster','setup','run','qr','data','growth','singles','doubles','broadcast'].includes(view) ? view : 'setup');
+        : (['roster','setup','teamAdjust','run','qr','data','growth','singles','doubles','broadcast'].includes(view) ? view : 'setup');
       document.querySelectorAll('.view-tab').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.view === currentView);
       });
       const setupPage = document.getElementById('setupPage');
+      const teamAdjustPage = document.getElementById('teamAdjustPage');
       const runPage = document.getElementById('runPage');
       const qrPage = document.getElementById('qrPage');
       const singlesPage = document.getElementById('singlesPage');
@@ -5536,6 +5875,7 @@ function switchView(view) {
       const setupWizardPanel = document.getElementById('setupWizardPanel');
       const rawRosterPanel = document.getElementById('rawRosterPanel');
       if (setupPage) setupPage.classList.toggle('active', currentView === 'setup' || currentView === 'roster');
+      if (teamAdjustPage) teamAdjustPage.classList.toggle('active', currentView === 'teamAdjust');
       if (runPage) runPage.classList.toggle('active', currentView === 'run');
       if (qrPage) qrPage.classList.toggle('active', currentView === 'qr');
       if (dataPage) dataPage.classList.toggle('active', currentView === 'data');
@@ -5548,6 +5888,7 @@ function switchView(view) {
         rawRosterPanel.style.display = currentView === 'roster' ? '' : 'none';
         rawRosterPanel.classList.toggle('collapsed', false);
       }
+      if (currentView === 'teamAdjust') renderTeamAdjustPage();
       if (currentView === 'growth') renderGrowthReportPage();
       if (currentView === 'doubles') renderDoublesPage();
       if (currentView === 'broadcast') renderBroadcastPage();
@@ -5714,8 +6055,8 @@ function switchView(view) {
     function escapeHtml(str) {
       return String(str)
         .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
+        .replaceAll('<', '<')
+        .replaceAll('>', '>')
         .replaceAll('"', '&quot;');
     }
 
@@ -7971,7 +8312,7 @@ function getBasePageUrl() {
 }
 
 function escapeAttr(value) {
-  return String(value || '').replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+  return String(value || '').replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '<').replaceAll('>', '>');
 }
 
 function getTeamLetter(team) {
@@ -8955,6 +9296,7 @@ function startLineupPolling() {
       match.finished = !match.finished;
       saveData();
       renderSinglesLeague();
+      renderTeamAdjustPage();
       renderBroadcastPage();
       if (IS_REFEREE_INPUT_MODE) renderRefereeMode();
     }
@@ -10267,7 +10609,36 @@ function renderDataInsightsPage() {
       const win = window.open('', '_blank', 'width=980,height=1200');
       if (!win) { alert('팝업이 차단되었습니다.'); return; }
       win.document.write(`<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>성장 리포트</title><style>
-        body{font-family:Pretendard,Arial,sans-serif;color:#111827;margin:0;background:#f3f4f6;} .page{width:210mm;min-height:297mm;margin:0 auto;background:#fff;padding:14mm;box-sizing:border-box;} .head{border-bottom:2px solid #111827;padding-bottom:10px;margin-bottom:14px;} h1{margin:0 0 6px;font-size:24px;} .sub{color:#4b5563;font-size:13px;} .meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px 16px;font-size:13px;margin-bottom:16px;} .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;} .kpi{border:1px solid #d1d5db;border-radius:10px;padding:10px;background:#f9fafb;text-align:center;} .label{font-size:12px;color:#6b7280;} .value{font-size:22px;font-weight:700;margin-top:4px;} .section{border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;margin-bottom:16px;} .section h3{margin:0;padding:10px 12px;background:#f3f4f6;font-size:15px;} .section .body{padding:12px;font-size:13px;line-height:1.6;} table{width:100%;border-collapse:collapse;font-size:13px;} th,td{border:1px solid #e5e7eb;padding:8px 10px;} th{text-align:left;background:#f9fafb;width:36%;} .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;} .box{border:1px solid #d1d5db;border-radius:8px;padding:10px;background:#fcfcfd;} .box h4{margin:0 0 6px;font-size:13px;} @media print{@page{size:A4;margin:14mm;} body{background:#fff;} .page{margin:0;width:auto;min-height:auto;padding:0;}}</style>
+        body{font-family:Pretendard,Arial,sans-serif;color:#111827;margin:0;background:#f3f4f6;} .page{width:210mm;min-height:297mm;margin:0 auto;background:#fff;padding:14mm;box-sizing:border-box;} .head{border-bottom:2px solid #111827;padding-bottom:10px;margin-bottom:14px;} h1{margin:0 0 6px;font-size:24px;} .sub{color:#4b5563;font-size:13px;} .meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px 16px;font-size:13px;margin-bottom:16px;} .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;} .kpi{border:1px solid #d1d5db;border-radius:10px;padding:10px;background:#f9fafb;text-align:center;} .label{font-size:12px;color:#6b7280;} .value{font-size:22px;font-weight:700;margin-top:4px;} .section{border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;margin-bottom:16px;} .section h3{margin:0;padding:10px 12px;background:#f3f4f6;font-size:15px;} .section .body{padding:12px;font-size:13px;line-height:1.6;} table{width:100%;border-collapse:collapse;font-size:13px;} th,td{border:1px solid #e5e7eb;padding:8px 10px;} th{text-align:left;background:#f9fafb;width:36%;} .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;} .box{border:1px solid #d1d5db;border-radius:8px;padding:10px;background:#fcfcfd;} .box h4{margin:0 0 6px;font-size:13px;} @media print{@page{size:A4;margin:14mm;} body{background:#fff;} .page{margin:0;width:auto;min-height:auto;padding:0;}}
+/* singles participant scroll clipping fix */
+#singlesPage .singles-participant-card{
+  position:relative !important;
+  overflow:hidden !important;
+  isolation:isolate !important;
+}
+#singlesPage .singles-participant-head.panel-header{
+  position:relative !important;
+  z-index:8 !important;
+  background:linear-gradient(180deg, rgba(10,26,50,.98), rgba(8,22,43,.98)) !important;
+}
+#singlesPage #singlesParticipantList{
+  position:relative !important;
+  z-index:1 !important;
+  overflow:auto !important;
+  overscroll-behavior:contain !important;
+  background:transparent !important;
+}
+#singlesPage #singlesParticipantList .singles-participant-ranklike{
+  margin-top:0 !important;
+}
+#singlesPage #singlesParticipantList .singles-participant-ranklike thead th{
+  top:0 !important;
+  z-index:4 !important;
+  background:#13223d !important;
+  box-shadow:0 1px 0 rgba(255,255,255,.04) inset, 0 1px 0 rgba(255,255,255,.04);
+}
+
+</style>
 <style id="global-spacing-refresh">
 /* Global spacing refresh */
 .titlebox{
@@ -10343,9 +10714,11 @@ function renderDataInsightsPage() {
 .avg-pill,
 .tag,
 .broadcast-badge,
-.broadcast-meta,
-.broadcast-mode-pill{
+.broadcast-meta{
   margin-top:10px !important;
+}
+.broadcast-mode-pill{
+  margin-top:0 !important;
 }
 .btn,.tab,.view-tab,.type-tab,.qr-mode-tab,.qr-round-btn{
   min-height:46px !important;
@@ -10439,6 +10812,35 @@ function renderDataInsightsPage() {
   .panel-body,.card-body{padding:16px 16px 18px !important;}
   .titlebox{padding:18px 18px !important;}
 }
+
+/* singles participant scroll clipping fix */
+#singlesPage .singles-participant-card{
+  position:relative !important;
+  overflow:hidden !important;
+  isolation:isolate !important;
+}
+#singlesPage .singles-participant-head.panel-header{
+  position:relative !important;
+  z-index:8 !important;
+  background:linear-gradient(180deg, rgba(10,26,50,.98), rgba(8,22,43,.98)) !important;
+}
+#singlesPage #singlesParticipantList{
+  position:relative !important;
+  z-index:1 !important;
+  overflow:auto !important;
+  overscroll-behavior:contain !important;
+  background:transparent !important;
+}
+#singlesPage #singlesParticipantList .singles-participant-ranklike{
+  margin-top:0 !important;
+}
+#singlesPage #singlesParticipantList .singles-participant-ranklike thead th{
+  top:0 !important;
+  z-index:4 !important;
+  background:#13223d !important;
+  box-shadow:0 1px 0 rgba(255,255,255,.04) inset, 0 1px 0 rgba(255,255,255,.04);
+}
+
 </style>
 
 
@@ -10537,6 +10939,366 @@ input:focus,select:focus,textarea:focus,.score-pair input:focus,.lineup-select:f
   box-shadow:0 0 0 3px rgba(77,163,255,.16) !important;
   outline:none !important;
 }
+
+/* singles participant scroll clipping fix */
+#singlesPage .singles-participant-card{
+  position:relative !important;
+  overflow:hidden !important;
+  isolation:isolate !important;
+}
+#singlesPage .singles-participant-head.panel-header{
+  position:relative !important;
+  z-index:8 !important;
+  background:linear-gradient(180deg, rgba(10,26,50,.98), rgba(8,22,43,.98)) !important;
+}
+#singlesPage #singlesParticipantList{
+  position:relative !important;
+  z-index:1 !important;
+  overflow:auto !important;
+  overscroll-behavior:contain !important;
+  background:transparent !important;
+}
+#singlesPage #singlesParticipantList .singles-participant-ranklike{
+  margin-top:0 !important;
+}
+#singlesPage #singlesParticipantList .singles-participant-ranklike thead th{
+  top:0 !important;
+  z-index:4 !important;
+  background:#13223d !important;
+  box-shadow:0 1px 0 rgba(255,255,255,.04) inset, 0 1px 0 rgba(255,255,255,.04);
+}
+
+
+
+
+/* ===== UI consistency pass ===== */
+:root{
+  --radius-xxl:24px;
+  --radius-xl:20px;
+  --radius-lg:16px;
+  --radius-md:12px;
+  --surface-1:rgba(15,28,51,.94);
+  --surface-2:linear-gradient(180deg, rgba(15,28,51,.96), rgba(10,23,48,.96));
+  --surface-3:rgba(255,255,255,.04);
+  --surface-4:rgba(255,255,255,.06);
+  --border-soft:rgba(255,255,255,.08);
+  --border-strong:rgba(90,177,255,.22);
+  --text-soft:#dce9ff;
+  --shadow-panel:0 12px 28px rgba(0,0,0,.28);
+  --header-bg:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015));
+  --input-bg:linear-gradient(180deg, rgba(11,33,65,.94), rgba(9,28,56,.94));
+  --button-bg:linear-gradient(180deg, #11233f, #0c1b31);
+  --button-active:linear-gradient(135deg, #2d73ff, #45b3ff);
+  --focus-ring:0 0 0 3px rgba(90,177,255,.18);
+}
+
+body{background:linear-gradient(180deg,#07101c 0%,#0a1730 100%);color:var(--text)}
+.app{padding:18px}
+.panel,
+.student-card,
+.team-panel,
+.start-panel,
+.score-panel,
+.titlebox,
+.team-adjust-hero,
+.broadcast-hero,
+.broadcast-card,
+.broadcast-rank-card,
+.broadcast-singles-bracket,
+.sync-bar,
+.modal-card,
+.modal-card-basic,
+.team-adjust-confirm-card,
+.ref-head{
+  border:1px solid var(--border-soft);
+  box-shadow:var(--shadow-panel);
+}
+.panel,
+.student-card,
+.team-panel,
+.start-panel,
+.score-panel,
+.titlebox,
+.team-adjust-hero,
+.broadcast-hero,
+.broadcast-card,
+.broadcast-rank-card,
+.broadcast-singles-bracket,
+.sync-bar,
+.modal-card,
+.modal-card-basic,
+.team-adjust-confirm-card,
+.ref-head{border-radius:var(--radius-xl)}
+
+.panel,
+.student-card,
+.team-panel,
+.start-panel,
+.score-panel,
+.titlebox,
+.team-adjust-hero,
+.broadcast-hero,
+.broadcast-card,
+.broadcast-rank-card,
+.broadcast-singles-bracket,
+.modal-card,
+.modal-card-basic,
+.team-adjust-confirm-card,
+.ref-head{background:var(--surface-2)}
+
+.panel-header,
+.student-card .panel-header,
+.modal-header,
+.modal-footer,
+.team-adjust-confirm-head,
+.team-adjust-confirm-foot,
+.broadcast-singles-bracket-head,
+.broadcast-rank-card-head,
+.ref-head{
+  background:var(--header-bg);
+  border-color:var(--border-soft);
+}
+
+.panel-header,
+.modal-header,
+.modal-footer,
+.team-adjust-confirm-head,
+.team-adjust-confirm-foot,
+.broadcast-singles-bracket-head,
+.broadcast-rank-card-head{padding:14px 16px}
+.panel-body,
+.student-body,
+.modal-body,
+.team-adjust-confirm-body{padding:16px}
+
+.sync-url-box,
+.sync-action-box,
+.lineup-link-card,
+.lineup-status-box,
+.team-adjust-card,
+.recommend-card,
+.direct-preview-box,
+.direct-detail-card,
+.team-overview-card,
+.team-adjust-log-item,
+.team-adjust-stat,
+.recommend-metric,
+.direct-player-card,
+.direct-picked-card,
+.direct-detail-item,
+.rule-check-item,
+.lineup-box,
+.team-box,
+.event-log,
+.match-stats,
+.history-item,
+.feedback-item,
+.footer-note,
+.help-inline-box,
+.league-note,
+.sync-note,
+.student-round-card,
+.game-box,
+.team-overview-player,
+.player-chip,
+.lineup-status-item,
+.lineup-link-card,
+.broadcast-singles-match-item,
+.broadcast-singles-court,
+.broadcast-singles-state,
+.broadcast-rank-card-meta,
+.broadcast-singles-bracket-meta,
+.team-adjust-empty,
+.team-adjust-log-item,
+.insight-card,
+.leader-card,
+.match-summary-pill,
+.sync-state-pill,
+.status-pill,
+.avg-pill,
+.tag,
+.player-chip-status{
+  border-radius:var(--radius-lg);
+}
+
+.team-adjust-card,
+.recommend-card,
+.direct-preview-box,
+.direct-detail-card,
+.team-overview-card,
+.team-adjust-log-item,
+.team-adjust-stat,
+.recommend-metric,
+.direct-player-card,
+.direct-picked-card,
+.direct-detail-item,
+.rule-check-item,
+.lineup-box,
+.team-box,
+.event-log,
+.match-stats,
+.history-item,
+.feedback-item,
+.footer-note,
+.help-inline-box,
+.league-note,
+.sync-note,
+.student-round-card,
+.game-box,
+.team-overview-player,
+.player-chip,
+.lineup-status-item,
+.lineup-link-card,
+.insight-card,
+.leader-card,
+.team-adjust-empty{background:var(--surface-3);border:1px solid rgba(255,255,255,.06)}
+
+.btn,
+.tab,
+.view-tab,
+.team-adjust-tab-btn,
+.type-tab,
+.picker-btn,
+.event-btn,
+.team-selector-btn,
+.broadcast-toggle-btn,
+.overlay-btn,
+.team-selector-action{
+  border-radius:14px;
+  min-height:44px;
+  font-weight:800;
+  border:1px solid var(--border-soft);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+.btn,
+.tab,
+.view-tab,
+.team-adjust-tab-btn,
+.type-tab,
+.picker-btn,
+.event-btn,
+.team-selector-btn,
+.overlay-btn,
+.team-selector-action{background:var(--button-bg);color:var(--text)}
+
+.tab.active,
+.view-tab.active,
+.team-adjust-tab-btn.active,
+.type-tab.active,
+.team-selector-btn.active,
+.broadcast-toggle-btn.active,
+.picker-btn.active,
+.btn.primary,
+.btn.green,
+.btn.yellow{
+  background:var(--button-active);
+  color:#fff;
+  border-color:transparent;
+  box-shadow:0 8px 18px rgba(45,115,255,.22);
+}
+
+.btn.red,
+.overlay-btn.danger{background:linear-gradient(135deg, #d45757, #ff7a7a);color:#fff;border-color:transparent}
+.overlay-btn.warn{background:rgba(255,209,102,.92);color:#17202e;border-color:transparent}
+
+input,
+select,
+textarea,
+.score-pair input,
+.lineup-select,
+.lineup-link-card input,
+.student-form-grid select,
+.control-row input,
+.control-row select,
+.top-control-field input,
+.top-control-field select,
+.sync-bar input,
+.sync-bar textarea,
+.form-stack input,
+.form-stack select,
+.team-move-select,
+.team-move-display{
+  background:var(--input-bg);
+  color:#fff;
+  border:1px solid rgba(92,131,190,.52);
+  border-radius:12px;
+}
+input:focus,
+select:focus,
+textarea:focus,
+.score-pair input:focus,
+.lineup-select:focus,
+.lineup-link-card input:focus,
+.student-form-grid select:focus,
+.control-row input:focus,
+.control-row select:focus,
+.top-control-field input:focus,
+.top-control-field select:focus,
+.sync-bar input:focus,
+.sync-bar textarea:focus,
+.form-stack input:focus,
+.form-stack select:focus,
+.team-move-select:focus{
+  outline:none;
+  border-color:#5ab1ff;
+  box-shadow:var(--focus-ring);
+}
+
+.status-dot,
+.status-pill,
+.match-summary-pill,
+.sync-state-pill,
+.avg-pill,
+.tag,
+.player-chip-status,
+.broadcast-mode-pill,
+.broadcast-rank-card-meta,
+.broadcast-singles-bracket-meta,
+.broadcast-singles-state,
+.broadcast-singles-court{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  padding:6px 10px;
+  font-size:.78rem;
+  font-weight:800;
+  line-height:1.2;
+  border:1px solid rgba(255,255,255,.08);
+}
+.match-summary-pill,
+.sync-state-pill,
+.avg-pill,
+.player-chip-status,
+.broadcast-mode-pill,
+.broadcast-rank-card-meta,
+.broadcast-singles-bracket-meta,
+.broadcast-singles-state,
+.broadcast-singles-court{background:rgba(90,177,255,.14);color:#dceaff}
+.tag{background:rgba(123,255,204,.12);color:#cffff0}
+
+th{background:#132642;color:#dceaff;font-weight:800}
+th,td{padding:9px 8px}
+.roster-wrap,
+.event-log-list,
+.history-list,
+.direct-team-list{border-radius:var(--radius-lg)}
+
+.help-icon-btn,
+.fullscreen-icon-btn,
+.overlay-icon-btn{border-radius:999px}
+
+.titlebox h1,
+.panel-title,
+.team-name,
+.team-overview-name,
+.recommend-title,
+.direct-preview-title,
+.broadcast-rank-card-title,
+.broadcast-singles-bracket-title,
+.ref-title{letter-spacing:-.02em}
+.muted,.tiny,.score-mini,.sync-status,.lineup-mini,.footer-note,.team-adjust-card-sub,.recommend-metric .label,.direct-detail-item .label{color:var(--muted)}
 </style>
 
 </head><body><div class="page"><div class="head"><h1>배드민턴 수업 학생 성장 리포트</h1><div class="sub">누적 관찰 데이터를 바탕으로 생성된 종합형 리포트</div></div><div class="meta"><div><strong>반</strong> ${currentClass}반</div><div><strong>이름</strong> ${escapeHtml(report.player.name)}</div><div><strong>종목</strong> ${escapeHtml(growthEventFilter === 'all' ? '전체' : GAME_LABEL[growthEventFilter])}</div></div><div class="kpis"><div class="kpi"><div class="label">관찰 기록</div><div class="value">${report.summary.totalRecords}</div></div><div class="kpi"><div class="label">서브 성공률</div><div class="value">${report.summary.serveRate}%</div></div><div class="kpi"><div class="label">공격 성공률</div><div class="value">${report.summary.attackRate}%</div></div><div class="kpi"><div class="label">수비 성공률</div><div class="value">${report.summary.defenseRate}%</div></div></div><div class="section"><h3>누적 수행 요약</h3><div class="body"><table><tr><th>서브</th><td>성공 ${report.summary.totalServeSuccess}회 / 실패 ${report.summary.totalServeFail}회</td></tr><tr><th>공격</th><td>성공 ${report.summary.totalAttackSuccess}회 / 실패 ${report.summary.totalAttackFail}회</td></tr><tr><th>수비</th><td>성공 ${report.summary.totalDefenseSuccess}회 / 실패 ${report.summary.totalDefenseFail}회</td></tr><tr><th>서브 실패 최빈값</th><td>${escapeHtml(report.summary.topServeFail)}</td></tr><tr><th>공격 실패 최빈값</th><td>${escapeHtml(report.summary.topAttackFail)}</td></tr><tr><th>수비 실패 최빈값</th><td>${escapeHtml(report.summary.topDefenseFail)}</td></tr></table></div></div><div class="section"><h3>종합 분석</h3><div class="body"><div class="grid"><div class="box"><h4>대표 수행 유형</h4><div><strong>${escapeHtml(report.playType.label)}</strong></div><div style="margin-top:6px;">${escapeHtml(report.playType.desc)}</div></div><div class="box"><h4>강점</h4><div>${escapeHtml(report.strengthText)}</div></div><div class="box"><h4>보완점</h4><div>${escapeHtml(report.improveText)}</div></div><div class="box"><h4>다음 목표</h4><div>${escapeHtml(report.goalText)}</div></div></div></div></div><div class="section"><h3>교사 종합 코멘트</h3><div class="body">${escapeHtml(report.teacherComment)}</div></div></div><script>window.onload=()=>window.print();<\/script>
@@ -10564,6 +11326,548 @@ input:focus,select:focus,textarea:focus,.score-pair input:focus,.lineup-select:f
     }
     window.printGrowthReport = printGrowthReport;
 
+
+
+    const teamAdjustState = {
+      tab: 'recommend',
+      selectedRecommendationIndex: 0,
+      selectedTeamLetters: [],
+      selectedPlayerAId: '',
+      selectedPlayerBId: '',
+      anonymous: true,
+      confirmPayload: null
+    };
+
+    function ensureTeamAdjustLogs() {
+      if (!Array.isArray(currentData().teamAdjustLogs)) currentData().teamAdjustLogs = [];
+      return currentData().teamAdjustLogs;
+    }
+
+    function getTeamAdjustRoundNo() {
+      return Number(getRunCurrentRoundNo()) || 1;
+    }
+
+    function getTeamCompositeAverage(team, simulatedMap = null) {
+      const ids = simulatedMap && simulatedMap[team.letter] ? simulatedMap[team.letter] : (team.playerIds || []);
+      const members = ids.map(getPlayerById).filter(Boolean);
+      if (!members.length) return 0;
+      return Math.round(members.reduce((sum, player) => sum + playerComposite(player), 0) / members.length);
+    }
+
+    function getTeamAdjustStrengthMetric(simulatedMap = null) {
+      const teams = currentData().teams || [];
+      if (!teams.length) return { overall: 0, spread: 0, values: {} };
+      const values = {};
+      teams.forEach(team => values[team.letter] = getTeamCompositeAverage(team, simulatedMap));
+      const scores = Object.values(values);
+      const overall = scores.length ? scores.reduce((sum, value) => sum + value, 0) / scores.length : 0;
+      const spread = scores.length ? Math.round(scores.reduce((sum, value) => sum + Math.abs(value - overall), 0) * 10) / 10 : 0;
+      return { overall: Math.round(overall * 10) / 10, spread, values };
+    }
+
+    function wasPlayerTradedPreviousRound(playerId) {
+      const previousRound = getTeamAdjustRoundNo() - 1;
+      if (previousRound < 1) return false;
+      return ensureTeamAdjustLogs().some(log => Number(log.roundNo) === previousRound && (log.aPlayerId === playerId || log.bPlayerId === playerId));
+    }
+
+    function hasTradeThisRound() {
+      const roundNo = getTeamAdjustRoundNo();
+      return ensureTeamAdjustLogs().some(log => Number(log.roundNo) === roundNo);
+    }
+
+    function getEligibleTradePlayers(team) {
+      const members = teamMembers(team).slice().sort((a,b) => playerComposite(b) - playerComposite(a));
+      const topProtectedId = members[0]?.id || '';
+      return members.filter(player => !isRunTeamCaptain(player.id) && player.id !== topProtectedId && !wasPlayerTradedPreviousRound(player.id));
+    }
+
+    function getPlayerGenderLabel(player) {
+      return player?.gender === 'M' ? '남' : (player?.gender === 'F' ? '여' : '미지정');
+    }
+
+    function getPlayerDisplayNameForTrade(player, useAnonymous = teamAdjustState.anonymous) {
+      if (!player) return '선택 대기';
+      return useAnonymous ? anonymousLabelFor(player.id) : player.name;
+    }
+
+    function getTeamAdjustRuleCheck(playerA, playerB) {
+      const currentMetric = getTeamAdjustStrengthMetric();
+      const currentSpread = currentMetric.spread;
+      const teams = currentData().teams || [];
+      const roundNo = getTeamAdjustRoundNo();
+      const oneTradeLimitFail = hasTradeThisRound();
+      const sameGender = !!(playerA && playerB && playerA.gender && playerA.gender === playerB.gender);
+      const skillGap = Math.abs(playerComposite(playerA || {}) - playerComposite(playerB || {}));
+      const withinStep = skillGap <= 10;
+      const prevRoundBlocked = wasPlayerTradedPreviousRound(playerA?.id) || wasPlayerTradedPreviousRound(playerB?.id);
+      const teamA = getRunPlayerTeamLetter(playerA?.id || '');
+      const teamB = getRunPlayerTeamLetter(playerB?.id || '');
+      const isCaptainBlocked = isRunTeamCaptain(playerA?.id || '') || isRunTeamCaptain(playerB?.id || '');
+      const topProtectedBlocked = (() => {
+        const membersA = teamMembers(getRunTeamByLetter(teamA) || { playerIds: [] }).slice().sort((a,b) => playerComposite(b) - playerComposite(a));
+        const membersB = teamMembers(getRunTeamByLetter(teamB) || { playerIds: [] }).slice().sort((a,b) => playerComposite(b) - playerComposite(a));
+        return membersA[0]?.id === playerA?.id || membersB[0]?.id === playerB?.id;
+      })();
+      let nextSpread = currentSpread;
+      let improves = false;
+      if (playerA && playerB && teamA && teamB && teamA !== teamB) {
+        const simulated = {};
+        teams.forEach(team => simulated[team.letter] = [...(team.playerIds || [])]);
+        simulated[teamA] = simulated[teamA].filter(id => id !== playerA.id).concat(playerB.id);
+        simulated[teamB] = simulated[teamB].filter(id => id !== playerB.id).concat(playerA.id);
+        nextSpread = getTeamAdjustStrengthMetric(simulated).spread;
+        improves = nextSpread <= currentSpread;
+      }
+      const items = [
+        { label: '같은 성별 교체', pass: sameGender, detail: sameGender ? '성별 구성이 유지됩니다.' : '서로 다른 성별은 직접 트레이드에서 허용하지 않습니다.' },
+        { label: '능력치 차 1단계 이내', pass: withinStep, detail: `차이 ${skillGap}점` },
+        { label: '최근 1라운드 교체 이력', pass: !prevRoundBlocked, detail: prevRoundBlocked ? '직전 라운드 교체 학생 포함' : '직전 라운드 교체 이력 없음' },
+        { label: '조장·상위 1명 보호', pass: !(isCaptainBlocked || topProtectedBlocked), detail: isCaptainBlocked ? '조장은 제외 대상입니다.' : (topProtectedBlocked ? '각 팀 상위 1명은 제외됩니다.' : '보호 규칙 통과') },
+        { label: '한 라운드 최대 1회', pass: !oneTradeLimitFail, detail: oneTradeLimitFail ? `${roundNo}라운드에 이미 트레이드가 적용되었습니다.` : '이번 라운드 첫 트레이드입니다.' },
+        { label: '적용 후 전체 편차', pass: improves, detail: `${currentSpread} → ${nextSpread}` }
+      ];
+      return { pass: items.every(item => item.pass), items, nextSpread, currentSpread };
+    }
+
+    function buildTeamAdjustRecommendations() {
+      const teams = (currentData().teams || []).slice();
+      const currentMetric = getTeamAdjustStrengthMetric();
+      const recs = [];
+      if (teams.length < 2 || hasTradeThisRound()) return recs;
+      for (let i = 0; i < teams.length; i += 1) {
+        for (let j = i + 1; j < teams.length; j += 1) {
+          const teamA = teams[i];
+          const teamB = teams[j];
+          const eligibleA = getEligibleTradePlayers(teamA);
+          const eligibleB = getEligibleTradePlayers(teamB);
+          eligibleA.forEach(playerA => {
+            eligibleB.forEach(playerB => {
+              if (!playerA || !playerB) return;
+              if (playerA.gender !== playerB.gender) return;
+              const gap = Math.abs(playerComposite(playerA) - playerComposite(playerB));
+              if (gap > 10) return;
+              const simulated = {};
+              teams.forEach(team => simulated[team.letter] = [...(team.playerIds || [])]);
+              simulated[teamA.letter] = simulated[teamA.letter].filter(id => id !== playerA.id).concat(playerB.id);
+              simulated[teamB.letter] = simulated[teamB.letter].filter(id => id !== playerB.id).concat(playerA.id);
+              const nextMetric = getTeamAdjustStrengthMetric(simulated);
+              if (nextMetric.spread > currentMetric.spread) return;
+              recs.push({
+                aTeam: teamA.letter,
+                bTeam: teamB.letter,
+                aPlayerId: playerA.id,
+                bPlayerId: playerB.id,
+                afterSpread: nextMetric.spread,
+                beforeSpread: currentMetric.spread,
+                skillGap: gap,
+                sameGender: true,
+                summary: `${teamA.letter}조와 ${teamB.letter}조의 편차를 줄이는 맞교환`,
+                detail: `${teamA.letter}조 ${playerA.name} ↔ ${teamB.letter}조 ${playerB.name}`
+              });
+            });
+          });
+        }
+      }
+      const unique = [];
+      const seen = new Set();
+      recs.sort((a,b) => a.afterSpread - b.afterSpread || a.skillGap - b.skillGap);
+      recs.forEach(item => {
+        const key = [item.aPlayerId, item.bPlayerId].sort().join('|');
+        if (seen.has(key)) return;
+        seen.add(key);
+        unique.push(item);
+      });
+      return unique.slice(0, 3);
+    }
+
+    function setTeamAdjustTab(tab) {
+      teamAdjustState.tab = tab === 'direct' ? 'direct' : 'recommend';
+      document.querySelectorAll('[data-adjust-tab]').forEach(btn => btn.classList.toggle('active', btn.dataset.adjustTab === teamAdjustState.tab));
+      document.getElementById('teamAdjustRecommendPanel')?.classList.toggle('active', teamAdjustState.tab === 'recommend');
+      document.getElementById('teamAdjustDirectPanel')?.classList.toggle('active', teamAdjustState.tab === 'direct');
+      renderTeamAdjustPage();
+    }
+
+    function formatTeamAdjustTime(value) {
+      const date = value ? new Date(value) : new Date();
+      if (Number.isNaN(date.getTime())) return '';
+      return `${String(date.getMonth()+1).padStart(2,'0')}.${String(date.getDate()).padStart(2,'0')} ${String(date.getHours()).padStart(2,'0')}:${String(date.getMinutes()).padStart(2,'0')}`;
+    }
+
+    function renderTeamAdjustOverviewGrid() {
+      const grid = document.getElementById('teamAdjustOverviewGrid');
+      const directGrid = document.getElementById('teamAdjustDirectTeamGrid');
+      if (!grid && !directGrid) return;
+      const metric = getTeamAdjustStrengthMetric();
+      const teams = currentData().teams || [];
+      const sorted = teams.slice().sort((a,b) => (metric.values[b.letter] || 0) - (metric.values[a.letter] || 0));
+      const topLetter = sorted[0]?.letter || '';
+      const weakLetter = sorted[sorted.length - 1]?.letter || '';
+      const renderCards = (interactive = false) => teams.map(team => {
+        const members = teamMembers(team).slice().sort((a,b) => playerComposite(b) - playerComposite(a));
+        const selected = interactive && teamAdjustState.selectedTeamLetters.includes(team.letter);
+        if (interactive) {
+          return `<button class="team-selector-btn ${selected ? 'active' : ''}" type="button" onclick="toggleDirectTradeTeam('${team.letter}')"><div class="selector-title">${escapeHtml(team.letter)}조</div><div class="selector-sub">평균 ${metric.values[team.letter] || 0} · ${members.length}명 · ${team.letter === topLetter ? '상대적 강팀' : (team.letter === weakLetter ? '상대적 약팀' : '균형권')}</div></button>`;
+        }
+        const tagText = 'AI 비교 중';
+        return `
+          <div class="team-overview-card">
+            <div class="team-overview-head">
+              <div>
+                <div class="team-overview-name">${escapeHtml(team.letter)}조</div>
+                <div class="team-overview-meta">
+                  <span class="team-overview-chip">평균 ${metric.values[team.letter] || 0}</span>
+                  <span class="team-overview-chip">${members.length}명</span>
+                  <span class="team-overview-chip">${team.letter === topLetter ? '상대적 강팀' : (team.letter === weakLetter ? '상대적 약팀' : '균형권')}</span>
+                </div>
+              </div>
+              <span class="avg-pill">${tagText}</span>
+            </div>
+            <div class="team-overview-players">
+              ${members.map((player, idx) => {
+                const isFixed = isRunTeamCaptain(player.id) || idx === 0 || wasPlayerTradedPreviousRound(player.id);
+                const primaryName = player.name;
+                const secondaryLabel = `${anonymousLabelFor(player.id)} · ${getPlayerGenderLabel(player)} · 종합 ${playerComposite(player)}`;
+                return `<div class="team-overview-player ${isFixed ? 'is-fixed' : ''}"><div class="team-overview-player-main"><div class="team-overview-player-name">${escapeHtml(primaryName)}</div><div class="team-overview-player-sub">${escapeHtml(secondaryLabel)}</div></div><span class="team-overview-chip">${isRunTeamCaptain(player.id) ? '조장' : (idx === 0 ? '상위1 보호' : (wasPlayerTradedPreviousRound(player.id) ? '최근 교체' : '교체 가능'))}</span></div>`;
+              }).join('')}
+            </div>
+          </div>`;
+      }).join('');
+      if (grid) grid.innerHTML = renderCards(false);
+      if (directGrid) directGrid.innerHTML = `${renderCards(true)}<button class="btn small team-selector-action ${teamAdjustState.anonymous ? "primary" : "secondary"}" type="button" id="teamAdjustAnonymousBtn" onclick="toggleTeamAdjustAnonymous()">익명 보기</button><button class="btn small team-selector-action" type="button" onclick="resetDirectTradeSelection()">선택 초기화</button>`;
+    }
+
+    function renderTeamAdjustRecommendations() {
+      const container = document.getElementById('teamAdjustRecommendList');
+      const empty = document.getElementById('teamAdjustRecommendEmpty');
+      if (!container || !empty) return;
+      const recs = buildTeamAdjustRecommendations();
+      if (!recs.length) {
+        container.innerHTML = '';
+        empty.style.display = '';
+        return;
+      }
+      empty.style.display = 'none';
+      if (teamAdjustState.selectedRecommendationIndex >= recs.length) teamAdjustState.selectedRecommendationIndex = 0;
+      container.innerHTML = recs.map((rec, idx) => {
+        const a = getPlayerById(rec.aPlayerId);
+        const b = getPlayerById(rec.bPlayerId);
+        return `
+          <article class="recommend-card ${idx === teamAdjustState.selectedRecommendationIndex ? 'active' : ''}" onclick="selectTeamAdjustRecommendation(${idx})">
+            <div class="recommend-top">
+              <div>
+                <div class="recommend-title">추천안 ${idx + 1}</div>
+                <div class="recommend-swap">${escapeHtml(rec.aTeam)}조 ${escapeHtml(a?.name || '')} ↔ ${escapeHtml(rec.bTeam)}조 ${escapeHtml(b?.name || '')}</div>
+                <div class="team-adjust-card-sub">${escapeHtml(rec.summary)}</div>
+              </div>
+              <span class="avg-pill">${idx === 0 ? '우선 추천' : '선택 가능'}</span>
+            </div>
+            <div class="recommend-metrics">
+              <div class="recommend-metric"><div class="label">편차 변화</div><div class="value">${rec.beforeSpread} → ${rec.afterSpread}</div></div>
+              <div class="recommend-metric"><div class="label">성별</div><div class="value">${getPlayerGenderLabel(a)} ↔ ${getPlayerGenderLabel(b)}</div></div>
+              <div class="recommend-metric"><div class="label">능력치 차</div><div class="value">${rec.skillGap}점</div></div>
+              <div class="recommend-metric"><div class="label">규칙</div><div class="value">통과</div></div>
+            </div>
+            <div class="recommend-actions">
+              <button class="btn small" type="button" onclick="event.stopPropagation(); selectTeamAdjustRecommendation(${idx});">선택</button>
+              <button class="btn small primary" type="button" onclick="event.stopPropagation(); openRecommendTradeConfirm(${idx});">확인 후 적용</button>
+            </div>
+          </article>`;
+      }).join('');
+    }
+
+    function selectTeamAdjustRecommendation(index) {
+      teamAdjustState.selectedRecommendationIndex = index;
+      renderTeamAdjustRecommendations();
+    }
+
+    function toggleTeamAdjustAnonymous() {
+      teamAdjustState.anonymous = !teamAdjustState.anonymous;
+      renderTeamAdjustPage();
+    }
+
+    function toggleDirectTradeTeam(letter) {
+      const selected = teamAdjustState.selectedTeamLetters.slice();
+      const idx = selected.indexOf(letter);
+      if (idx >= 0) selected.splice(idx, 1);
+      else {
+        if (selected.length >= 2) selected.shift();
+        selected.push(letter);
+      }
+      teamAdjustState.selectedTeamLetters = selected;
+      teamAdjustState.selectedPlayerAId = '';
+      teamAdjustState.selectedPlayerBId = '';
+      renderTeamAdjustPage();
+    }
+
+    function getSelectedDirectTeams() {
+      if (teamAdjustState.selectedTeamLetters.length !== 2) return [];
+      return teamAdjustState.selectedTeamLetters.map(getRunTeamByLetter).filter(Boolean);
+    }
+
+    function selectDirectTradePlayer(teamSlot, playerId) {
+      const prop = teamSlot === 'A' ? 'selectedPlayerAId' : 'selectedPlayerBId';
+      teamAdjustState[prop] = teamAdjustState[prop] === playerId ? '' : playerId;
+      renderTeamAdjustPage();
+    }
+
+    function resetDirectTradeSelection() {
+      teamAdjustState.selectedPlayerAId = '';
+      teamAdjustState.selectedPlayerBId = '';
+      renderTeamAdjustPage();
+    }
+
+    function renderDirectTradeWorkArea() {
+      const area = document.getElementById('teamAdjustDirectWorkArea');
+      if (!area) return;
+      const teams = getSelectedDirectTeams();
+      if (teams.length !== 2) {
+        area.innerHTML = '<div class="team-adjust-empty">먼저 트레이드할 팀 카드 2개를 선택하세요.</div>';
+        return;
+      }
+      const [teamA, teamB] = teams;
+      const selectedA = getPlayerById(teamAdjustState.selectedPlayerAId);
+      const selectedB = getPlayerById(teamAdjustState.selectedPlayerBId);
+      const directRules = selectedA && selectedB ? getTeamAdjustRuleCheck(selectedA, selectedB) : null;
+      const getProtectionLabel = (player, idx) => isRunTeamCaptain(player.id) ? '조장 보호' : (idx === 0 ? '상위1 보호' : (wasPlayerTradedPreviousRound(player.id) ? '최근 교체 제외' : '교체 가능'));
+      const getLateLabel = (player) => player?.singlesTiming === 'late' ? '늦게 배치' : '기본 배치';
+      const getDoublesLabel = (player) => {
+        const value = getDisplayedDoublesSkill(player);
+        return value == null ? '대기' : String(Number(value) || 50);
+      };
+      const getMatchCountLabel = (player) => {
+        const win = Number(player?.stats?.win) || 0;
+        const lose = Number(player?.stats?.lose) || 0;
+        return String(win + lose);
+      };
+      const renderDetailCard = (player, team, slot) => {
+        if (!player) {
+          return `<div class="direct-detail-card empty"><div><div class="direct-detail-title">${escapeHtml(team.letter)}조 상세 비교</div><div class="team-adjust-card-sub">학생을 선택하면 꼭 필요한 비교 정보가 여기에 표시됩니다.</div></div></div>`;
+        }
+        const members = teamMembers(team).slice().sort((a,b) => playerComposite(b) - playerComposite(a));
+        const idx = members.findIndex(member => member.id === player.id);
+        const protection = getProtectionLabel(player, idx < 0 ? 99 : idx);
+        const displayName = getPlayerDisplayNameForTrade(player, teamAdjustState.anonymous);
+        return `
+          <div class="direct-detail-card ${slot === 'A' ? 'active-a' : 'active-b'}">
+            <div class="direct-detail-head">
+              <div>
+                <div class="direct-detail-title">${escapeHtml(team.letter)}조 선택 학생</div>
+                <div class="direct-detail-name">${escapeHtml(displayName)}</div>
+              </div>
+              <span class="direct-detail-badge">${escapeHtml(protection)}</span>
+            </div>
+            <div class="direct-detail-grid">
+              <div class="direct-detail-item"><span class="label">성별</span><span class="value">${escapeHtml(getPlayerGenderLabel(player))}</span></div>
+              <div class="direct-detail-item"><span class="label">종합 점수</span><span class="value">${playerComposite(player)}</span></div>
+              <div class="direct-detail-item"><span class="label">단식 점수</span><span class="value">${Number(player.singleSkill) || 50}</span></div>
+              <div class="direct-detail-item"><span class="label">복식 점수</span><span class="value">${escapeHtml(getDoublesLabel(player))}</span></div>
+              <div class="direct-detail-item"><span class="label">최근 교체 여부</span><span class="value">${wasPlayerTradedPreviousRound(player.id) ? '직전 라운드 교체' : '없음'}</span></div>
+              <div class="direct-detail-item"><span class="label">늦게 배치 여부</span><span class="value">${escapeHtml(getLateLabel(player))}</span></div>
+            </div>
+          </div>`;
+      };
+      const renderTeamList = (team, slot) => {
+        const members = teamMembers(team).slice().sort((a,b) => playerComposite(b) - playerComposite(a));
+        return `
+          <div class="team-adjust-card">
+            <div class="team-adjust-card-head"><div><div class="team-adjust-card-title">${escapeHtml(team.letter)}조</div><div class="team-adjust-card-sub">조장, 상위 1명, 최근 교체 학생은 비활성으로 표시됩니다.</div></div></div>
+            <div class="direct-team-list">
+              ${members.map((player, idx) => {
+                const blocked = isRunTeamCaptain(player.id) || idx === 0 || wasPlayerTradedPreviousRound(player.id);
+                const selectedClass = slot === 'A' ? (teamAdjustState.selectedPlayerAId === player.id ? 'selected-a' : '') : (teamAdjustState.selectedPlayerBId === player.id ? 'selected-b' : '');
+                const displayName = getPlayerDisplayNameForTrade(player, teamAdjustState.anonymous);
+                const sub = `${getPlayerGenderLabel(player)} · 종합 ${playerComposite(player)} · 단식 ${Number(player.singleSkill)||50}`;
+                const tag = isRunTeamCaptain(player.id) ? '조장' : (idx === 0 ? '상위1 보호' : (wasPlayerTradedPreviousRound(player.id) ? '최근 교체' : '교체 가능'));
+                return `<button class="direct-player-card ${selectedClass} ${blocked ? 'is-blocked' : ''}" type="button" ${blocked ? 'disabled' : ''} onclick="selectDirectTradePlayer('${slot}','${player.id}')"><div class="direct-player-no">${String(idx+1).padStart(2,'0')}</div><div class="direct-player-main"><div class="direct-player-name">${escapeHtml(displayName)}</div><div class="direct-player-meta">${escapeHtml(sub)} · ${escapeHtml(tag)}</div></div><div class="team-overview-chip">선택</div></button>`;
+              }).join('')}
+            </div>
+          </div>`;
+      };
+      area.innerHTML = `
+        <div class="direct-layout">
+          ${renderTeamList(teamA, 'A')}
+          <div class="direct-center">
+            <div class="direct-preview-box">
+              <div class="direct-preview-top"><div><div class="direct-preview-title">트레이드 미리보기</div><div class="direct-preview-sub">중앙 미리보기까지는 익명 표시를 유지합니다. 선택한 학생의 꼭 필요한 비교 정보는 아래 상세 카드에서 확인할 수 있습니다.</div></div></div>
+              <div class="direct-picked-row">
+                <div class="direct-picked-card ${selectedA ? 'active-a' : ''}"><div><div class="direct-picked-name">${escapeHtml(getPlayerDisplayNameForTrade(selectedA, teamAdjustState.anonymous))}</div><div class="direct-picked-sub">${selectedA ? `${teamA.letter}조 · ${getPlayerGenderLabel(selectedA)} · 종합 ${playerComposite(selectedA)}` : `${teamA.letter}조에서 학생을 선택하세요.`}</div></div></div>
+                <div class="direct-arrow">↔</div>
+                <div class="direct-picked-card ${selectedB ? 'active-b' : ''}"><div><div class="direct-picked-name">${escapeHtml(getPlayerDisplayNameForTrade(selectedB, teamAdjustState.anonymous))}</div><div class="direct-picked-sub">${selectedB ? `${teamB.letter}조 · ${getPlayerGenderLabel(selectedB)} · 종합 ${playerComposite(selectedB)}` : `${teamB.letter}조에서 학생을 선택하세요.`}</div></div></div>
+              </div>
+              <div class="direct-detail-compare">
+                ${renderDetailCard(selectedA, teamA, 'A')}
+                ${renderDetailCard(selectedB, teamB, 'B')}
+              </div>
+              <div class="rule-check-list">
+                <div class="rule-check-item"><strong>교체 방식</strong><span>양쪽 조 1명씩 맞교환</span></div>
+                <div class="rule-check-item"><strong>인원 변화</strong><span>두 팀 모두 인원 수 유지</span></div>
+                <div class="rule-check-item ${directRules ? (directRules.items[5].pass ? 'pass' : 'fail') : ''}"><strong>적용 후 전체 편차</strong><span>${directRules ? `${directRules.currentSpread} → ${directRules.nextSpread}` : '학생 2명을 모두 선택하면 계산됩니다.'}</span></div>
+              </div>
+              <div class="recommend-actions">
+                <button class="btn small" type="button" onclick="resetDirectTradeSelection()">선택 초기화</button>
+                <button class="btn small primary" type="button" ${selectedA && selectedB ? '' : 'disabled'} onclick="openDirectTradeConfirm()">확인</button>
+              </div>
+            </div>
+          </div>
+          ${renderTeamList(teamB, 'B')}
+        </div>`;
+    }
+
+    function renderTeamAdjustLogs() {
+      const list = document.getElementById('teamAdjustLogList');
+      if (!list) return;
+      const logs = ensureTeamAdjustLogs().slice().sort((a,b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+      if (!logs.length) {
+        list.innerHTML = '<div class="team-adjust-empty">아직 적용된 팀 조정 기록이 없습니다.</div>';
+        return;
+      }
+      list.innerHTML = logs.slice(0, 10).map(log => {
+        const a = getPlayerById(log.aPlayerId);
+        const b = getPlayerById(log.bPlayerId);
+        return `<article class="team-adjust-log-item"><div class="team-adjust-log-head"><div class="team-adjust-log-title">${log.mode === 'recommend' ? '추천 트레이드 적용' : '직접 트레이드 적용'}</div><span class="avg-pill">${log.roundNo}라운드 · ${formatTeamAdjustTime(log.createdAt)}</span></div><div><strong>${escapeHtml(log.aTeam)}조 ${escapeHtml(a?.name || '알 수 없음')}</strong> ↔ <strong>${escapeHtml(log.bTeam)}조 ${escapeHtml(b?.name || '알 수 없음')}</strong></div><div class="team-adjust-log-meta">익명 선택 후 규칙 확인을 통과하여 적용된 기록입니다. 편차 ${log.beforeSpread} → ${log.afterSpread}</div></article>`;
+      }).join('');
+    }
+
+    function openTeamAdjustConfirm(payload) {
+      teamAdjustState.confirmPayload = payload;
+      let backdrop = document.getElementById('teamAdjustConfirmBackdrop');
+      if (!backdrop) {
+        backdrop = document.createElement('div');
+        backdrop.id = 'teamAdjustConfirmBackdrop';
+        backdrop.className = 'team-adjust-confirm-backdrop';
+        backdrop.innerHTML = '<div class="team-adjust-confirm-card"><div class="team-adjust-confirm-head"><div class="team-adjust-confirm-title" id="teamAdjustConfirmTitle">팀 조정 확인</div></div><div class="team-adjust-confirm-body" id="teamAdjustConfirmBody"></div><div class="team-adjust-confirm-foot"><button class="btn small" type="button" onclick="closeTeamAdjustConfirm()">취소</button><button class="btn small primary" type="button" id="teamAdjustConfirmApplyBtn">적용</button></div></div>';
+        document.body.appendChild(backdrop);
+      }
+      const body = document.getElementById('teamAdjustConfirmBody');
+      const title = document.getElementById('teamAdjustConfirmTitle');
+      const applyBtn = document.getElementById('teamAdjustConfirmApplyBtn');
+      if (title) title.textContent = payload.mode === 'direct' ? '직접 트레이드 규칙 확인' : '추천 트레이드 확인';
+      const rules = payload.rules || [];
+      const ruleHtml = rules.map(item => `<div class="rule-check-item ${item.pass ? 'pass' : 'fail'}"><strong>${escapeHtml(item.label)}</strong><span>${escapeHtml(item.detail)}</span></div>`).join('');
+      if (body) body.innerHTML = `
+        <div class="team-adjust-confirm-anon">${escapeHtml(payload.anonymousPair)}</div>
+        <div class="team-adjust-confirm-note">${escapeHtml(payload.note || '규칙 통과 여부를 확인한 뒤 적용합니다.')}</div>
+        <div class="rule-check-list">${ruleHtml}</div>
+      `;
+      if (applyBtn) {
+        applyBtn.disabled = !payload.canApply;
+        applyBtn.textContent = payload.canApply ? '트레이드 적용' : '적용 불가';
+        applyBtn.onclick = () => applyTeamAdjustConfirm();
+      }
+      backdrop.classList.add('show');
+    }
+
+    function closeTeamAdjustConfirm() {
+      document.getElementById('teamAdjustConfirmBackdrop')?.classList.remove('show');
+      teamAdjustState.confirmPayload = null;
+    }
+
+    function openRecommendTradeConfirm(index = teamAdjustState.selectedRecommendationIndex) {
+      const recs = buildTeamAdjustRecommendations();
+      const rec = recs[index];
+      if (!rec) return;
+      const a = getPlayerById(rec.aPlayerId);
+      const b = getPlayerById(rec.bPlayerId);
+      const rules = [
+        { label: '같은 성별 교체', pass: true, detail: `${getPlayerGenderLabel(a)} ↔ ${getPlayerGenderLabel(b)}` },
+        { label: '능력치 차 1단계 이내', pass: rec.skillGap <= 10, detail: `차이 ${rec.skillGap}점` },
+        { label: '한 라운드 최대 1회', pass: !hasTradeThisRound(), detail: hasTradeThisRound() ? `${getTeamAdjustRoundNo()}라운드에 이미 적용된 트레이드가 있습니다.` : '이번 라운드 첫 트레이드입니다.' },
+        { label: '적용 후 전체 편차', pass: rec.afterSpread <= rec.beforeSpread, detail: `${rec.beforeSpread} → ${rec.afterSpread}` }
+      ];
+      openTeamAdjustConfirm({
+        mode: 'recommend',
+        canApply: rules.every(item => item.pass),
+        anonymousPair: `${rec.aTeam}조 ${a?.name || ''} ↔ ${rec.bTeam}조 ${b?.name || ''}`,
+        note: '추천 트레이드는 실명 기준으로 확인하고 적용합니다.',
+        rules,
+        apply: () => applyTeamAdjustSwap({ mode: 'recommend', rec })
+      });
+    }
+
+    function openDirectTradeConfirm() {
+      const playerA = getPlayerById(teamAdjustState.selectedPlayerAId);
+      const playerB = getPlayerById(teamAdjustState.selectedPlayerBId);
+      if (!playerA || !playerB) return;
+      const ruleSet = getTeamAdjustRuleCheck(playerA, playerB);
+      openTeamAdjustConfirm({
+        mode: 'direct',
+        canApply: ruleSet.pass,
+        anonymousPair: `${getPlayerDisplayNameForTrade(playerA, true)} ↔ ${getPlayerDisplayNameForTrade(playerB, true)}`,
+        note: '확인 단계에서는 규칙 통과 여부만 표시합니다. 적용 완료 후 로그에 실명이 기록됩니다.',
+        rules: ruleSet.items,
+        apply: () => applyTeamAdjustSwap({ mode: 'direct', playerAId: playerA.id, playerBId: playerB.id, beforeSpread: ruleSet.currentSpread, afterSpread: ruleSet.nextSpread })
+      });
+    }
+
+    function applyTeamAdjustConfirm() {
+      const payload = teamAdjustState.confirmPayload;
+      if (!payload || !payload.canApply) return;
+      if (typeof payload.apply === 'function') payload.apply();
+      closeTeamAdjustConfirm();
+    }
+
+    function applyTeamAdjustSwap({ mode, rec = null, playerAId = '', playerBId = '', beforeSpread = null, afterSpread = null }) {
+      const aId = rec ? rec.aPlayerId : playerAId;
+      const bId = rec ? rec.bPlayerId : playerBId;
+      const aTeam = rec ? rec.aTeam : getRunPlayerTeamLetter(aId);
+      const bTeam = rec ? rec.bTeam : getRunPlayerTeamLetter(bId);
+      const playerA = getPlayerById(aId);
+      const playerB = getPlayerById(bId);
+      if (!playerA || !playerB) return;
+      if (hasTradeThisRound()) {
+        alert('이번 라운드에는 이미 트레이드가 적용되었습니다. 다음 라운드에서 다시 시도하세요.');
+        return;
+      }
+      if (!swapRunPlayersBetweenTeams(aId, bId)) {
+        alert('서로 다른 조의 학생만 맞교환할 수 있습니다.');
+        return;
+      }
+      const metricBefore = beforeSpread ?? getTeamAdjustStrengthMetric().spread;
+      saveData();
+      const metricAfter = afterSpread ?? getTeamAdjustStrengthMetric().spread;
+      ensureTeamAdjustLogs().unshift({
+        mode,
+        roundNo: getTeamAdjustRoundNo(),
+        aPlayerId: aId,
+        bPlayerId: bId,
+        aTeam,
+        bTeam,
+        beforeSpread: metricBefore,
+        afterSpread: metricAfter,
+        createdAt: new Date().toISOString()
+      });
+      saveData();
+      teamAdjustState.selectedPlayerAId = '';
+      teamAdjustState.selectedPlayerBId = '';
+      renderAll();
+      alert(`트레이드 적용 완료\n${aTeam}조 ${playerA.name} ↔ ${bTeam}조 ${playerB.name}`);
+    }
+
+    function renderTeamAdjustPage() {
+      const page = document.getElementById('teamAdjustPage');
+      if (!page) return;
+      const teams = currentData().teams || [];
+      document.getElementById('teamAdjustRoundValue').textContent = `${getTeamAdjustRoundNo()}라운드`;
+      document.getElementById('teamAdjustTeamCountValue').textContent = `${teams.length}팀`;
+      document.getElementById('teamAdjustRoundTradeCountValue').textContent = `${ensureTeamAdjustLogs().filter(log => Number(log.roundNo) === getTeamAdjustRoundNo()).length}회`;
+      document.getElementById('teamAdjustRecommendCountValue').textContent = `${buildTeamAdjustRecommendations().length}안`;
+      document.querySelectorAll('[data-adjust-tab]').forEach(btn => btn.classList.toggle('active', btn.dataset.adjustTab === teamAdjustState.tab));
+      document.getElementById('teamAdjustRecommendPanel')?.classList.toggle('active', teamAdjustState.tab === 'recommend');
+      document.getElementById('teamAdjustDirectPanel')?.classList.toggle('active', teamAdjustState.tab === 'direct');
+      if (!teams.length) {
+        const emptyHtml = '<div class="team-adjust-empty">먼저 조편성에서 팀 구성을 완료하세요. 팀 조정은 팀이 생성된 뒤에 사용할 수 있습니다.</div>';
+        const ids = ['teamAdjustOverviewGrid','teamAdjustRecommendList','teamAdjustDirectTeamGrid','teamAdjustDirectWorkArea','teamAdjustLogList'];
+        ids.forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = emptyHtml; });
+        return;
+      }
+      renderTeamAdjustOverviewGrid();
+      renderTeamAdjustRecommendations();
+      renderDirectTradeWorkArea();
+      renderTeamAdjustLogs();
+    }
+
 function renderAll() {
       recomputeAllStats();
       renderRoster();
@@ -10582,6 +11886,7 @@ function renderAll() {
       renderDataInsightsPage();
       renderGrowthReportPage();
       renderSinglesLeague();
+      renderTeamAdjustPage();
       renderBroadcastPage();
       if (IS_BROADCAST_MODE) applyBroadcastOnlyLayout();
       switchView(currentView);
